@@ -28,6 +28,12 @@ export class player {
 		console.log(event.key);
 		if (event.key === "a") this.positionW -= this._playerSpeed;
 		if (event.key === "d") this.positionW += this._playerSpeed;
+		if (event.key === "w") {
+			this.shoot;
+			console.log("ping");
+			this._context.fillStyle = "red";
+			this._context.fillRect(100, 100, 5, 10);
+		}
 		this._context.clearRect(
 			this.positionW - this._playerSpeed,
 			this.positionH,
@@ -41,5 +47,10 @@ export class player {
 			this._size,
 			this._size
 		);
+	}
+	public shoot() {
+		console.log("peng");
+		this._context.fillStyle = "red";
+		this._context.fillRect(100, 100, 5, 10);
 	}
 }
