@@ -1,5 +1,22 @@
 {
+  "name": "jkons-invader",
+  "version": "0.0.1",
+  "description": "A space invader game",
+  "main": "index.html",
+  "scripts": {
+    "watch": "tsc -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jim8Knopf/jkons-invader.git"
+  },
+  "author": "Jk|o|ns",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jim8Knopf/jkons-invader/issues"
+  },
+  "homepage": "https://github.com/Jim8Knopf/jkons-invader#readme",
   "dependencies": {
-    "typescript": "^4.2.4"
+    "prettier": "^2.2.1"
   }
 }
