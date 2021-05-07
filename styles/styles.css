@@ -1,0 +1,21 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+#jkonsInvader {
+  background-color: black;
+  border: 1px solid red;
+  width: 512px;
+  height: 448px;
+}/*# sourceMappingURL=styles.css.map */
