@@ -1,10 +1,11 @@
 import { Enemy } from "./enemy.js";
-
+import { player } from "./player.js";
 const canvas: HTMLCanvasElement = <HTMLCanvasElement>(
-  document.getElementById("jkonsInvader")
+	document.getElementById("jkonsInvader")
 );
+window.onunload = unloadPage;
 const context: CanvasRenderingContext2D = canvas.getContext(
-  "2d"
+	"2d"
 ) as CanvasRenderingContext2D;
 
 // Set canvas height and with in JS, because with and height set in CSS distort drawn shapes
@@ -21,3 +22,15 @@ function animate(): void {
 }
 
 animate();
+context.fillStyle = "white";
+context.fillRect(10, 10, 2, 15);
+let p = new player(context);
+
+function unloadPage() {
+	alert("unload event detected!");
+	document.removeEventListener("keydown", function (event) {
+		p.move(event);
+	});
+	console.log("test");
+	setTimeout(() => {}, 5000);
+}
