@@ -1,3 +1,4 @@
+// browser styles
 html,
 body {
   height: 100%;
@@ -7,9 +8,8 @@ body {
   justify-content: center;
 }
 
+// canvas styles
 #jkonsInvader {
+  border: 4px solid grey;
   background-color: black;
-  border: 1px solid red;
-  width: 512px;
-  height: 448px;
 }
