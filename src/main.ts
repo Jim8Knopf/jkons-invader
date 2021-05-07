@@ -11,4 +11,8 @@ canvas.width = 512;
 canvas.height = 448;
 context.fillStyle = "white";
 context.fillRect(10, 10, 2, 15);
-let p = new player(canvas);
+let p = new player(context);
+
+function onUnload() {
+	alert("test");
+}
