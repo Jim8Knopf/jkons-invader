@@ -12,19 +12,19 @@ const context: CanvasRenderingContext2D = canvas.getContext(
 canvas.width = 512;
 canvas.height = 448;
 context.imageSmoothingEnabled = false;
+let p = new player(context);
 
 // TODO array of enemies
 const enemy: Enemy = new Enemy(context, 10, 10);
 function animate(): void {
-  context.clearRect(0, 0, canvas.width, canvas.height);
-  enemy.moveEnemy();
-  requestAnimationFrame(animate);
+	context.clearRect(0, 0, canvas.width, canvas.height - p.size);
+	enemy.moveEnemy();
+	requestAnimationFrame(animate);
 }
 
 animate();
 context.fillStyle = "white";
 context.fillRect(10, 10, 2, 15);
-let p = new player(context);
 
 function unloadPage() {
 	alert("unload event detected!");
