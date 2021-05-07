@@ -1,24 +1,45 @@
 export class player {
-	constructor(canvas: HTMLCanvasElement) {
-		const size = 40;
-		const playerSpeed = 5;
-		const context: CanvasRenderingContext2D = canvas.getContext(
-			"2d"
-		) as CanvasRenderingContext2D;
-		const position_h = canvas.height - size;
-		let position_w = (canvas.width - size) / 2;
-		let base_image = new Image();
-		base_image.src = "../img/iro.png";
-		base_image.onload = function () {
-			context.drawImage(base_image, position_w, position_h, size, size);
+	private _size = 40;
+	private _playerSpeed = 5;
+	private _context;
+	public positionH;
+	public positionW;
+	private base_image = new Image();
+	constructor(context: CanvasRenderingContext2D) {
+		const that = this;
+		this._context = context;
+		this.positionH = context.canvas.height - this._size;
+		this.positionW = (context.canvas.width - this._size) / 2;
+		this.base_image.src = "../img/iro.png";
+		this.base_image.onload = function () {
+			context.drawImage(
+				that.base_image,
+				that.positionW,
+				that.positionH,
+				that._size,
+				that._size
+			);
 		};
-		document.addEventListener("keydown", function (e) {
-			console.log(e.key);
-			if (e.key === "a") position_w -= playerSpeed; // ArrayUp
-			if (e.key === "d") position_w += playerSpeed;
-			context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-			context.drawImage(base_image, position_w, position_h, size, size);
+		document.addEventListener("keydown", function (event) {
+			that.move(event);
 		});
 	}
-	public move(event: KeyboardEvent) {}
+	public move(event: any) {
+		console.log(event.key);
+		if (event.key === "a") this.positionW -= this._playerSpeed;
+		if (event.key === "d") this.positionW += this._playerSpeed;
+		this._context.clearRect(
+			this.positionW - this._playerSpeed,
+			this.positionH,
+			this._context.canvas.width,
+			this._context.canvas.height
+		);
+		this._context.drawImage(
+			this.base_image,
+			this.positionW,
+			this.positionH,
+			this._size,
+			this._size
+		);
+	}
 }
