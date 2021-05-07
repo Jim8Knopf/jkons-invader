@@ -1,4 +1,6 @@
 import { player } from "./player.js";
+import { Enemy } from "./enemy.js";
+
 const canvas: HTMLCanvasElement = <HTMLCanvasElement>(
 	document.getElementById("jkonsInvader")
 );
@@ -22,3 +24,15 @@ function unloadPage() {
 	console.log("test");
 	setTimeout(() => {}, 5000);
 }
+context.imageSmoothingEnabled = false;
+
+// TODO array of enemies
+const enemy: Enemy = new Enemy(context, 10, 10);
+function animate(): void {
+  context.clearRect(0, 0, canvas.width, canvas.height);
+	
+  enemy.moveEnemy();
+  requestAnimationFrame(animate);
+}
+
+animate();
