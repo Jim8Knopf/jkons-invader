@@ -1,4 +1,5 @@
 export class Enemy {
+
   private _context: CanvasRenderingContext2D;
 
   // TODO maybe a tile service
