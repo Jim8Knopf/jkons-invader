@@ -34,7 +34,6 @@ const enemy: Enemy = new Enemy(context, -100 , -100);
 const spaceBetween = enemy.zoom * enemy.tileWidth;
 for (let i = 0; i < 6; i++) {
 	enemyHandler.addEnemy(new Enemy(context, i * spaceBetween * 1.2, enemy.tileHeight));
-	
 }
 
 function animate(): void {
