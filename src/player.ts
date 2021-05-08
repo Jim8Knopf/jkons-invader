@@ -1,23 +1,23 @@
 export class player {
-	private _size = 40;
-	private _playerSpeed = 5;
-	private _context;
-	public positionH;
-	public positionW;
-	private base_image = new Image();
+	public size: number = 40;
+	private _playerSpeed: number = 5;
+	private _context: CanvasRenderingContext2D;
+	private _baseImage = new Image();
+	public positionH: number;
+	public positionW: number;
 	constructor(context: CanvasRenderingContext2D) {
 		const that = this;
 		this._context = context;
-		this.positionH = context.canvas.height - this._size;
-		this.positionW = (context.canvas.width - this._size) / 2;
-		this.base_image.src = "../img/iro.png";
-		this.base_image.onload = function () {
+		this.positionH = context.canvas.height - this.size;
+		this.positionW = (context.canvas.width - this.size) / 2;
+		this._baseImage.src = "../img/iro.png";
+		this._baseImage.onload = function () {
 			context.drawImage(
-				that.base_image,
+				that._baseImage,
 				that.positionW,
 				that.positionH,
-				that._size,
-				that._size
+				that.size,
+				that.size
 			);
 		};
 		document.addEventListener("keydown", function (event) {
@@ -35,11 +35,11 @@ export class player {
 			this._context.canvas.height
 		);
 		this._context.drawImage(
-			this.base_image,
+			this._baseImage,
 			this.positionW,
 			this.positionH,
-			this._size,
-			this._size
+			this.size,
+			this.size
 		);
 	}
 }
