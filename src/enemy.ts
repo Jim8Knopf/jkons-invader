@@ -1,61 +1,85 @@
 export class Enemy {
   private context: CanvasRenderingContext2D;
 
-  private coordinates: { x: number; y: number } = { x: 0, y: 0 };
-  private speed: { dx: number; dy: number } = { dx: 0.5, dy: 1 };
-  private size: { width: number; height: number };
+  // TODO maybe a tile service
   private sheet = new Image();
-  private tileSize = 9;
-  private border: number;
+  private tileFrameX = 0;
+  private tileFrameY = 2;
+  // TODO get tile from tile config
+  private tileWidth: number = 9;
+  private tileHeight: number = 9;
+
+  // TODO get zoom from game settings
+  private zoom = 5;
+  private zoomedWidth: number = this.tileWidth * this.zoom;
+  private zoomedHeight: number = this.tileHeight * this.zoom;
+
+  private coordinates: { x: number; y: number } = { x: 0, y: 0 };
+  private speed: { x: number; y: number } = { x: 2, y: this.zoomedHeight };
+  private canvasCollision: {
+    right: number,
+    left: number,
+    top: number,
+    bottom: number 
+  };
 
   constructor(
     context: CanvasRenderingContext2D,
     x?: number,
     y?: number,
-    border?: number
   ) {
-    this.sheet.src = "../img/ji-sheet.png";
     this.context = context;
-    this.size = { width: this.sheet.width * 2, height: this.sheet.height * 4 };
-    this.speed.dy = this.size.height;
-
     if (x) this.coordinates.x = x;
     if (y) this.coordinates.y = y;
 
-    if (border) this.border = border - this.size.height;
-    else this.border = this.context.canvas.height - this.size.height;
+    this.canvasCollision = { 
+      right: this.context.canvas.width - this.zoomedWidth,
+      left: 0,
+      top: 0,
+      bottom: this.context.canvas.width - this.zoomedHeight * 4
+    }
+    this.sheet.src = "../img/ji-sheet.png";
   }
 
-  // start enemy
-  public moveEnemy(): void {
-    this.context.drawImage(
-      this.sheet,
-      9,
-      0,
-      this.tileSize,
-      this.tileSize,
-      this.coordinates.x,
-      this.coordinates.y,
-      this.size.width,
-      this.size.height
+  // Render enemy
+  public renderEnemy(): void {
+      this.context.drawImage(
+        this.sheet,
+        this.tileWidth * this.tileFrameX,
+        this.tileWidth * this.tileFrameY,
+        this.tileWidth,
+        this.tileWidth,
+        this.coordinates.x,
+        this.coordinates.y,
+        this.zoomedWidth,
+        this.zoomedHeight,
     );
-    this.enemyMovement();
-  }
+}
 
   public enemyMovement() {
-    if (
-      this.coordinates.x + this.size.width >= this.context.canvas.width - 9 ||
-      this.coordinates.x - 9 <= 0
-    ) {
-      this.speed.dx = -this.speed.dx;
-      this.coordinates.y += this.speed.dy;
+    this.context.clearRect(this.coordinates.x - this.speed.x, this.coordinates.y, this.zoomedWidth, this.zoomedHeight);
+    this.renderEnemy();
+    if (this.coordinates.x > this.canvasCollision.right || this.coordinates.x < this.canvasCollision.left) {
+      this.speed.x = -this.speed.x;
+      this.coordinates.y += this.speed.y;
+    }
+    if (this.coordinates.y > this.canvasCollision.bottom) {
+      this.speed.y = 0;
+      this.speed.x = 0;
     }
 
-    if (this.coordinates.y >= this.border) {
-      this.speed.dy = 0;
-      this.speed.dx = 0;
-    }
+    this.coordinates.x += this.speed.x;
+  }
 
-    this.coordinates.x += this.speed.dx;
+  public getZoom(): number {
+    return this.zoom
+  }
+
+  public getTileWidth(): number {
+    return this.tileWidth;
+  }
+
+  public getTileHeight(): number {
+    return this.tileHeight;
   }
 }
