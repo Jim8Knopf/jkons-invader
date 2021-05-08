@@ -24,15 +24,31 @@ export class player {
 				that.size
 			);
 		};
+		// ! add keypress listener
 		document.addEventListener("keydown", (event) => {
 			that.move(event);
 		});
 	}
-	public move(event: any) {
+	/**
+	 * it checks the KeyboardEvent and activate the shoot ore moves
+	 * @param event is the KeyboardEvent
+	 */
+	public move(event: KeyboardEvent) {
 		console.log(event.key);
-		if (event.key === "a") this.positionX -= this._playerSpeed;
-		if (event.key === "d") this.positionX += this._playerSpeed;
-		if (event.key === "w") {
+		if (event.key === "a")
+			// moves left but not out of the screen
+			this.positionX =
+				this.positionX - this._playerSpeed >= 0
+					? this.positionX - this._playerSpeed
+					: 0;
+		if (event.key === "d")
+			// moves right but not out of the screen
+			this.positionX =
+				this.positionX + this.size <= this._context.canvas.width
+					? this.positionX + this._playerSpeed
+					: this.positionX;
+		if (event.key === " ") {
+			// activates the shoot if possible
 			this.shoot.shoot(this.positionX + this.size / 2, this.positionY);
 		}
 		this._context.clearRect(
