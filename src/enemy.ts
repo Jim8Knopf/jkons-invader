@@ -1,22 +1,22 @@
 export class Enemy {
-  private context: CanvasRenderingContext2D;
+  private _context: CanvasRenderingContext2D;
 
   // TODO maybe a tile service
-  private sheet = new Image();
-  private tileFrameX = 0;
-  private tileFrameY = 2;
+  private _sheet = new Image();
+  private _tileFrameX = 0;
+  private _tileFrameY = 2;
   // TODO get tile from tile config
-  private tileWidth: number = 9;
-  private tileHeight: number = 9;
-
+  private _tileWidth: number = 9;
+  private _tileHeight: number = 9;
+  private _spriteChangeCounter = 0;
   // TODO get zoom from game settings
-  private zoom = 5;
-  private zoomedWidth: number = this.tileWidth * this.zoom;
-  private zoomedHeight: number = this.tileHeight * this.zoom;
+  private _zoom = 5;
+  private _zoomedWidth: number = this._tileWidth * this._zoom;
+  private _zoomedHeight: number = this._tileHeight * this._zoom;
 
-  private coordinates: { x: number; y: number } = { x: 0, y: 0 };
-  private speed: { x: number; y: number } = { x: 2, y: this.zoomedHeight };
-  private canvasCollision: {
+  private _coordinates: { x: number; y: number } = { x: 0, y: 0 };
+  private _speed: { x: number; y: number } = { x: 1, y: this._zoomedHeight };
+  private _canvasCollision: {
     right: number,
     left: number,
     top: number,
@@ -28,58 +28,79 @@ export class Enemy {
     x?: number,
     y?: number,
   ) {
-    this.context = context;
-    if (x) this.coordinates.x = x;
-    if (y) this.coordinates.y = y;
+    this._context = context;
+    if (x) this._coordinates.x = x;
+    if (y) this._coordinates.y = y;
 
-    this.canvasCollision = { 
-      right: this.context.canvas.width - this.zoomedWidth,
+    this._canvasCollision = { 
+      right: this._context.canvas.width - this._zoomedWidth,
       left: 0,
       top: 0,
-      bottom: this.context.canvas.width - this.zoomedHeight * 4
+      bottom: this._context.canvas.width - this._zoomedHeight * 4
     }
-    this.sheet.src = "../img/ji-sheet.png";
+    this._sheet.src = "../img/ji-sheet.png";
   }
 
   // Render enemy
   public renderEnemy(): void {
-      this.context.drawImage(
-        this.sheet,
-        this.tileWidth * this.tileFrameX,
-        this.tileWidth * this.tileFrameY,
-        this.tileWidth,
-        this.tileWidth,
-        this.coordinates.x,
-        this.coordinates.y,
-        this.zoomedWidth,
-        this.zoomedHeight,
+      this._context.drawImage(
+        this._sheet,
+        this._tileWidth * this._tileFrameX,
+        this._tileWidth * this._tileFrameY,
+        this._tileWidth,
+        this._tileWidth,
+        this._coordinates.x,
+        this._coordinates.y,
+        this._zoomedWidth,
+        this._zoomedHeight,
     );
 }
 
   public enemyMovement() {
-    this.context.clearRect(this.coordinates.x - this.speed.x, this.coordinates.y, this.zoomedWidth, this.zoomedHeight);
+    this._context.clearRect(this._coordinates.x - this._speed.x, this._coordinates.y, this._zoomedWidth, this._zoomedHeight);
     this.renderEnemy();
-    if (this.coordinates.x > this.canvasCollision.right || this.coordinates.x < this.canvasCollision.left) {
-      this.speed.x = -this.speed.x;
-      this.coordinates.y += this.speed.y;
+    // d
+    if (this._coordinates.y <= this._canvasCollision.bottom) {
+      // detect if enemy hits left or right border
+      if (this._coordinates.x > this._canvasCollision.right || this._coordinates.x < this._canvasCollision.left) {
+        // invert x direction
+        this._speed.x = -this._speed.x;
+        // put's enemy in the next column
+        this._coordinates.y += this._speed.y;
+        // clear enemy on row change
+        this._context.clearRect(this._coordinates.x, this._coordinates.y - this._speed.y, this._zoomedWidth, this._zoomedHeight);
+      }
+    } else {
+      this._speed.y = 0;
+      this._speed.x = 0;
     }
-    if (this.coordinates.y > this.canvasCollision.bottom) {
-      this.speed.y = 0;
-      this.speed.x = 0;
+
+    // move enemy on x axis
+    this._coordinates.x += this._speed.x;
+
+    // count's up till a specified number, then reset
+    if (this._spriteChangeCounter >= 50) {
+      this._spriteChangeCounter = 0;
+      // change current frame
+      if (this._tileFrameX < 1)
+        this._tileFrameX++;
+      else
+        this._tileFrameX = 0;
     }
-
-    this.coordinates.x += this.speed.x;
+    else {
+      this._spriteChangeCounter++;
+    }
   }
 
-  public getZoom(): number {
-    return this.zoom
+  public get zoom(): number {
+    return this._zoom
   }
 
-  public getTileWidth(): number {
-    return this.tileWidth;
+  public get tileWidth(): number {
+    return this._tileWidth;
   }
 
-  public getTileHeight(): number {
-    return this.tileHeight;
+  public get tileHeight(): number {
+    return this._tileHeight;
   }
 }
