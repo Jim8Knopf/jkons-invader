@@ -1,65 +1,85 @@
 export class Enemy {
-	private _context: CanvasRenderingContext2D;
+  private context: CanvasRenderingContext2D;
 
-	private _coordinates: { x: number; y: number } = { x: 0, y: 0 };
-	private _speed: { dx: number; dy: number } = { dx: 0.5, dy: 1 };
-	private _size: { width: number; height: number };
-	private _sheet = new Image();
-	private _tileSize = 9;
-	private _border: number;
+  // TODO maybe a tile service
+  private sheet = new Image();
+  private tileFrameX = 0;
+  private tileFrameY = 2;
+  // TODO get tile from tile config
+  private tileWidth: number = 9;
+  private tileHeight: number = 9;
 
-	constructor(
-		context: CanvasRenderingContext2D,
-		x?: number,
-		y?: number,
-		border?: number
-	) {
-		this._sheet.src = "../img/ji-sheet.png";
-		this._context = context;
-		this._size = {
-			width: this._sheet.width * 2,
-			height: this._sheet.height * 4,
-		};
-		this._speed.dy = this._size.height;
+  // TODO get zoom from game settings
+  private zoom = 5;
+  private zoomedWidth: number = this.tileWidth * this.zoom;
+  private zoomedHeight: number = this.tileHeight * this.zoom;
 
-		if (x) this._coordinates.x = x;
-		if (y) this._coordinates.y = y;
+  private coordinates: { x: number; y: number } = { x: 0, y: 0 };
+  private speed: { x: number; y: number } = { x: 2, y: this.zoomedHeight };
+  private canvasCollision: {
+    right: number,
+    left: number,
+    top: number,
+    bottom: number 
+  };
 
-		if (border) this._border = border - this._size.height;
-		else this._border = this._context.canvas.height - this._size.height;
-	}
+  constructor(
+    context: CanvasRenderingContext2D,
+    x?: number,
+    y?: number,
+  ) {
+    this.context = context;
+    if (x) this.coordinates.x = x;
+    if (y) this.coordinates.y = y;
 
-	// start enemy
-	public moveEnemy(): void {
-		this._context.drawImage(
-			this._sheet,
-			9,
-			0,
-			this._tileSize,
-			this._tileSize,
-			this._coordinates.x,
-			this._coordinates.y,
-			this._size.width,
-			this._size.height
-		);
-		this.enemyMovement();
-	}
+    this.canvasCollision = { 
+      right: this.context.canvas.width - this.zoomedWidth,
+      left: 0,
+      top: 0,
+      bottom: this.context.canvas.width - this.zoomedHeight * 4
+    }
+    this.sheet.src = "../img/ji-sheet.png";
+  }
 
-	public enemyMovement() {
-		if (
-			this._coordinates.x + this._size.width >=
-				this._context.canvas.width - 9 ||
-			this._coordinates.x - 9 <= 0
-		) {
-			this._speed.dx = -this._speed.dx;
-			this._coordinates.y += this._speed.dy;
-		}
+  // Render enemy
+  public renderEnemy(): void {
+      this.context.drawImage(
+        this.sheet,
+        this.tileWidth * this.tileFrameX,
+        this.tileWidth * this.tileFrameY,
+        this.tileWidth,
+        this.tileWidth,
+        this.coordinates.x,
+        this.coordinates.y,
+        this.zoomedWidth,
+        this.zoomedHeight,
+    );
+}
 
-		if (this._coordinates.y >= this._border) {
-			this._speed.dy = 0;
-			this._speed.dx = 0;
-		}
+  public enemyMovement() {
+    this.context.clearRect(this.coordinates.x - this.speed.x, this.coordinates.y, this.zoomedWidth, this.zoomedHeight);
+    this.renderEnemy();
+    if (this.coordinates.x > this.canvasCollision.right || this.coordinates.x < this.canvasCollision.left) {
+      this.speed.x = -this.speed.x;
+      this.coordinates.y += this.speed.y;
+    }
+    if (this.coordinates.y > this.canvasCollision.bottom) {
+      this.speed.y = 0;
+      this.speed.x = 0;
+    }
 
-		this._coordinates.x += this._speed.dx;
-	}
+    this.coordinates.x += this.speed.x;
+  }
+
+  public getZoom(): number {
+    return this.zoom
+  }
+
+  public getTileWidth(): number {
+    return this.tileWidth;
+  }
+
+  public getTileHeight(): number {
+    return this.tileHeight;
+  }
 }
