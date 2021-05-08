@@ -1,5 +1,6 @@
 import { player } from "./player.js";
 import { Enemy } from "./enemy.js";
+import { EnemyHandler } from "./enemyHandler.js";
 
 const canvas: HTMLCanvasElement = <HTMLCanvasElement>(
 	document.getElementById("jkonsInvader")
@@ -26,13 +27,20 @@ function unloadPage() {
 }
 context.imageSmoothingEnabled = false;
 
-// TODO array of enemies
-const enemy: Enemy = new Enemy(context, 10, 10);
-function animate(): void {
-  context.clearRect(0, 0, canvas.width, canvas.height);
+const enemyHandler: EnemyHandler = new EnemyHandler();
+// ! Should not be, but dummy enemy for zoom and tile size, till game settings and tile config is created. 
+const enemy: Enemy = new Enemy(context, -100 , -100);
+const spaceBetween = enemy.getZoom() * enemy.getTileWidth();
+for (let i = 0; i < 6; i++) {
+	enemyHandler.addEnemy(new Enemy(context, i * spaceBetween , enemy.getTileHeight()));
 	
-  enemy.moveEnemy();
-  requestAnimationFrame(animate);
+}
+
+function animate(): void {
+	setTimeout(() => {
+		enemyHandler.moveEnemies();
+		requestAnimationFrame(animate);
+	}, 1000 / 120);
 }
 
 animate();
