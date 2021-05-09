@@ -1,7 +1,8 @@
 import { shoot } from "./shoot.js";
 
 export class player {
-	public size: number = 40;
+	private _zoomedSize: number;
+	private _tileSize: number = 9;
 	private _playerSpeed: number = 5;
 	private _context: CanvasRenderingContext2D;
 	private _baseImage = new Image();
@@ -14,26 +15,32 @@ export class player {
 	constructor(
 		context: CanvasRenderingContext2D,
 		shoot: shoot,
+		zoom: number,
 		left: string,
 		right: string,
 		fire: string
 	) {
 		const that = this;
+		this._zoomedSize = zoom * this._tileSize;
 		this._context = context;
 		this.shoot = shoot;
 		this._left = left;
 		this._right = right;
 		this._fire = fire;
-		this.positionY = context.canvas.height - this.size;
-		this.positionX = (context.canvas.width - this.size) / 2;
-		this._baseImage.src = "../img/iro.png";
+		this.positionY = context.canvas.height - this._zoomedSize;
+		this.positionX = (context.canvas.width - this._zoomedSize) / 2;
+		this._baseImage.src = "../img/ji-sheet.png";
 		this._baseImage.onload = function () {
 			context.drawImage(
 				that._baseImage,
 				0,
+				0,
+				9,
+				9,
+				that.positionX,
 				that.positionY,
-				that.size,
-				that.size
+				that._zoomedSize,
+				that._zoomedSize,
 			);
 		};
 		// ! add keypress listener
@@ -56,12 +63,12 @@ export class player {
 		if (event.key === this._right)
 			// moves right but not out of the screen
 			this.positionX =
-				this.positionX + this.size <= this._context.canvas.width
+				this.positionX + this._zoomedSize <= this._context.canvas.width
 					? this.positionX + this._playerSpeed
 					: this.positionX;
 		if (event.key === this._fire) {
 			// activates the shoot if possible
-			this.shoot.shoot(this.positionX + this.size / 2, this.positionY);
+			this.shoot.shoot(this.positionX + this._zoomedSize / 2, this.positionY);
 		}
 		this._context.clearRect(
 			this.positionX - this._playerSpeed,
@@ -71,10 +78,14 @@ export class player {
 		);
 		this._context.drawImage(
 			this._baseImage,
+			0,
+			0,
+			9,
+			9,
 			this.positionX,
 			this.positionY,
-			this.size,
-			this.size
+			this._zoomedSize,
+			this._zoomedSize,
 		);
 	}
 }

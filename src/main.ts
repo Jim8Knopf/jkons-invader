@@ -70,7 +70,7 @@ function animate(): void {
 function newPlayer(left: string, right: string, fire: string) {
 	const s = new shoot(context);
 	shoots.push(s);
-	let p: player = new player(context, s, left, right, fire);
+	let p: player = new player(context, s, settings.zoom ,left, right, fire);
 	players.push(p);
 }
 

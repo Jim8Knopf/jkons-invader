@@ -13,7 +13,7 @@ export class GameSettings {
   }
   
   private resizeCanvas() {
-
+    // resize canvas if the window size reached a specific size
       if (innerHeight <= 450) {
         this.zoom = 1;
       }
