@@ -11,38 +11,55 @@ window.onunload = unloadPage;
 const context: CanvasRenderingContext2D = canvas.getContext(
 	"2d"
 ) as CanvasRenderingContext2D;
-
-
-context.imageSmoothingEnabled = false;
-context.fillStyle = "white";
-context.fillRect(10, 10, 2, 15);
-
-function unloadPage() {
-	alert("unload event detected!");
-	document.removeEventListener("keydown", function (event) {
-		p.move(event);
-	});
-}
-const gameSettings: GameSettings = new GameSettings(canvas);
 const enemyHandler: EnemyHandler = new EnemyHandler();
-let p: player = new player(context);
+const settings: GameSettings = new GameSettings(canvas);
 context.imageSmoothingEnabled = false;
+
+let shoots = new Array();
+let players = new Array();
+newPlayer("a", "d", " ");
+newPlayer("j", "l", "i");
 
 // ! Should not be, but dummy enemy for zoom and tile size, till game settings and tile config is created.
-const enemy: Enemy = new Enemy(context, -100, -100);
+// const p: player = new player(context);
+const enemy: Enemy = new Enemy(context, shoots, enemyHandler, -100, -100);
 const spaceBetween = enemy.zoom * enemy.tileWidth;
-for (let i = 0; i < 6; i++) {
+for (let i = 0; i < 8; i++) {
 	enemyHandler.addEnemy(
-		new Enemy(context, i * spaceBetween * 1.2, 0)
+		new Enemy(
+			context,
+			shoots,
+			enemyHandler,
+			i * spaceBetween * 1.2,
+			enemy.tileHeight
+		)
 	);
 }
+
+animate();
 
 function animate(): void {
 	setTimeout(() => {
 		enemyHandler.moveEnemies();
-		p.shoot.shootMovement();
+		for (let j = 0; j < shoots.length; j++) {
+			shoots[j].shootMovement();
+		}
 		requestAnimationFrame(animate);
 	}, 1000 / 120);
 }
 
-animate();
+function newPlayer(left: string, right: string, fire: string) {
+	const s = new shoot(context);
+	shoots.push(s);
+	let p: player = new player(context, s, left, right, fire);
+	players.push(p);
+}
+
+function unloadPage() {
+	alert("unload event detected!");
+	document.removeEventListener("keydown", function (event) {
+		for (let j = 0; j < players.length; j++) {
+			players[j].move(event);
+		}
+	});
+}

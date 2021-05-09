@@ -1,4 +1,3 @@
 node_modules/
 dist/
-styles/styles.css
-styles/styles.css.map
+styles/*

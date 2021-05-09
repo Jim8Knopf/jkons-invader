@@ -15,7 +15,7 @@ export class shoot {
 	 */
 	public shoot(positionX: number, positionY: number) {
 		if (this.positionY <= 0) {
-			this._clear();
+			this._shootClear();
 			this.positionX = positionX;
 			this.positionY = positionY;
 		}
@@ -24,7 +24,7 @@ export class shoot {
 	 * hit should be called when anything is hitten by the shot
 	 */
 	public hit() {
-		this._clear();
+		this._shootClear();
 		this.positionY = 0;
 	}
 	/**
@@ -38,9 +38,19 @@ export class shoot {
 			// this.clear();
 			return;
 		}
-		this._clear();
+		this._shootClear();
 		this.positionY -= this._shootSpeed;
 		this._shootRender();
+	}
+
+	/**
+	 * getPosition
+	 */
+	public getPosition(): Array<number> {
+		let position = new Array();
+		position.push(this.positionX);
+		position.push(this.positionY);
+		return position;
 	}
 
 	/**
@@ -58,7 +68,7 @@ export class shoot {
 	/**
 	 * this function clears the current shoot
 	 */
-	private _clear() {
+	private _shootClear() {
 		this._context.clearRect(
 			this.positionX - this._shootThickness / 2,
 			this.positionY - this._shootLength,
