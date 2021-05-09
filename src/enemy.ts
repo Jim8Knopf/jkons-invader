@@ -1,5 +1,6 @@
 import { EnemyHandler } from "./enemyHandler.js";
 import { shoot } from "./shoot.js";
+import { score } from "./main.js";
 
 export class Enemy {
 	private _context: CanvasRenderingContext2D;
@@ -16,7 +17,7 @@ export class Enemy {
 	private _tileHeight: number = 9;
 	private _spriteChangeCounter = 0;
 	private _zoom: number;
-	private _zoomedWidth: number; 
+	private _zoomedWidth: number;
 	private _zoomedHeight: number;
 
 	private _coordinates: { x: number; y: number } = { x: 0, y: 0 };
@@ -37,9 +38,9 @@ export class Enemy {
 		y?: number
 	) {
 		this._zoom = zoom;
-		this. _zoomedWidth = this._tileWidth * this._zoom;
+		this._zoomedWidth = this._tileWidth * this._zoom;
 		this._zoomedHeight = this._tileHeight * this._zoom;
-		this._speed = { x: 10, y: this._zoomedHeight }
+		this._speed = { x: 10, y: this._zoomedHeight };
 		this._shoots = shoots;
 		this._handler = handler;
 		this._context = context;
@@ -143,6 +144,7 @@ export class Enemy {
 				console.log("HIT");
 				this._shoots[j].hit();
 				this._live--;
+				score();
 			}
 			this._shoots[j].getPosition()[0];
 		}
