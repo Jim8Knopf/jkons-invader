@@ -2,6 +2,7 @@ import { Enemy } from "./enemy.js";
 import { player } from "./player.js";
 import { EnemyHandler } from "./enemyHandler.js";
 import { shoot } from "./shoot.js";
+import { GameSettings } from "./game-settings.js";
 
 const canvas: HTMLCanvasElement = <HTMLCanvasElement>(
 	document.getElementById("jkonsInvader")
@@ -10,37 +11,51 @@ window.onunload = unloadPage;
 const context: CanvasRenderingContext2D = canvas.getContext(
 	"2d"
 ) as CanvasRenderingContext2D;
-
-// Set canvas height and with in JS, because with and height set in CSS distort drawn shapes
-canvas.width = 512;
-canvas.height = 448;
+const enemyHandler: EnemyHandler = new EnemyHandler();
+const settings: GameSettings = new GameSettings(canvas);
 context.imageSmoothingEnabled = false;
+
 let shoots = new Array();
 let players = new Array();
+let gameStarted: boolean = false;
 newPlayer("a", "d", " ");
 newPlayer("j", "l", "i");
-
-context.imageSmoothingEnabled = false;
-
-const enemyHandler: EnemyHandler = new EnemyHandler();
-
 // ! Should not be, but dummy enemy for zoom and tile size, till game settings and tile config is created.
-const p: player = new player(context);
-const enemy: Enemy = new Enemy(context, shoots, enemyHandler, -100, -100);
-const spaceBetween = enemy.zoom * enemy.tileWidth;
-for (let i = 0; i < 8; i++) {
+const enemy: Enemy = new Enemy(context, shoots, enemyHandler, 1, -100, -100);
+const spaceBetween = settings.zoom * enemy.tileWidth;
+
+export function init() {
+	document.addEventListener("keyup", (keyboard) => {
+		switch (keyboard.key) {
+			case "r":
+				if (gameStarted === false) {	
+					gameStarted = true;
+					animate();
+				} else {
+					init();
+				}
+				break;
+		
+			default:
+				gameStarted = false;
+				break;
+		}
+	});
+}
+for (let i = 0; i < 10; i++) {
 	enemyHandler.addEnemy(
 		new Enemy(
 			context,
 			shoots,
 			enemyHandler,
-			i * spaceBetween * 1.2,
-			enemy.tileHeight
+			settings.zoom,
+			i * spaceBetween,
+			0
 		)
 	);
 }
 
-animate();
+export function gameOver() {}
 
 function animate(): void {
 	setTimeout(() => {
@@ -49,13 +64,13 @@ function animate(): void {
 			shoots[j].shootMovement();
 		}
 		requestAnimationFrame(animate);
-	}, 1000 / 120);
+	}, 1000 / 30);
 }
 
 function newPlayer(left: string, right: string, fire: string) {
 	const s = new shoot(context);
 	shoots.push(s);
-	let p: player = new player(context, s, left, right, fire);
+	let p: player = new player(context, s, settings.zoom ,left, right, fire);
 	players.push(p);
 }
 
@@ -66,4 +81,7 @@ function unloadPage() {
 			players[j].move(event);
 		}
 	});
+
 }
+
+init();

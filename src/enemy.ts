@@ -1,5 +1,5 @@
-import { EnemyHandler } from "./enemyHandler";
-import { shoot } from "./shoot";
+import { EnemyHandler } from "./enemyHandler.js";
+import { shoot } from "./shoot.js";
 
 export class Enemy {
 	private _context: CanvasRenderingContext2D;
@@ -15,13 +15,12 @@ export class Enemy {
 	private _tileWidth: number = 9;
 	private _tileHeight: number = 9;
 	private _spriteChangeCounter = 0;
-	// TODO get zoom from game settings
-	private _zoom = 4;
-	private _zoomedWidth: number = this._tileWidth * this._zoom;
-	private _zoomedHeight: number = this._tileHeight * this._zoom;
+	private _zoom: number;
+	private _zoomedWidth: number; 
+	private _zoomedHeight: number;
 
 	private _coordinates: { x: number; y: number } = { x: 0, y: 0 };
-	private _speed: { x: number; y: number } = { x: 1, y: this._zoomedHeight };
+	private _speed: { x: number; y: number };
 	private _canvasCollision: {
 		right: number;
 		left: number;
@@ -33,9 +32,14 @@ export class Enemy {
 		context: CanvasRenderingContext2D,
 		shoots: Array<shoot>,
 		handler: EnemyHandler,
+		zoom: number,
 		x?: number,
 		y?: number
 	) {
+		this._zoom = zoom;
+		this. _zoomedWidth = this._tileWidth * this._zoom;
+		this._zoomedHeight = this._tileHeight * this._zoom;
+		this._speed = { x: 10, y: this._zoomedHeight }
 		this._shoots = shoots;
 		this._handler = handler;
 		this._context = context;
