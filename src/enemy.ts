@@ -55,7 +55,7 @@ export class Enemy {
 			right: this._context.canvas.width - this._zoomedWidth,
 			left: 0,
 			top: 0,
-			bottom: this._context.canvas.width - this._zoomedHeight * 4,
+			bottom: this._context.canvas.width - this._zoomedHeight * 9,
 		};
 		this._sheet.src = "../img/ji-sheet.png";
 	}
@@ -145,6 +145,32 @@ export class Enemy {
 				this._zoomedWidth,
 				this._zoomedHeight
 			);
+			const randomX =
+				Math.floor(Math.random() * (this._context.canvas.width / 9)) * 9;
+			let randomY = Math.floor(
+				Math.random() * (this._canvasCollision.bottom / 9) * 9
+			);
+			while (
+				this._handler.getEnemiesY.find((y) => {
+					randomY >= y && randomY <= randomY + this._zoomedHeight;
+				})
+			) {
+				randomY =
+					Math.floor(Math.random() * (this._context.canvas.height / 9)) * 9;
+			}
+
+			setTimeout(() => {
+				this._handler.addEnemy(
+					new Enemy(
+						this._context,
+						this._shoots,
+						this._handler,
+						this._zoom,
+						randomX,
+						randomY
+					)
+				);
+			}, 10000);
 		}
 	}
 
@@ -158,5 +184,9 @@ export class Enemy {
 
 	public get tileHeight(): number {
 		return this._tileHeight;
+	}
+
+	public get y(): number {
+		return this._y;
 	}
 }
