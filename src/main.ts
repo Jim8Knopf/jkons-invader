@@ -61,7 +61,7 @@ function animate(): void {
 			shoots[j].shootMovement();
 		}
 		requestAnimationFrame(animate);
-	}, 1000 / 60);
+	}, 0);
 }
 
 export function score() {
