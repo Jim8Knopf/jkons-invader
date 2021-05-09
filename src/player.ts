@@ -6,12 +6,24 @@ export class player {
 	private _context: CanvasRenderingContext2D;
 	private _baseImage = new Image();
 	public shoot: shoot;
+	private _left: string;
+	private _right: string;
+	private _fire: string;
 	public positionX: number;
 	public positionY: number;
-	constructor(context: CanvasRenderingContext2D) {
+	constructor(
+		context: CanvasRenderingContext2D,
+		shoot: shoot,
+		left: string,
+		right: string,
+		fire: string
+	) {
 		const that = this;
 		this._context = context;
-		this.shoot = new shoot(this._context);
+		this.shoot = shoot;
+		this._left = left;
+		this._right = right;
+		this._fire = fire;
 		this.positionY = context.canvas.height - this.size;
 		this.positionX = (context.canvas.width - this.size) / 2;
 		this._baseImage.src = "../img/iro.png";
@@ -35,19 +47,19 @@ export class player {
 	 */
 	public move(event: KeyboardEvent) {
 		console.log(event.key);
-		if (event.key === "a")
+		if (event.key === this._left)
 			// moves left but not out of the screen
 			this.positionX =
 				this.positionX - this._playerSpeed >= 0
 					? this.positionX - this._playerSpeed
 					: 0;
-		if (event.key === "d")
+		if (event.key === this._right)
 			// moves right but not out of the screen
 			this.positionX =
 				this.positionX + this.size <= this._context.canvas.width
 					? this.positionX + this._playerSpeed
 					: this.positionX;
-		if (event.key === " ") {
+		if (event.key === this._fire) {
 			// activates the shoot if possible
 			this.shoot.shoot(this.positionX + this.size / 2, this.positionY);
 		}
