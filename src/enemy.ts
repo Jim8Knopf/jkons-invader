@@ -1,5 +1,5 @@
-import { EnemyHandler } from "./enemyHandler";
-import { shoot } from "./shoot";
+import { EnemyHandler } from "./enemyHandler.js";
+import { shoot } from "./shoot.js";
 
 export class Enemy {
 	private _context: CanvasRenderingContext2D;

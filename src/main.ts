@@ -25,7 +25,7 @@ context.imageSmoothingEnabled = false;
 const enemyHandler: EnemyHandler = new EnemyHandler();
 
 // ! Should not be, but dummy enemy for zoom and tile size, till game settings and tile config is created.
-const p: player = new player(context);
+// const p: player = new player(context);
 const enemy: Enemy = new Enemy(context, shoots, enemyHandler, -100, -100);
 const spaceBetween = enemy.zoom * enemy.tileWidth;
 for (let i = 0; i < 8; i++) {
