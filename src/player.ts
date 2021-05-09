@@ -18,7 +18,7 @@ export class player {
 		this._baseImage.onload = function () {
 			context.drawImage(
 				that._baseImage,
-				that.positionX,
+				0,
 				that.positionY,
 				that.size,
 				that.size
