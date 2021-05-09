@@ -55,16 +55,20 @@ export class Enemy {
 			right: this._context.canvas.width - this._zoomedWidth,
 			left: 0,
 			top: 0,
-			bottom: this._context.canvas.width - this._zoomedHeight * 4,
+			bottom: this._context.canvas.width - this._zoomedHeight * 9,
 		};
 		this._sheet.src = "../img/ji-sheet.png";
 	}
 
 	private _translate(x: number, y: number) {
-		this._context.clearRect(this._x , this._y, this._zoomedWidth,
-		this._zoomedHeight);
+		this._context.clearRect(
+			this._x,
+			this._y,
+			this._zoomedWidth,
+			this._zoomedHeight
+		);
 		this._x += x;
-		this._y += y
+		this._y += y;
 		this._renderEnemy();
 	}
 	// Render enemy
@@ -84,16 +88,22 @@ export class Enemy {
 
 	public moveEnemy() {
 		// check hit function
-		this.hit();
-		this._dead();
+		this._hit();
 		this._spriteAnimation();
-		if (this._speedX > 0 && this._x <= this._canvasCollision.right || this._speedX < 0 && this._x >= this._canvasCollision.left) {
+		if (
+			(this._speedX > 0 && this._x <= this._canvasCollision.right) ||
+			(this._speedX < 0 && this._x >= this._canvasCollision.left)
+		) {
 			this._translate(this._speedX, 0);
 		}
-		if (this._speedX > 0 && this._x >= this._canvasCollision.right || this._speedX < 0 && this._x <= this._canvasCollision.left) {
+		if (
+			(this._speedX > 0 && this._x >= this._canvasCollision.right) ||
+			(this._speedX < 0 && this._x <= this._canvasCollision.left)
+		) {
 			this._speedX = -this._speedX;
 			this._translate(0, this._speedY);
 		}
+		this._dead();
 	}
 
 	private _spriteAnimation() {
@@ -108,6 +118,62 @@ export class Enemy {
 		}
 	}
 
+	private _hit() {
+		for (let j = 0; j < this._shoots.length; j++) {
+			let shootX = this._shoots[j].getPositionX;
+			let shootY = this._shoots[j].getPositionY;
+			if (
+				shootY > this._y &&
+				shootY <= this._y + this._zoomedHeight &&
+				shootX >= this._x &&
+				shootX <= this._x + this._zoomedWidth
+			) {
+				console.log("HIT");
+				this._shoots[j].hit();
+				this._live--;
+				score();
+			}
+			this._shoots[j].getPositionX;
+		}
+	}
+	private _dead() {
+		if (this._live <= 0) {
+			this._handler.removeEnemy(this);
+			this._context.clearRect(
+				this._x,
+				this._y,
+				this._zoomedWidth,
+				this._zoomedHeight
+			);
+			const randomX =
+				Math.floor(Math.random() * (this._context.canvas.width / 9)) * 9;
+			let randomY = Math.floor(
+				Math.random() * (this._canvasCollision.bottom / 9) * 9
+			);
+			while (
+				this._handler.getEnemiesY.find((y) => {
+					randomY >= y && randomY <= randomY + this._zoomedHeight;
+				})
+			) {
+				randomY =
+					Math.floor(Math.random() * (this._context.canvas.height / 9)) * 9;
+			}
+
+			setTimeout(() => {
+				this._handler.addEnemy(
+					new Enemy(
+						this._context,
+						this._shoots,
+						this._handler,
+						this._zoom,
+						randomX,
+						randomY
+					)
+				);
+			}, 10000);
+		}
+	}
+
 	public get zoom(): number {
 		return this._zoom;
 	}
@@ -119,33 +185,8 @@ export class Enemy {
 	public get tileHeight(): number {
 		return this._tileHeight;
 	}
-	private hit() {
-		for (let j = 0; j < this._shoots.length; j++) {
-			let shootX = this._shoots[j].getPosition()[0];
-			let shootY = this._shoots[j].getPosition()[1];
-			if (
-				shootY >= this._y &&
-				shootY <= this._y + this._zoomedHeight &&
-				shootX >= this._x &&
-				shootX <= this._x + this._zoomedWidth
-			) {
-				console.log("HIT");
-				this._shoots[j].hit();
-				this._live--;
-				score();
-			}
-			this._shoots[j].getPosition()[0];
-		}
-	}
-	private _dead() {
-		if (this._live <= 0) {
-			this._handler.removeEnemy(this);
-			this._context.clearRect(
-				this._x - this._speedX,
-				this._y,
-				this._zoomedWidth,
-				this._zoomedHeight
-			);
-		}
+
+	public get y(): number {
+		return this._y;
 	}
 }
