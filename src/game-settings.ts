@@ -1,5 +1,5 @@
 export class GameSettings {
-  private _zoom: number = 4;
+  private _zoom: number = 1;
   private _canvas: HTMLCanvasElement;
   private size: number = 0;
   constructor(canvas: HTMLCanvasElement) {
