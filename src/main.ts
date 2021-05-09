@@ -18,40 +18,37 @@ context.imageSmoothingEnabled = false;
 let shoots = new Array();
 let players = new Array();
 let gameStarted: boolean = false;
-newPlayer("a", "d", " ");
+let actualScore: number = 0;
+let scoreElement: HTMLOutputElement = <HTMLOutputElement>(
+	document.getElementById("score")
+);
 newPlayer("j", "l", "i");
+newPlayer("a", "d", " ");
 // ! Should not be, but dummy enemy for zoom and tile size, till game settings and tile config is created.
-const enemy: Enemy = new Enemy(context, shoots, enemyHandler, 1, -100, -100);
-const spaceBetween = settings.zoom * enemy.tileWidth;
+const enemy: Enemy = new Enemy(context, shoots, enemyHandler, 1, 0, 0);
+// const spaceBetween = settings.zoom * enemy.tileWidth;
 
 export function init() {
 	document.addEventListener("keyup", (keyboard) => {
 		switch (keyboard.key) {
 			case "r":
-				if (gameStarted === false) {	
+				if (gameStarted === false) {
 					gameStarted = true;
 					animate();
 				} else {
 					init();
 				}
 				break;
-		
+
 			default:
 				gameStarted = false;
 				break;
 		}
 	});
 }
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 20; i++) {
 	enemyHandler.addEnemy(
-		new Enemy(
-			context,
-			shoots,
-			enemyHandler,
-			settings.zoom,
-			i * spaceBetween,
-			0
-		)
+		new Enemy(context, shoots, enemyHandler, settings.zoom, i * spaceBetween, 0)
 	);
 }
 
@@ -64,13 +61,18 @@ function animate(): void {
 			shoots[j].shootMovement();
 		}
 		requestAnimationFrame(animate);
-	}, 1000 / 30);
+	}, 1000 / 60);
+}
+
+export function score() {
+	actualScore++;
+	scoreElement.value = actualScore.toString();
 }
 
 function newPlayer(left: string, right: string, fire: string) {
 	const s = new shoot(context);
 	shoots.push(s);
-	let p: player = new player(context, s, settings.zoom ,left, right, fire);
+	let p: player = new player(context, s, settings.zoom, left, right, fire);
 	players.push(p);
 }
 
@@ -81,7 +83,6 @@ function unloadPage() {
 			players[j].move(event);
 		}
 	});
-
 }
 
 init();
