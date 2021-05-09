@@ -17,26 +17,45 @@ context.imageSmoothingEnabled = false;
 
 let shoots = new Array();
 let players = new Array();
+let gameStarted: boolean = false;
 newPlayer("a", "d", " ");
 newPlayer("j", "l", "i");
-
 // ! Should not be, but dummy enemy for zoom and tile size, till game settings and tile config is created.
-// const p: player = new player(context);
-const enemy: Enemy = new Enemy(context, shoots, enemyHandler, -100, -100);
-const spaceBetween = enemy.zoom * enemy.tileWidth;
-for (let i = 0; i < 8; i++) {
+const enemy: Enemy = new Enemy(context, shoots, enemyHandler, 1, -100, -100);
+const spaceBetween = settings.zoom * enemy.tileWidth;
+
+export function init() {
+	document.addEventListener("keyup", (keyboard) => {
+		switch (keyboard.key) {
+			case "r":
+				if (gameStarted === false) {	
+					gameStarted = true;
+					animate();
+				} else {
+					init();
+				}
+				break;
+		
+			default:
+				gameStarted = false;
+				break;
+		}
+	});
+}
+for (let i = 0; i < 10; i++) {
 	enemyHandler.addEnemy(
 		new Enemy(
 			context,
 			shoots,
 			enemyHandler,
-			i * spaceBetween * 1.2,
-			enemy.tileHeight
+			settings.zoom,
+			i * spaceBetween,
+			0
 		)
 	);
 }
 
-animate();
+export function gameOver() {}
 
 function animate(): void {
 	setTimeout(() => {
@@ -45,7 +64,7 @@ function animate(): void {
 			shoots[j].shootMovement();
 		}
 		requestAnimationFrame(animate);
-	}, 1000 / 120);
+	}, 1000 / 30);
 }
 
 function newPlayer(left: string, right: string, fire: string) {
@@ -62,4 +81,7 @@ function unloadPage() {
 			players[j].move(event);
 		}
 	});
+
 }
+
+init();
