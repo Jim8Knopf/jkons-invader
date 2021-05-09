@@ -26,7 +26,7 @@ newPlayer("j", "l", "i");
 newPlayer("a", "d", " ");
 // ! Should not be, but dummy enemy for zoom and tile size, till game settings and tile config is created.
 const enemy: Enemy = new Enemy(context, shoots, enemyHandler, 1, 0, 0);
-// const spaceBetween = settings.zoom * enemy.tileWidth;
+const spaceBetween = settings.zoom * enemy.tileWidth;
 
 export function init() {
 	document.addEventListener("keyup", (keyboard) => {
