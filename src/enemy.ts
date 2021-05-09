@@ -20,8 +20,11 @@ export class Enemy {
 	private _zoomedWidth: number;
 	private _zoomedHeight: number;
 
-	private _coordinates: { x: number; y: number } = { x: 0, y: 0 };
-	private _speed: { x: number; y: number };
+	private _x: number;
+	private _y: number;
+	private _speedX: number;
+	private _speedY: number;
+
 	private _canvasCollision: {
 		right: number;
 		left: number;
@@ -34,18 +37,19 @@ export class Enemy {
 		shoots: Array<shoot>,
 		handler: EnemyHandler,
 		zoom: number,
-		x?: number,
-		y?: number
+		x: number,
+		y: number
 	) {
+		this._x = x;
+		this._y = y;
+		this._speedX = 1;
+		this._speedY = 35;
 		this._zoom = zoom;
 		this._zoomedWidth = this._tileWidth * this._zoom;
 		this._zoomedHeight = this._tileHeight * this._zoom;
-		this._speed = { x: 10, y: this._zoomedHeight };
 		this._shoots = shoots;
 		this._handler = handler;
 		this._context = context;
-		if (x) this._coordinates.x = x;
-		if (y) this._coordinates.y = y;
 
 		this._canvasCollision = {
 			right: this._context.canvas.width - this._zoomedWidth,
@@ -56,59 +60,43 @@ export class Enemy {
 		this._sheet.src = "../img/ji-sheet.png";
 	}
 
+	private _translate(x: number, y: number) {
+		this._context.clearRect(this._x , this._y, this._zoomedWidth,
+		this._zoomedHeight);
+		this._x += x;
+		this._y += y
+		this._renderEnemy();
+	}
 	// Render enemy
-	public renderEnemy(): void {
+	private _renderEnemy(): void {
 		this._context.drawImage(
 			this._sheet,
 			this._tileWidth * this._tileFrameX,
 			this._tileWidth * this._tileFrameY,
 			this._tileWidth,
 			this._tileWidth,
-			this._coordinates.x,
-			this._coordinates.y,
+			this._x,
+			this._y,
 			this._zoomedWidth,
 			this._zoomedHeight
 		);
 	}
 
-	public enemyMovement() {
+	public moveEnemy() {
 		// check hit function
 		this.hit();
 		this._dead();
-		this._context.clearRect(
-			this._coordinates.x - this._speed.x,
-			this._coordinates.y,
-			this._zoomedWidth,
-			this._zoomedHeight
-		);
-		this.renderEnemy();
-		// d
-		if (this._coordinates.y <= this._canvasCollision.bottom) {
-			// detect if enemy hits left or right border
-			if (
-				this._coordinates.x > this._canvasCollision.right ||
-				this._coordinates.x < this._canvasCollision.left
-			) {
-				// invert x direction
-				this._speed.x = -this._speed.x;
-				// put's enemy in the next column
-				this._coordinates.y += this._speed.y;
-				// clear enemy on row change
-				this._context.clearRect(
-					this._coordinates.x,
-					this._coordinates.y - this._speed.y,
-					this._zoomedWidth,
-					this._zoomedHeight
-				);
-			}
-		} else {
-			this._speed.y = 0;
-			this._speed.x = 0;
+		this._spriteAnimation();
+		if (this._speedX > 0 && this._x <= this._canvasCollision.right || this._speedX < 0 && this._x >= this._canvasCollision.left) {
+			this._translate(this._speedX, 0);
 		}
+		if (this._speedX > 0 && this._x >= this._canvasCollision.right || this._speedX < 0 && this._x <= this._canvasCollision.left) {
+			this._speedX = -this._speedX;
+			this._translate(0, this._speedY);
+		}
+	}
 
-		// move enemy on x axis
-		this._coordinates.x += this._speed.x;
-
+	private _spriteAnimation() {
 		// count's up till a specified number, then reset
 		if (this._spriteChangeCounter >= 50) {
 			this._spriteChangeCounter = 0;
@@ -136,10 +124,10 @@ export class Enemy {
 			let shootX = this._shoots[j].getPosition()[0];
 			let shootY = this._shoots[j].getPosition()[1];
 			if (
-				shootY >= this._coordinates.y &&
-				shootY <= this._coordinates.y + this._zoomedHeight &&
-				shootX >= this._coordinates.x &&
-				shootX <= this._coordinates.x + this._zoomedWidth
+				shootY >= this._y &&
+				shootY <= this._y + this._zoomedHeight &&
+				shootX >= this._x &&
+				shootX <= this._x + this._zoomedWidth
 			) {
 				console.log("HIT");
 				this._shoots[j].hit();
@@ -153,8 +141,8 @@ export class Enemy {
 		if (this._live <= 0) {
 			this._handler.removeEnemy(this);
 			this._context.clearRect(
-				this._coordinates.x - this._speed.x,
-				this._coordinates.y,
+				this._x - this._speedX,
+				this._y,
 				this._zoomedWidth,
 				this._zoomedHeight
 			);

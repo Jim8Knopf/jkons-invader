@@ -19,7 +19,7 @@ export class EnemyHandler {
 
   moveEnemies() {
     for (let i = 0; i < this.enemies.length; i++) {
-      this.enemies[i].enemyMovement();
+      this.enemies[i].moveEnemy();
     }
   }
 }

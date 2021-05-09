@@ -9,7 +9,7 @@ export class GameSettings {
     // Webkit/Blink will fire this on load, but Gecko doesn't.
     window.addEventListener("resize", () => {
       this.resizeCanvas()
-  });
+    });
   }
   
   private resizeCanvas() {
