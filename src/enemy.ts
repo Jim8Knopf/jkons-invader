@@ -1,6 +1,6 @@
-import { EnemyHandler } from "./enemyHandler.js";
-import { shoot } from "./shoot.js";
-import { score } from "./main.js";
+import { EnemyHandler } from "./enemyHandler";
+import { shoot } from "./shoot";
+import { score } from "./main";
 
 export class Enemy {
 	private _context: CanvasRenderingContext2D;
@@ -42,7 +42,7 @@ export class Enemy {
 	) {
 		this._x = x;
 		this._y = y;
-		this._speedX = 1;
+		this._speedX = 5;
 		this._speedY = 35;
 		this._zoom = zoom;
 		this._zoomedWidth = this._tileWidth * this._zoom;
@@ -104,6 +104,7 @@ export class Enemy {
 			this._translate(0, this._speedY);
 		}
 		this._dead();
+		this._gameOver();
 	}
 
 	private _spriteAnimation() {
@@ -171,6 +172,12 @@ export class Enemy {
 					)
 				);
 			}, 10000);
+		}
+	}
+
+	private _gameOver() {
+		if (this._y > this._canvasCollision.bottom) {
+			console.log("finish");
 		}
 	}
 
