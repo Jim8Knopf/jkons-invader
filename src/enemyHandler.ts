@@ -22,4 +22,12 @@ export class EnemyHandler {
 			this.enemies[i].moveEnemy();
 		}
 	}
+
+	public get getEnemiesY(): number[] {
+		const yList: number[] = [];
+		for (let i = 0; i < this.enemies.length; i++) {
+			yList.push(this.enemies[i].y);
+		}
+		return yList;
+	}
 }
