@@ -1,6 +1,6 @@
 import { shoot } from "./shoot";
 
-export class player {
+export class Player {
 	private _zoomedSize: number;
 	private _tileSize: number = 9;
 	private _playerSpeed: number = 5;

@@ -1,5 +1,5 @@
 import { Enemy } from "./enemy";
-import { player } from "./player";
+import { Player } from "./player";
 import { EnemyHandler } from "./enemyHandler";
 import { shoot } from "./shoot";
 import { GameSettings } from "./game-settings";
@@ -75,7 +75,7 @@ export function score() {
 function newPlayer(left: string, right: string, fire: string) {
 	const s = new shoot(context);
 	shoots.push(s);
-	let p: player = new player(context, s, settings.zoom, left, right, fire);
+	let p: Player = new Player(context, s, settings.zoom, left, right, fire);
 	players.push(p);
 }
 
