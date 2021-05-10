@@ -1,21 +1,21 @@
 import { combineLatest, fromEvent, Observable } from "rxjs";
 import { filter, map } from "rxjs/operators";
 import { isThisTypeNode } from "typescript";
-import { shoot } from "./shoot";
+import { Shot } from "./shot";
 
 export class Player {
+	private _context: CanvasRenderingContext2D;
 	private _zoomedSize: number;
 	private _tileSize: number = 9;
 	private _playerSpeed: number = 5;
-	private _context: CanvasRenderingContext2D;
 	private _baseImage = new Image();
-	public shoot: shoot;
 	private _left: string;
 	private _right: string;
 	private _fire: string;
 	public positionX: number;
 	public positionY: number;
 	private pressed_keys: string[] = [];
+	private shot: Shot;
 	private _keydown = fromEvent<KeyboardEvent>(document, "keydown");
 	private _keydown$: Observable<void> = this._keydown.pipe(
 		map((event: KeyboardEvent) => {
@@ -35,7 +35,6 @@ export class Player {
 
 	constructor(
 		context: CanvasRenderingContext2D,
-		shoot: shoot,
 		zoom: number,
 		left: string,
 		right: string,
@@ -44,7 +43,6 @@ export class Player {
 		const that = this;
 		this._zoomedSize = zoom * this._tileSize;
 		this._context = context;
-		this.shoot = shoot;
 		this._left = left;
 		this._right = right;
 		this._fire = fire;
@@ -64,20 +62,20 @@ export class Player {
 				that._zoomedSize
 			);
 		};
+		this.shot = new Shot(this._context, this);
 		// ! add keypress listener
-		document.addEventListener("keydown", (event) => {
-			that.move();
-		});
+		// document.addEventListener("keydown", (event) => {
+		// 	that.move();
+		// });
 	}
 	/**
 	 * it checks the KeyboardEvent and activate the shoot ore moves
 	 * @param event is the KeyboardEvent
 	 */
 	public move() {
-		if (this.pressed_keys.includes(this._left)) this.moveLeft();
-		if (this.pressed_keys.includes(this._right)) this.moveRight();
-		if (this.pressed_keys.includes(this._fire))
-			this.shoot.shoot(this.positionX + this._zoomedSize / 2, this.positionY);
+		if (this.pressed_keys.includes(this._left)) this.playerMoveLeft();
+		if (this.pressed_keys.includes(this._right)) this.playerMoveRight();
+		if (this.pressed_keys.includes(this._fire)) this.playerShoot();
 
 		this._context.clearRect(
 			this.positionX - this._playerSpeed,
@@ -96,24 +94,27 @@ export class Player {
 			this._zoomedSize,
 			this._zoomedSize
 		);
+
+		this.shot.animateShot();
 	}
 
-	private moveLeft() {
+	private playerMoveLeft() {
 		// moves left but not out of the screen
 		this.positionX =
 			this.positionX - this._playerSpeed >= 0
 				? this.positionX - this._playerSpeed
 				: 0;
 	}
-	private moveRight() {
+	private playerMoveRight() {
 		// moves right but not out of the screen
 		this.positionX =
 			this.positionX + this._zoomedSize <= this._context.canvas.width
 				? this.positionX + this._playerSpeed
 				: this.positionX;
 	}
+
 	private playerShoot() {
 		// activates the shoot if possible
-		this.shoot.shoot(this.positionX + this._zoomedSize / 2, this.positionY);
+		this.shot.startShot();
 	}
 }

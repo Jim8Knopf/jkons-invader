@@ -1,7 +1,7 @@
 import { Enemy } from "./enemy";
 import { Player } from "./player";
 import { EnemyHandler } from "./enemyHandler";
-import { shoot } from "./shoot";
+import { Shot } from "./shot";
 import { GameSettings } from "./game-settings";
 import { BehaviorSubject, Observable } from "rxjs";
 
@@ -9,7 +9,6 @@ const subject = new BehaviorSubject(23);
 const canvas: HTMLCanvasElement = <HTMLCanvasElement>(
 	document.getElementById("jkonsInvader")
 );
-window.onunload = unloadPage;
 const context: CanvasRenderingContext2D = canvas.getContext(
 	"2d"
 ) as CanvasRenderingContext2D;
@@ -25,14 +24,18 @@ let actualScore: number = 0;
 let scoreElement: HTMLOutputElement = <HTMLOutputElement>(
 	document.getElementById("score")
 );
+// shoots.push(s);
+const p: Player = new Player(context, settings.zoom, "a", "d", " ");
+// players.push(p);
+
 let animationSpeed: number = 1 / 60;
 // newPlayer("a", "d", " ");
 // ! Should not be, but dummy enemy for zoom and tile size, till game settings and tile config is created.
-const enemy: Enemy = new Enemy(context, shoots, enemyHandler, 1, 0, 0);
-const spaceBetween = settings.zoom * enemy.tileWidth;
-const s = new shoot(context);
-const player: Player = new Player(context, s, settings.zoom, "a", "d", " ");
+// const s = new shoot(context);
+// const player: Player = new Player(context, s, settings.zoom, "a", "d", " ");
 
+const enemy: Enemy = new Enemy(context, enemyHandler, 1, 0, 0);
+const spaceBetween = settings.zoom * enemy.tileWidth;
 export function init() {
 	document.addEventListener("keyup", (keyboard) => {
 		switch (keyboard.key) {
@@ -53,7 +56,7 @@ export function init() {
 }
 for (let i = 0; i < 20; i++) {
 	enemyHandler.addEnemy(
-		new Enemy(context, shoots, enemyHandler, settings.zoom, i * spaceBetween, 0)
+		new Enemy(context, enemyHandler, settings.zoom, i * spaceBetween, 0)
 	);
 }
 
@@ -62,8 +65,7 @@ export function gameOver() {}
 function animate(): void {
 	setTimeout(() => {
 		enemyHandler.moveEnemies();
-		player.move();
-		shoots.push(s);
+		p.move();
 		for (let j = 0; j < shoots.length; j++) {
 			shoots[j].shootMovement();
 		}
@@ -76,20 +78,6 @@ export function score() {
 	// scoreElement.value = actualScore.toString();
 }
 
-function newPlayer(left: string, right: string, fire: string) {
-	const s = new shoot(context);
-	shoots.push(s);
-	let p: Player = new Player(context, s, settings.zoom, left, right, fire);
-	players.push(p);
-}
-
-function unloadPage() {
-	alert("unload event detected!");
-	document.removeEventListener("keydown", function (event) {
-		for (let j = 0; j < players.length; j++) {
-			players[j].move(event);
-		}
-	});
-}
+function newPlayer(left: string, right: string, fire: string) {}
 
 init();
