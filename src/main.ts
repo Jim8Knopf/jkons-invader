@@ -3,7 +3,9 @@ import { player } from "./player.js";
 import { EnemyHandler } from "./enemyHandler.js";
 import { shoot } from "./shoot.js";
 import { GameSettings } from "./game-settings.js";
+import { BehaviorSubject, Observable } from "rxjs";
 
+const subject = new BehaviorSubject(123);
 const canvas: HTMLCanvasElement = <HTMLCanvasElement>(
 	document.getElementById("jkonsInvader")
 );
@@ -15,6 +17,7 @@ const enemyHandler: EnemyHandler = new EnemyHandler();
 const settings: GameSettings = new GameSettings(canvas);
 context.imageSmoothingEnabled = false;
 
+subject.subscribe(console.log);
 let shoots = new Array();
 let players = new Array();
 let gameStarted: boolean = false;
@@ -22,7 +25,7 @@ let actualScore: number = 0;
 let scoreElement: HTMLOutputElement = <HTMLOutputElement>(
 	document.getElementById("score")
 );
-newPlayer("j", "l", "i");
+let animationSpeed: number = 1 / 60;
 newPlayer("a", "d", " ");
 // ! Should not be, but dummy enemy for zoom and tile size, till game settings and tile config is created.
 const enemy: Enemy = new Enemy(context, shoots, enemyHandler, 1, 0, 0);
@@ -61,7 +64,7 @@ function animate(): void {
 			shoots[j].shootMovement();
 		}
 		requestAnimationFrame(animate);
-	}, 1000 / 60);
+	}, animationSpeed);
 }
 
 export function score() {
