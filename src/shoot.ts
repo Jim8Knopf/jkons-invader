@@ -14,11 +14,11 @@ export class shoot {
 	 * shoot if there is no actual shoot an the field
 	 */
 	public shoot(positionX: number, positionY: number) {
-		// if (this.positionY <= 0) {
-		this._clearShoot();
-		this._positionX = positionX;
-		this._positionY = positionY;
-		// }
+		if (this._positionY <= 0) {
+			this._clearShoot();
+			this._positionX = positionX;
+			this._positionY = positionY;
+		}
 	}
 	/**
 	 * hit should be called when anything is hitten by the shot
@@ -75,7 +75,7 @@ export class shoot {
 		this._context.clearRect(
 			this._positionX - this._shootThickness / 2,
 			this._positionY - this._shootLength,
-			this._shootThickness + 0.1,
+			this._shootThickness + 0.5,
 			this._shootLength + 0.1
 		);
 	}
