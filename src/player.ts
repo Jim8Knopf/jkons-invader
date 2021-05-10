@@ -1,3 +1,6 @@
+import { combineLatest, fromEvent, Observable } from "rxjs";
+import { filter, map } from "rxjs/operators";
+import { isThisTypeNode } from "typescript";
 import { shoot } from "./shoot";
 
 export class Player {
@@ -12,6 +15,24 @@ export class Player {
 	private _fire: string;
 	public positionX: number;
 	public positionY: number;
+	private pressed_keys: string[] = [];
+	private _keydown = fromEvent<KeyboardEvent>(document, "keydown");
+	private _keydown$: Observable<void> = this._keydown.pipe(
+		map((event: KeyboardEvent) => {
+			this.pressed_keys.push(event.key);
+		})
+	);
+
+	private _keySpace = fromEvent<KeyboardEvent>(document, "keyup");
+	private _keySpace$: Observable<void> = this._keySpace.pipe(
+		map((event: KeyboardEvent) => {
+			this.pressed_keys = this.pressed_keys.filter((k) => k !== event.key);
+		})
+	);
+	//output (example): 'Event time: 7276.390000000001'
+	subscribe = this._keydown$.subscribe();
+	subscribe2 = this._keySpace$.subscribe();
+
 	constructor(
 		context: CanvasRenderingContext2D,
 		shoot: shoot,
@@ -40,36 +61,24 @@ export class Player {
 				that.positionX,
 				that.positionY,
 				that._zoomedSize,
-				that._zoomedSize,
+				that._zoomedSize
 			);
 		};
 		// ! add keypress listener
 		document.addEventListener("keydown", (event) => {
-			that.move(event);
+			that.move();
 		});
 	}
 	/**
 	 * it checks the KeyboardEvent and activate the shoot ore moves
 	 * @param event is the KeyboardEvent
 	 */
-	public move(event: KeyboardEvent) {
-		console.log(event.key);
-		if (event.key === this._left)
-			// moves left but not out of the screen
-			this.positionX =
-				this.positionX - this._playerSpeed >= 0
-					? this.positionX - this._playerSpeed
-					: 0;
-		if (event.key === this._right)
-			// moves right but not out of the screen
-			this.positionX =
-				this.positionX + this._zoomedSize <= this._context.canvas.width
-					? this.positionX + this._playerSpeed
-					: this.positionX;
-		if (event.key === this._fire) {
-			// activates the shoot if possible
+	public move() {
+		if (this.pressed_keys.includes(this._left)) this.moveLeft();
+		if (this.pressed_keys.includes(this._right)) this.moveRight();
+		if (this.pressed_keys.includes(this._fire))
 			this.shoot.shoot(this.positionX + this._zoomedSize / 2, this.positionY);
-		}
+
 		this._context.clearRect(
 			this.positionX - this._playerSpeed,
 			this.positionY,
@@ -85,7 +94,26 @@ export class Player {
 			this.positionX,
 			this.positionY,
 			this._zoomedSize,
-			this._zoomedSize,
+			this._zoomedSize
 		);
+	}
+
+	private moveLeft() {
+		// moves left but not out of the screen
+		this.positionX =
+			this.positionX - this._playerSpeed >= 0
+				? this.positionX - this._playerSpeed
+				: 0;
+	}
+	private moveRight() {
+		// moves right but not out of the screen
+		this.positionX =
+			this.positionX + this._zoomedSize <= this._context.canvas.width
+				? this.positionX + this._playerSpeed
+				: this.positionX;
+	}
+	private playerShoot() {
+		// activates the shoot if possible
+		this.shoot.shoot(this.positionX + this._zoomedSize / 2, this.positionY);
 	}
 }

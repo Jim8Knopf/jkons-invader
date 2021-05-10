@@ -26,10 +26,12 @@ let scoreElement: HTMLOutputElement = <HTMLOutputElement>(
 	document.getElementById("score")
 );
 let animationSpeed: number = 1 / 60;
-newPlayer("a", "d", " ");
+// newPlayer("a", "d", " ");
 // ! Should not be, but dummy enemy for zoom and tile size, till game settings and tile config is created.
 const enemy: Enemy = new Enemy(context, shoots, enemyHandler, 1, 0, 0);
 const spaceBetween = settings.zoom * enemy.tileWidth;
+const s = new shoot(context);
+const player: Player = new Player(context, s, settings.zoom, "a", "d", " ");
 
 export function init() {
 	document.addEventListener("keyup", (keyboard) => {
@@ -60,6 +62,8 @@ export function gameOver() {}
 function animate(): void {
 	setTimeout(() => {
 		enemyHandler.moveEnemies();
+		player.move();
+		shoots.push(s);
 		for (let j = 0; j < shoots.length; j++) {
 			shoots[j].shootMovement();
 		}
@@ -69,7 +73,7 @@ function animate(): void {
 
 export function score() {
 	actualScore++;
-	scoreElement.value = actualScore.toString();
+	// scoreElement.value = actualScore.toString();
 }
 
 function newPlayer(left: string, right: string, fire: string) {
