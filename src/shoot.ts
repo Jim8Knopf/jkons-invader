@@ -1,31 +1,31 @@
 export class shoot {
-	public positionX: number;
-	public positionY: number;
+	private _positionX: number;
+	private _positionY: number;
 	private _context: CanvasRenderingContext2D;
 	private _shootLength: number = 10;
 	private _shootThickness: number = 5;
-	private _shootSpeed: number = 10;
+	private _shootSpeed: number = 20;
 	constructor(context: CanvasRenderingContext2D) {
 		this._context = context;
-		this.positionX = 0;
-		this.positionY = 0;
+		this._positionX = 0;
+		this._positionY = 0;
 	}
 	/**
 	 * shoot if there is no actual shoot an the field
 	 */
 	public shoot(positionX: number, positionY: number) {
-		if (this.positionY <= 0) {
-			this._shootClear();
-			this.positionX = positionX;
-			this.positionY = positionY;
+		if (this._positionY <= 0) {
+			this._clearShoot();
+			this._positionX = positionX;
+			this._positionY = positionY;
 		}
 	}
 	/**
 	 * hit should be called when anything is hitten by the shot
 	 */
 	public hit() {
-		this._shootClear();
-		this.positionY = 0;
+		this._clearShoot();
+		this._positionY = 0;
 	}
 	/**
 	 * this function checks if the shoot is in the field
@@ -33,34 +33,37 @@ export class shoot {
 	 * than it moves the shoot up and paint it
 	 */
 	public shootMovement() {
-		if (this.positionY <= 0) {
-			this.positionY = 0;
-			// this.clear();
+		if (this._positionY <= 0) {
+			this._positionY = 0;
+			this._clearShoot();
 			return;
 		}
-		this._shootClear();
-		this.positionY -= this._shootSpeed;
-		this._shootRender();
+		this._clearShoot();
+		this._positionY -= this._shootSpeed;
+		this._renderShoot();
 	}
 
 	/**
-	 * getPosition
+	 * getPositionX
 	 */
-	public getPosition(): Array<number> {
-		let position = new Array();
-		position.push(this.positionX);
-		position.push(this.positionY);
-		return position;
+	public get getPositionX(): number {
+		return this._positionX;
+	}
+	/**
+	 * getPositionY
+	 */
+	public get getPositionY(): number {
+		return this._positionY;
 	}
 
 	/**
 	 * shootRender
 	 */
-	private _shootRender() {
+	private _renderShoot() {
 		this._context.fillStyle = "red";
 		this._context.fillRect(
-			this.positionX - this._shootThickness / 2,
-			this.positionY - this._shootLength,
+			this._positionX - this._shootThickness / 2,
+			this._positionY - this._shootLength,
 			this._shootThickness,
 			this._shootLength
 		);
@@ -68,12 +71,12 @@ export class shoot {
 	/**
 	 * this function clears the current shoot
 	 */
-	private _shootClear() {
+	private _clearShoot() {
 		this._context.clearRect(
-			this.positionX - this._shootThickness / 2,
-			this.positionY - this._shootLength,
-			this._shootThickness + 1,
-			this._shootLength + 1
+			this._positionX - this._shootThickness / 2,
+			this._positionY - this._shootLength,
+			this._shootThickness + 0.5,
+			this._shootLength + 0.1
 		);
 	}
 }
