@@ -1,11 +1,11 @@
-import { Enemy } from "./enemy.js";
-import { player } from "./player.js";
-import { EnemyHandler } from "./enemyHandler.js";
-import { shoot } from "./shoot.js";
-import { GameSettings } from "./game-settings.js";
+import { Enemy } from "./enemy";
+import { player } from "./player";
+import { EnemyHandler } from "./enemyHandler";
+import { shoot } from "./shoot";
+import { GameSettings } from "./game-settings";
 import { BehaviorSubject, Observable } from "rxjs";
 
-const subject = new BehaviorSubject(123);
+const subject = new BehaviorSubject(23);
 const canvas: HTMLCanvasElement = <HTMLCanvasElement>(
 	document.getElementById("jkonsInvader")
 );
