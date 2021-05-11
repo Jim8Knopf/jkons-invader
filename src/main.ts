@@ -17,24 +17,18 @@ const settings: GameSettings = new GameSettings(canvas);
 context.imageSmoothingEnabled = false;
 
 subject.subscribe(console.log);
-let shoots = new Array();
+let shots = new Array();
 let players = new Array();
 let gameStarted: boolean = false;
 let actualScore: number = 0;
 let scoreElement: HTMLOutputElement = <HTMLOutputElement>(
 	document.getElementById("score")
 );
-// shoots.push(s);
-const p: Player = new Player(context, settings.zoom, "a", "d", " ");
-// players.push(p);
-
 let animationSpeed: number = 1 / 60;
-// newPlayer("a", "d", " ");
 // ! Should not be, but dummy enemy for zoom and tile size, till game settings and tile config is created.
-// const s = new shoot(context);
-// const player: Player = new Player(context, s, settings.zoom, "a", "d", " ");
+const player = newPlayer("a", "d", " ");
 
-const enemy: Enemy = new Enemy(context, enemyHandler, 1, 0, 0);
+const enemy: Enemy = new Enemy(context, shots, enemyHandler, 1, 0, 0);
 const spaceBetween = settings.zoom * enemy.tileWidth;
 export function init() {
 	document.addEventListener("keyup", (keyboard) => {
@@ -56,7 +50,7 @@ export function init() {
 }
 for (let i = 0; i < 20; i++) {
 	enemyHandler.addEnemy(
-		new Enemy(context, enemyHandler, settings.zoom, i * spaceBetween, 0)
+		new Enemy(context, shots, enemyHandler, settings.zoom, i * spaceBetween, 0)
 	);
 }
 
@@ -64,10 +58,10 @@ export function gameOver() {}
 
 function animate(): void {
 	setTimeout(() => {
+		player.move();
 		enemyHandler.moveEnemies();
-		p.move();
-		for (let j = 0; j < shoots.length; j++) {
-			shoots[j].shootMovement();
+		for (let j = 0; j < shots.length; j++) {
+			shots[j].shootMovement();
 		}
 		requestAnimationFrame(animate);
 	}, animationSpeed);
@@ -78,6 +72,21 @@ export function score() {
 	// scoreElement.value = actualScore.toString();
 }
 
-function newPlayer(left: string, right: string, fire: string) {}
+function newPlayer(left: string, right: string, fire: string): Player {
+	const shot: Shot = new Shot(context);
+	const player: Player = new Player(
+		context,
+		shot,
+		settings.zoom,
+		left,
+		right,
+		fire
+	);
+
+	shots.push(shot);
+	players.push(player);
+
+	return player;
+}
 
 init();

@@ -1,10 +1,11 @@
 import { EnemyHandler } from "./enemyHandler";
-import { Shot } from "./shot";
 import { score } from "./main";
+import { Shot } from "./shot";
 
 export class Enemy {
 	private _context: CanvasRenderingContext2D;
 	private _live: number = 1;
+	private _shoots: Array<Shot>;
 	private _handler: EnemyHandler;
 
 	// TODO maybe a tile service
@@ -33,6 +34,7 @@ export class Enemy {
 
 	constructor(
 		context: CanvasRenderingContext2D,
+		shoots: Array<Shot>,
 		handler: EnemyHandler,
 		zoom: number,
 		x: number,
@@ -45,6 +47,7 @@ export class Enemy {
 		this._zoom = zoom;
 		this._zoomedWidth = this._tileWidth * this._zoom;
 		this._zoomedHeight = this._tileHeight * this._zoom;
+		this._shoots = shoots;
 		this._handler = handler;
 		this._context = context;
 
@@ -117,20 +120,23 @@ export class Enemy {
 	}
 
 	private _hit() {
-		// let shootX = this._shoots[j].getPositionX;
-		// let shootY = this._shoots[j].getPositionY;
-		// if (
-			// shootY > this._y &&
-			// shootY <= this._y + this._zoomedHeight &&
-			// shootX >= this._x &&
-			// shootX <= this._x + this._zoomedWidth
-		// ) {
-		// 	console.log("HIT");
-		// 	this._live--;
-		// 	score();
-		// }
+		for (let j = 0; j < this._shoots.length; j++) {
+			let shootX = this._shoots[j].getPositionX;
+			let shootY = this._shoots[j].getPositionY;
+			if (
+				shootY > this._y &&
+				shootY <= this._y + this._zoomedHeight &&
+				shootX >= this._x &&
+				shootX <= this._x + this._zoomedWidth
+			) {
+				console.log("HIT");
+				this._shoots[j].hit();
+				this._live--;
+				score();
+			}
+			this._shoots[j].getPositionX;
+		}
 	}
-
 	private _dead() {
 		if (this._live <= 0) {
 			this._handler.removeEnemy(this);
@@ -156,7 +162,14 @@ export class Enemy {
 
 			setTimeout(() => {
 				this._handler.addEnemy(
-					new Enemy(this._context, this._handler, this._zoom, randomX, randomY)
+					new Enemy(
+						this._context,
+						this._shoots,
+						this._handler,
+						this._zoom,
+						randomX,
+						randomY
+					)
 				);
 			}, 10000);
 		}
