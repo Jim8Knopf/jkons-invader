@@ -32,6 +32,8 @@ export class Enemy {
 		bottom: number;
 	};
 
+	grid = 900;
+
 	constructor(
 		context: CanvasRenderingContext2D,
 		shoots: Array<Shot>,
@@ -40,6 +42,8 @@ export class Enemy {
 		x: number,
 		y: number
 	) {
+		this._context = context;
+
 		this._x = x;
 		this._y = y;
 		this._speedX = 5;
@@ -49,7 +53,6 @@ export class Enemy {
 		this._zoomedHeight = this._tileHeight * this._zoom;
 		this._shoots = shoots;
 		this._handler = handler;
-		this._context = context;
 
 		this._canvasCollision = {
 			right: this._context.canvas.width - this._zoomedWidth,
