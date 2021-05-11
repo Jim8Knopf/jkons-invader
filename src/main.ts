@@ -61,7 +61,7 @@ function animate(): void {
 		player.handleInput();
 		enemyHandler.moveEnemies();
 		for (let j = 0; j < shots.length; j++) {
-			shots[j].shootMovement();
+			shots[j].shootAnimation();
 		}
 		requestAnimationFrame(animate);
 	}, animationSpeed);
