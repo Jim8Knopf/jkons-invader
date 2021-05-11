@@ -12,7 +12,7 @@ const canvas: HTMLCanvasElement = <HTMLCanvasElement>(
 const context: CanvasRenderingContext2D = canvas.getContext(
 	"2d"
 ) as CanvasRenderingContext2D;
-const enemyHandler: EnemyHandler = new EnemyHandler();
+const enemyHandler: EnemyHandler = new EnemyHandler(context);
 const settings: GameSettings = new GameSettings(canvas);
 context.imageSmoothingEnabled = false;
 
@@ -87,6 +87,11 @@ function newPlayer(left: string, right: string, fire: string): Player {
 	players.push(player);
 
 	return player;
+}
+
+context.fillStyle = "red";
+for (let index = 0; index < 9; index++) {
+	context.fillRect(index * 36 * 2, 0, 36, 36);
 }
 
 init();

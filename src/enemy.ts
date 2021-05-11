@@ -1,4 +1,4 @@
-import { EnemyHandler } from "./enemyHandler";
+import { EnemyHandler, RowDirection } from "./enemyHandler";
 import { score } from "./main";
 import { Shot } from "./shot";
 
@@ -32,7 +32,7 @@ export class Enemy {
 		bottom: number;
 	};
 
-	grid = 900;
+	grid = 900 / 36;
 
 	constructor(
 		context: CanvasRenderingContext2D,
@@ -46,8 +46,8 @@ export class Enemy {
 
 		this._x = x;
 		this._y = y;
-		this._speedX = 5;
-		this._speedY = 35;
+		this._speedX = 1;
+		this._speedY = 36;
 		this._zoom = zoom;
 		this._zoomedWidth = this._tileWidth * this._zoom;
 		this._zoomedHeight = this._tileHeight * this._zoom;
@@ -93,21 +93,41 @@ export class Enemy {
 		// check hit function
 		this._hit();
 		this._spriteAnimation();
-		if (
-			(this._speedX > 0 && this._x <= this._canvasCollision.right) ||
-			(this._speedX < 0 && this._x >= this._canvasCollision.left)
-		) {
-			this._translate(this._speedX, 0);
+
+		// if (this._handler.getMoveDown) {
+		// 	this._translate(0, this._speedY);
+		// }
+		if (this._x <= this._canvasCollision.left) {
+			this._handler.setRowDirection = RowDirection.right;
+			this._handler.setMoveDown = 1;
 		}
-		if (
-			(this._speedX > 0 && this._x >= this._canvasCollision.right) ||
-			(this._speedX < 0 && this._x <= this._canvasCollision.left)
-		) {
-			this._speedX = -this._speedX;
-			this._translate(0, this._speedY);
+		if (this._x >= this._canvasCollision.right) {
+			this._handler.setRowDirection = RowDirection.left;
+			this._handler.setMoveDown = 1;
 		}
+
+		if (this._handler.getRowDirection === RowDirection.right) {
+			this._translate(this._speedX, this._handler.getMoveDown);
+		} else {
+			this._translate(-this._speedX, this._handler.getMoveDown);
+		}
+
 		this._dead();
 		this._gameOver();
+	}
+
+	/**
+	 * moveDown
+	 */
+	public moveDown() {
+		this._translate(0, 36);
+	}
+
+	public moveHorizontally() {
+		this._translate(this._speedX, 0);
+	}
+	public changeDirection() {
+		this._speedX = -this._speedX;
 	}
 
 	private _spriteAnimation() {
@@ -178,6 +198,14 @@ export class Enemy {
 		}
 	}
 
+	private checkIfEnemyCanSpawn(x: number, y: number): boolean {
+		if (x === 0 || x % 36 === 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	private _gameOver() {
 		if (this._y > this._canvasCollision.bottom) {
 			console.log("finish");
@@ -196,7 +224,11 @@ export class Enemy {
 		return this._tileHeight;
 	}
 
-	public get y(): number {
+	public get getX(): number {
+		return this._x;
+	}
+
+	public get getY(): number {
 		return this._y;
 	}
 }
