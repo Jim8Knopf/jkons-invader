@@ -121,8 +121,8 @@ export class Enemy {
 
 	private _hit() {
 		for (let j = 0; j < this._shoots.length; j++) {
-			let shootX = this._shoots[j].getPositionX;
-			let shootY = this._shoots[j].getPositionY;
+			let shootX = this._shoots[j].getX;
+			let shootY = this._shoots[j].getY;
 			if (
 				shootY > this._y &&
 				shootY <= this._y + this._zoomedHeight &&
@@ -134,7 +134,7 @@ export class Enemy {
 				this._live--;
 				score();
 			}
-			this._shoots[j].getPositionX;
+			this._shoots[j].getX;
 		}
 	}
 	private _dead() {

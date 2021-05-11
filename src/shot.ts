@@ -1,82 +1,90 @@
 export class Shot {
-	private _positionX: number;
-	private _positionY: number;
+	// canvas context for drawing shapes
 	private _context: CanvasRenderingContext2D;
-	private _shootLength: number = 10;
-	private _shootThickness: number = 5;
-	private _shootSpeed: number = 20;
+
+	// shot coordinates and velocity
+	private _x: number;
+	private _y: number;
+	private _velocity: number = 20;
+
+	// defines the shot length and thickness for the drawing of shot
+	private _length: number = 10;
+	private _thickness: number = 5;
+
 	constructor(context: CanvasRenderingContext2D) {
 		this._context = context;
-		this._positionX = 0;
-		this._positionY = 0;
+		this._x = 0;
+		this._y = 0;
 	}
+
 	/**
 	 * shoot if there is no actual shoot an the field
 	 */
 	public shoot(positionX: number, positionY: number) {
-		if (this._positionY <= 0) {
-			this._clearShoot();
-			this._positionX = positionX;
-			this._positionY = positionY;
+		if (this._y <= 0) {
+			this._clear();
+			this._x = positionX;
+			this._y = positionY;
 		}
 	}
 	/**
 	 * hit should be called when anything is hitten by the shot
 	 */
 	public hit() {
-		this._clearShoot();
-		this._positionY = 0;
+		this._clear();
+		this._y = 0;
 	}
+
 	/**
-	 * this function checks if the shoot is in the field
+	 * checks if the shoot is in the field
 	 * than it clears the old shoot
 	 * than it moves the shoot up and paint it
 	 */
-	public shootMovement() {
-		if (this._positionY <= 0) {
-			this._positionY = 0;
-			this._clearShoot();
-			return;
+	public shootAnimation() {
+		if (this._y <= 0) {
+			this._clear();
 		}
-		this._clearShoot();
-		this._positionY -= this._shootSpeed;
-		this._renderShoot();
+
+		this._clear();
+		this._y -= this._velocity;
+		this._render();
 	}
 
 	/**
-	 * getPositionX
+	 * clears the current shoot
 	 */
-	public get getPositionX(): number {
-		return this._positionX;
-	}
-	/**
-	 * getPositionY
-	 */
-	public get getPositionY(): number {
-		return this._positionY;
+	private _clear() {
+		this._context.clearRect(
+			this._x - this._thickness / 2,
+			this._y - this._length,
+			this._thickness + 0.5,
+			this._length + 0.1
+		);
 	}
 
 	/**
-	 * shootRender
+	 * draws the shot on screen
 	 */
-	private _renderShoot() {
+	private _render() {
 		this._context.fillStyle = "red";
 		this._context.fillRect(
-			this._positionX - this._shootThickness / 2,
-			this._positionY - this._shootLength,
-			this._shootThickness,
-			this._shootLength
+			this._x - this._thickness / 2,
+			this._y - this._length,
+			this._thickness,
+			this._length
 		);
 	}
+
 	/**
-	 * this function clears the current shoot
+	 * get x position of the shot
 	 */
-	private _clearShoot() {
-		this._context.clearRect(
-			this._positionX - this._shootThickness / 2,
-			this._positionY - this._shootLength,
-			this._shootThickness + 0.5,
-			this._shootLength + 0.1
-		);
+	public get getX(): number {
+		return this._x;
+	}
+	/**
+	 * get y position of the shot
+	 */
+	public get getY(): number {
+		return this._y;
 	}
 }
