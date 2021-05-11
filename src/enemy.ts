@@ -1,5 +1,5 @@
 import { EnemyHandler } from "./enemyHandler";
-import { score } from "./main";
+import { score, stop } from "./main";
 import { Shot } from "./shot";
 
 export class Enemy {
@@ -58,7 +58,7 @@ export class Enemy {
 			right: this._context.canvas.width - this._zoomedWidth,
 			left: 0,
 			top: 0,
-			bottom: this._context.canvas.width - this._zoomedHeight * 9,
+			bottom: this._context.canvas.height - this._zoomedHeight * 2,
 		};
 		this._sheet.src = "../img/ji-sheet.png";
 	}
@@ -181,6 +181,7 @@ export class Enemy {
 	private _gameOver() {
 		if (this._y > this._canvasCollision.bottom) {
 			console.log("finish");
+			stop();
 		}
 	}
 
