@@ -1,4 +1,4 @@
-import { Enemy } from "./enemy.js";
+import { Enemy } from "./enemy";
 export class EnemyHandler {
 	private enemies: Enemy[];
 	constructor() {

@@ -1,11 +1,11 @@
 import { EnemyHandler } from "./enemyHandler";
-import { shoot } from "./shoot";
 import { score } from "./main";
+import { Shot } from "./shot";
 
 export class Enemy {
 	private _context: CanvasRenderingContext2D;
 	private _live: number = 1;
-	private _shoots: Array<shoot>;
+	private _shoots: Array<Shot>;
 	private _handler: EnemyHandler;
 
 	// TODO maybe a tile service
@@ -34,7 +34,7 @@ export class Enemy {
 
 	constructor(
 		context: CanvasRenderingContext2D,
-		shoots: Array<shoot>,
+		shoots: Array<Shot>,
 		handler: EnemyHandler,
 		zoom: number,
 		x: number,
@@ -121,8 +121,8 @@ export class Enemy {
 
 	private _hit() {
 		for (let j = 0; j < this._shoots.length; j++) {
-			let shootX = this._shoots[j].getPositionX;
-			let shootY = this._shoots[j].getPositionY;
+			let shootX = this._shoots[j].getX;
+			let shootY = this._shoots[j].getY;
 			if (
 				shootY > this._y &&
 				shootY <= this._y + this._zoomedHeight &&
@@ -134,7 +134,7 @@ export class Enemy {
 				this._live--;
 				score();
 			}
-			this._shoots[j].getPositionX;
+			this._shoots[j].getX;
 		}
 	}
 	private _dead() {
