@@ -24,6 +24,8 @@ let actualScore: number = 0;
 let scoreElement: HTMLOutputElement = <HTMLOutputElement>(
 	document.getElementById("score")
 );
+let animation: number;
+let animationActive: boolean = true;
 let animationSpeed: number = 1 / 60;
 // ! Should not be, but dummy enemy for zoom and tile size, till game settings and tile config is created.
 const player = newPlayer("a", "d", " ");
@@ -63,7 +65,9 @@ function animate(): void {
 		for (let j = 0; j < shots.length; j++) {
 			shots[j].shootAnimation();
 		}
-		requestAnimationFrame(animate);
+		if (animationActive) {
+			animation = requestAnimationFrame(animate);
+		}
 	}, animationSpeed);
 }
 
@@ -87,6 +91,17 @@ function newPlayer(left: string, right: string, fire: string): Player {
 	players.push(player);
 
 	return player;
+}
+
+export function stop() {
+	console.log("stop");
+	animationActive = false;
+	cancelAnimationFrame(animation);
+	let fontsize: number = 160;
+	let x = (canvas.width - fontsize * 5) / 2;
+	let y = canvas.height / 2;
+	context.font = `${fontsize}px Arial`;
+	context.fillText("Game Over", x, y);
 }
 
 init();
