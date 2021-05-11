@@ -58,7 +58,7 @@ export function gameOver() {}
 
 function animate(): void {
 	setTimeout(() => {
-		player.move();
+		player.handleInput();
 		enemyHandler.moveEnemies();
 		for (let j = 0; j < shots.length; j++) {
 			shots[j].shootMovement();
@@ -77,10 +77,10 @@ function newPlayer(left: string, right: string, fire: string): Player {
 	const player: Player = new Player(
 		context,
 		shot,
-		settings.zoom,
 		left,
 		right,
-		fire
+		fire,
+		settings.zoom
 	);
 
 	shots.push(shot);
