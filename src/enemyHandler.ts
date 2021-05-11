@@ -1,4 +1,4 @@
-import { Enemy } from "./enemy.js";
+import { Enemy } from "./enemy";
 export class EnemyHandler {
 	private enemies: Enemy[];
 	constructor() {
@@ -21,5 +21,13 @@ export class EnemyHandler {
 		for (let i = 0; i < this.enemies.length; i++) {
 			this.enemies[i].moveEnemy();
 		}
+	}
+
+	public get getEnemiesY(): number[] {
+		const yList: number[] = [];
+		for (let i = 0; i < this.enemies.length; i++) {
+			yList.push(this.enemies[i].y);
+		}
+		return yList;
 	}
 }
