@@ -6,7 +6,7 @@ export enum RowDirection {
 	left,
 }
 export class EnemyRow {
-	private _enemies: Enemy[];
+	private _enemies: Enemy[] = [];
 	private _shots: Shot[];
 	private _x: number = 0;
 	private _y: number = 0;
@@ -15,28 +15,68 @@ export class EnemyRow {
 	private moveDown: boolean = false;
 
 	// TODO check if row longer as canvas width and if no other enemy row is in this row
-	constructor(shots: Shot[], x: number, y: number) {
-		this._enemies = [];
+	constructor(
+		shots: Shot[],
+		length: number,
+		rowX?: number,
+		rowY?: number,
+		spaceX?: number,
+		spaceY?: number
+	) {
 		this._shots = shots;
-		this._x = x;
-		this._y = y;
-	}
+		let spaceXBetween = 36;
+		let spaceYBetween = 36;
 
-	addEnemyToRow() {
-		this._enemies.push(
-			new Enemy(getContext(), this._shots, this, 4, this._x, this._y)
-		);
-		this.updateRowLength();
-	}
+		if (!rowX || rowX < 0) {
+			rowX = 0;
+		}
+		if (!rowY || rowY < 0) {
+			rowY = 0;
+		}
+		if (spaceX) {
+			spaceXBetween += spaceX;
+		}
+		if (!spaceX) {
+			spaceX = 0;
+		}
 
-	addEnemiesToRow(number: number) {
-		for (let i = 0; i < number; i++) {
-			this._enemies.push(
-				new Enemy(getContext(), this._shots, this, 36, this._x, this._y)
+		if (length * 36 + spaceX * length + rowX <= getContext().canvas.width) {
+			const enemies: Enemy[] = [];
+			this._x = rowX;
+			this._y = rowY;
+
+			let enemyX = rowX;
+			for (let i = 0; i < length; i++) {
+				enemies.push(
+					new Enemy(getContext(), this._shots, this, 4, enemyX, rowY)
+				);
+				enemyX += spaceXBetween;
+				// enemyY += spaceYBetween;
+			}
+			this._enemies = enemies;
+			this.updateRowLength();
+		} else {
+			throw new Error(
+				"Could not update row, because row is longer than canvas."
 			);
 		}
-		this.updateRowLength();
 	}
+
+	// addEnemyToRow() {
+	// 	this._enemies.push(
+	// 		new Enemy(getContext(), this._shots, this, 4, this._x, this._y)
+	// 	);
+	// 	this.updateRowLength();
+	// }
+
+	// addEnemiesToRow(number: number) {
+	// 	for (let i = 0; i < number; i++) {
+	// 		this._enemies.push(
+	// 			new Enemy(getContext(), this._shots, this, 36, this._x, this._y)
+	// 		);
+	// 	}
+	// 	this.updateRowLength();
+	// }
 
 	createEnemyRow(
 		length: number,

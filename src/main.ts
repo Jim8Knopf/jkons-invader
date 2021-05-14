@@ -6,14 +6,14 @@ import { BehaviorSubject, Observable, timer } from "rxjs";
 import { getCanvas, getContext } from "./gameHelper";
 import { setCanvasSize } from "./gameSettings";
 
-timer(7000, 7000).subscribe(() => {
-	enemyRows.push(new EnemyRow(shots, 0, 0));
-	for (let i = 0; i < enemyRows.length; i++) {
-		if (i === enemyRows.length - 1) {
-			enemyRows[i].createEnemyRow(10, 0, 0, 0);
-		}
-	}
-});
+// timer(7000, 7000).subscribe(() => {
+// 	enemyRows.push(new EnemyRow(shots, 0, 0));
+// 	for (let i = 0; i < enemyRows.length; i++) {
+// 		if (i === enemyRows.length - 1) {
+// 			enemyRows[i].createEnemyRow(10, 0, 0, 0);
+// 		}
+// 	}
+// });
 
 setCanvasSize();
 let animationSpeed: number = 1 / 60;
@@ -83,12 +83,8 @@ function newPlayer(left: string, right: string, fire: string): Player {
 }
 
 function initEnemyRows() {
-	for (let i = 0; i < 4; i++) {
-		enemyRows.push(new EnemyRow(shots, 0, 0));
-	}
-
-	for (let i = 0; i < enemyRows.length; i++) {
-		enemyRows[i].createEnemyRow(10, getCanvas().width / 2 - 190, i * 36, 16);
+	for (let i = 0; i < 3; i++) {
+		enemyRows.push(new EnemyRow(shots, 15, 0, i * 36, 2));
 	}
 }
 
