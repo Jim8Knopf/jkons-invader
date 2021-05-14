@@ -4,7 +4,6 @@ import { getShots } from "./gameObjects";
 import { getScaledTileSize, getTileSize } from "./gameSettings";
 import { score, stopGame } from "./main";
 import { Shot } from "./shot";
-import { url } from "../web";
 export class Enemy {
 	private _context: CanvasRenderingContext2D = getContext();
 	private _live: number = 1;
@@ -20,7 +19,7 @@ export class Enemy {
 
 	private _x: number;
 	private _y: number;
-	private _speedX: number = 5;
+	private _speedX: number = 2;
 	private _speedY: number = getScaledTileSize();
 
 	private _canvasCollision: {
@@ -41,11 +40,7 @@ export class Enemy {
 			top: 0,
 			bottom: this._context.canvas.height - getScaledTileSize() * 2,
 		};
-		if (url) {
-			this._sheet.src = url + "/img/ji-sheet.png";
-		} else {
-			this._sheet.src = "/img/ji-sheet.png";
-		}
+		this._sheet.src = "/assets/img/ji-sheet.png";
 	}
 
 	private _translate(x: number, y: number) {
@@ -97,7 +92,7 @@ export class Enemy {
 		}
 
 		this._dead();
-		// this._gameOver();
+		this._gameOver();
 	}
 
 	/**
