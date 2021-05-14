@@ -5,8 +5,7 @@
 	"main": "index.html",
 	"scripts": {
 		"start": "webpack serve --mode development",
-		"build": "tsc --build --clean",
-
+		"build": "tsc --build",
 		"webpack": "webpack -h",
 		"watch": "tsc -w"
 	},
