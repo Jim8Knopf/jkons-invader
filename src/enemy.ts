@@ -58,7 +58,7 @@ export class Enemy {
 			top: 0,
 			bottom: this._context.canvas.height - this._zoomedHeight * 2,
 		};
-		this._sheet.src = "./ji-sheet.png";
+		this._sheet.src = "../img/ji-sheet.png";
 	}
 
 	private _translate(x: number, y: number) {
