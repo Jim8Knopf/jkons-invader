@@ -1,6 +1,7 @@
 import { getCanvas, getContext } from "./gameHelper";
 import { getEnemyRow, getShots, initEnemyRows, newPlayer } from "./gameObjects";
 import { getScaledTileSize, setCanvasSize } from "./gameSettings";
+setCanvasSize();
 
 // timer(7000, 7000).subscribe(() => {
 // 	enemyRows.push(new EnemyRow(getShots(), 0, 0));
