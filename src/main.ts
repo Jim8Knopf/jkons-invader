@@ -1,6 +1,11 @@
 import { EnemyRow } from "./enemyRow";
 import { getCanvas, getContext } from "./gameHelper";
-import { getEnemyRow, getShots, initEnemyRows, newPlayer } from "./gameObjects";
+import {
+	getEnemyRows,
+	getShots,
+	initEnemyRows,
+	newPlayer,
+} from "./gameObjects";
 import { getScaledTileSize, setCanvasSize } from "./gameSettings";
 import { url } from "../web";
 setCanvasSize();
@@ -16,7 +21,7 @@ setCanvasSize();
 
 let animation: number;
 let animationActive: boolean = true;
-let animationSpeed: number = 1 / 60;
+let animationSpeed: number = 10000 / 60;
 
 let gameStarted: boolean = false;
 let actualScore: number = 0;
@@ -47,8 +52,8 @@ export function init() {
 function animate(): void {
 	setTimeout(() => {
 		player.handleInput();
-		for (let j = 0; j < getEnemyRow().length; j++) {
-			getEnemyRow()[j].moveEnemyRow();
+		for (let j = 0; j < getEnemyRows().length; j++) {
+			getEnemyRows()[j].moveEnemyRow();
 		}
 		for (let j = 0; j < getShots().length; j++) {
 			getShots()[j].shootAnimation();

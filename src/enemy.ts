@@ -1,15 +1,19 @@
 import { EnemyRow, RowDirection } from "./enemyRow";
 import { getContext } from "./gameHelper";
-import { getShots } from "./gameObjects";
+import { addShot, getEnemyRows, getShots } from "./gameObjects";
 import { getScaledTileSize, getTileSize } from "./gameSettings";
 import { score, stopGame } from "./main";
-import { Shot } from "./shot";
+import { shotPlayer } from "./shotPlayer";
 import { url } from "../web";
+import { Shot, who } from "./shot";
+import { shotEnemy } from "./shotEnemy";
 export class Enemy {
 	private _context: CanvasRenderingContext2D = getContext();
 	private _live: number = 1;
-	private _shoots: Array<Shot> = getShots();
+	private _shoots: Array<shotPlayer> = getShots();
 	private _handler: EnemyRow;
+	private _enemyRow: number;
+	private _shot: shotEnemy;
 
 	// TODO maybe a tile service
 	private _sheet = new Image();
@@ -30,10 +34,13 @@ export class Enemy {
 		bottom: number;
 	};
 
-	constructor(handler: EnemyRow, x: number, y: number) {
+	constructor(handler: EnemyRow, x: number, y: number, enemyRow: number) {
 		this._x = x;
 		this._y = y;
 		this._handler = handler;
+		this._enemyRow = enemyRow;
+		this._shot = new shotEnemy(who.enemy);
+		addShot(this._shot);
 
 		this._canvasCollision = {
 			right: this._context.canvas.width - getScaledTileSize(),
@@ -41,11 +48,11 @@ export class Enemy {
 			top: 0,
 			bottom: this._context.canvas.height - getScaledTileSize() * 2,
 		};
-		if (url) {
-			this._sheet.src = url + "/img/ji-sheet.png";
-		} else {
-			this._sheet.src = "/img/ji-sheet.png";
-		}
+		// if (url) {
+		// 	this._sheet.src = url + "/img/ji-sheet.png";
+		// } else {
+		this._sheet.src = "/img/ji-sheet.png";
+		// }
 	}
 
 	private _translate(x: number, y: number) {
@@ -97,6 +104,7 @@ export class Enemy {
 		}
 
 		this._dead();
+		this._shoot();
 		this._gameOver();
 	}
 
@@ -123,6 +131,33 @@ export class Enemy {
 			else this._tileFrameX = 0;
 		} else {
 			this._spriteChangeCounter++;
+		}
+	}
+
+	/**
+	 * the enemy shoot function
+	 */
+	private _shoot() {
+		let random = Math.random() * 10000;
+		if (random > 9900) {
+			this._canIShoot();
+		}
+	}
+
+	private _canIShoot() {
+		let enemyRows = getEnemyRows();
+		for (let j = this._enemyRow + 1; j < enemyRows.length; j++) {
+			let enemies = enemyRows[j].getEnemies;
+			for (let k = 0; k < enemies.length; k++) {
+				if (
+					!(
+						enemies[k].enemyY > this.enemyY && enemies[k].enemyX === this.enemyX
+					)
+				) {
+					this._fireShot();
+					break;
+				}
+			}
 		}
 	}
 
@@ -160,5 +195,19 @@ export class Enemy {
 		if (this._y > this._canvasCollision.bottom) {
 			stopGame();
 		}
+	}
+	private _fireShot() {
+		this._shot.shoot(
+			this._x + getScaledTileSize() / 2,
+			this._y + getScaledTileSize() + 20
+		);
+	}
+
+	public get enemyY(): number {
+		return this._y;
+	}
+
+	public get enemyX(): number {
+		return this._x;
 	}
 }
