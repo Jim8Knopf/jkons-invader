@@ -111,12 +111,12 @@ if (audio.canPlayType("audio/mp3")) {
 
 //Function to play the exact file format
 function playAudio() {
-	let u: string = "";
+	let u: string = "../";
 	if (url) {
 		u = url;
 	}
 	var audio = new Audio(
-		u + "../assets/sounds/jkons-invader_title_theme" + audioType
+		u + "assets/sounds/jkons-invader_title_theme" + audioType
 	);
 	audio.play();
 }
