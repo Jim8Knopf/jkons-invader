@@ -71,7 +71,7 @@ if (audio.canPlayType("audio/mp3")) {
 }
 
 function playAudio() {
-	let audio = new Audio("/assets/sounds/jkons-invader_title_theme" + audioType);
+	let audio = new Audio("assets/sounds/jkons-invader_title_theme" + audioType);
 	audio.loop = true;
 	audio.volume = 0.05;
 

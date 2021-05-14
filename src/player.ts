@@ -51,7 +51,7 @@ export class Player {
 		this._left = left;
 		this._right = right;
 		this._fire = fire;
-		this._sheet.src = "/assets/img/ji-sheet.png";
+		this._sheet.src = "assets/img/ji-sheet.png";
 		// draw player on page load
 		this._render(true);
 	}
