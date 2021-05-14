@@ -1,4 +1,4 @@
-import { EnemyHandler, RowDirection } from "./enemyHandler";
+import { EnemyRow, RowDirection } from "./enemyRow";
 import { score } from "./main";
 import { Shot } from "./shot";
 
@@ -6,7 +6,7 @@ export class Enemy {
 	private _context: CanvasRenderingContext2D;
 	private _live: number = 1;
 	private _shoots: Array<Shot>;
-	private _handler: EnemyHandler;
+	private _handler: EnemyRow;
 
 	// TODO maybe a tile service
 	private _sheet = new Image();
@@ -37,7 +37,7 @@ export class Enemy {
 	constructor(
 		context: CanvasRenderingContext2D,
 		shoots: Array<Shot>,
-		handler: EnemyHandler,
+		handler: EnemyRow,
 		zoom: number,
 		x: number,
 		y: number
@@ -46,7 +46,7 @@ export class Enemy {
 
 		this._x = x;
 		this._y = y;
-		this._speedX = 1;
+		this._speedX = 2;
 		this._speedY = 36;
 		this._zoom = zoom;
 		this._zoomedWidth = this._tileWidth * this._zoom;
@@ -112,7 +112,7 @@ export class Enemy {
 		}
 
 		this._dead();
-		this._gameOver();
+		// this._gameOver();
 	}
 
 	/**
@@ -173,19 +173,11 @@ export class Enemy {
 		}
 	}
 
-	private checkIfEnemyCanSpawn(x: number, y: number): boolean {
-		if (x === 0 || x % 36 === 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	private _gameOver() {
-		if (this._y > this._canvasCollision.bottom) {
-			console.log("finish");
-		}
-	}
+	// private _gameOver() {
+	// 	if (this._y > this._canvasCollision.bottom) {
+	// 		console.log("finish");
+	// 	}
+	// }
 
 	public get zoom(): number {
 		return this._zoom;
