@@ -91,7 +91,7 @@ export class EnemyRow {
 		this.moveDown = moveDown;
 	}
 
-	public get getEnemies(): Enemy[] {
+	public get getEnemies(): Array<Enemy> {
 		return this._enemies;
 	}
 }

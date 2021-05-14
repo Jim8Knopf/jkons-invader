@@ -139,23 +139,38 @@ export class Enemy {
 	 */
 	private _shoot() {
 		let random = Math.random() * 10000;
-		if (random > 9900) {
+		if (random > 8000) {
 			this._canIShoot();
 		}
 	}
 
 	private _canIShoot() {
 		let enemyRows = getEnemyRows();
-		for (let j = this._enemyRow + 1; j < enemyRows.length; j++) {
-			let enemies = enemyRows[j].getEnemies;
-			for (let k = 0; k < enemies.length; k++) {
-				if (
-					!(
-						enemies[k].enemyY > this.enemyY && enemies[k].enemyX === this.enemyX
-					)
-				) {
+		if (this._enemyRow === 0) {
+			this._fireShot();
+			return;
+		}
+		for (let j = this._enemyRow; j > 0; j--) {
+			if (enemyRows[j]) {
+				let enemies = enemyRows[j].getEnemies;
+
+				for (let k = 5; k < enemies.length; k++) {
+					if (enemies[k].enemyY === this.enemyY) {
+						this._fireShot();
+						return;
+					}
+					let nextLeft = enemies[k].enemyX;
+					let nextRight = nextLeft + getScaledTileSize();
+					let left = this._x;
+					let right = left + getScaledTileSize();
+					if (nextLeft <= left && nextRight >= left) {
+						return;
+					}
+					if (nextLeft <= right && nextRight >= right) {
+						return;
+					}
 					this._fireShot();
-					break;
+					return;
 				}
 			}
 		}

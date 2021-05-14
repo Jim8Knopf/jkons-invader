@@ -21,7 +21,7 @@ setCanvasSize();
 
 let animation: number;
 let animationActive: boolean = true;
-let animationSpeed: number = 10000 / 60;
+let animationSpeed: number = 6000 / 60;
 
 let gameStarted: boolean = false;
 let actualScore: number = 0;
