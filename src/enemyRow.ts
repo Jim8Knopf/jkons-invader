@@ -1,5 +1,6 @@
 import { Enemy } from "./enemy";
-import { getContext } from "./gameHelper";
+import { getCanvas, getContext } from "./gameHelper";
+import { getScaledTileSize } from "./gameSettings";
 import { Shot } from "./shot";
 export enum RowDirection {
 	right,
@@ -7,25 +8,14 @@ export enum RowDirection {
 }
 export class EnemyRow {
 	private _enemies: Enemy[] = [];
-	private _shots: Shot[];
 	private _x: number = 0;
 	private _y: number = 0;
 	private _rowLength: number = 0;
 	private direction: RowDirection = RowDirection.right;
 	private moveDown: boolean = false;
 
-	// TODO check if row longer as canvas width and if no other enemy row is in this row
-	constructor(
-		shots: Shot[],
-		length: number,
-		rowX?: number,
-		rowY?: number,
-		spaceX?: number,
-		spaceY?: number
-	) {
-		this._shots = shots;
-		let spaceXBetween = 36;
-		let spaceYBetween = 36;
+	constructor(length: number, rowX?: number, rowY?: number, spaceX?: number) {
+		let spaceXBetween = getScaledTileSize();
 
 		if (!rowX || rowX < 0) {
 			rowX = 0;
@@ -40,21 +30,22 @@ export class EnemyRow {
 			spaceX = 0;
 		}
 
-		if (length * 36 + spaceX * length + rowX <= getContext().canvas.width) {
+		if (
+			length * getScaledTileSize() + spaceX * length + rowX <=
+			getCanvas().width
+		) {
 			const enemies: Enemy[] = [];
 			this._x = rowX;
 			this._y = rowY;
 
 			let enemyX = rowX;
 			for (let i = 0; i < length; i++) {
-				enemies.push(
-					new Enemy(getContext(), this._shots, this, 4, enemyX, rowY)
-				);
+				enemies.push(new Enemy(this, enemyX, rowY));
 				enemyX += spaceXBetween;
 				// enemyY += spaceYBetween;
 			}
 			this._enemies = enemies;
-			this.updateRowLength();
+			this._updateRowLength();
 		} else {
 			throw new Error(
 				"Could not update row, because row is longer than canvas."
@@ -62,70 +53,16 @@ export class EnemyRow {
 		}
 	}
 
-	// addEnemyToRow() {
-	// 	this._enemies.push(
-	// 		new Enemy(getContext(), this._shots, this, 4, this._x, this._y)
-	// 	);
-	// 	this.updateRowLength();
-	// }
-
-	// addEnemiesToRow(number: number) {
-	// 	for (let i = 0; i < number; i++) {
-	// 		this._enemies.push(
-	// 			new Enemy(getContext(), this._shots, this, 36, this._x, this._y)
-	// 		);
-	// 	}
-	// 	this.updateRowLength();
-	// }
-
-	createEnemyRow(
-		length: number,
-		rowX?: number,
-		rowY?: number,
-		addSpace?: number
-	) {
-		if (length * 36 <= getContext().canvas.width) {
-			let spaceBetween = 36;
-
-			if (!rowX || rowX < 0) {
-				rowX = 0;
-			}
-			if (!rowY || rowY < 0) {
-				rowY = 0;
-			}
-			if (addSpace) {
-				spaceBetween += addSpace;
-			}
-			const enemies: Enemy[] = [];
-			this._x = rowX;
-			this._y = rowY;
-
-			let enemyX = rowX;
-			for (let i = 0; i < length; i++) {
-				enemies.push(
-					new Enemy(getContext(), this._shots, this, 4, enemyX, rowY)
-				);
-				enemyX += spaceBetween;
-			}
-			this._enemies = enemies;
-			this.updateRowLength();
-		} else {
-			throw new Error(
-				"Could not update row, because row is longer than canvas."
-			);
-		}
-	}
-
-	removeEnemy(enemy: Enemy) {
-		this._enemies.splice(this._enemies.indexOf(enemy), 1);
-		this.updateRowLength();
-	}
-
-	updateRowLength() {
+	private _updateRowLength() {
 		this._rowLength = this._enemies.length;
 	}
 
-	moveEnemyRow() {
+	public removeEnemy(enemy: Enemy) {
+		this._enemies.splice(this._enemies.indexOf(enemy), 1);
+		this._updateRowLength();
+	}
+
+	public moveEnemyRow() {
 		for (let i = 0; i < this._enemies.length; i++) {
 			if (this._enemies.length - 1 === i) {
 				if (this.getRowDirection === RowDirection.right && this.getMoveDown) {
@@ -136,10 +73,6 @@ export class EnemyRow {
 
 			this._enemies[i].moveEnemy();
 		}
-
-		// if (this._x === 0) {
-		// 	this.createEnemyRow()
-		// }
 	}
 
 	public get getRowDirection(): RowDirection {
@@ -157,15 +90,4 @@ export class EnemyRow {
 	public set setMoveDown(moveDown: boolean) {
 		this.moveDown = moveDown;
 	}
-
-	public get getEnemiesY(): number[] {
-		const yList: number[] = [];
-		for (let i = 0; i < this._enemies.length; i++) {
-			yList.push(this._enemies[i].getY);
-		}
-		return yList;
-	}
-
-	// // ! debugging function
-	// public get getArray
 }
