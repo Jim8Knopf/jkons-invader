@@ -40,6 +40,7 @@ export class Enemy {
 			top: 0,
 			bottom: this._context.canvas.height - getScaledTileSize() * 2,
 		};
+		
 		this._sheet.src = "assets/img/ji-sheet.png";
 	}
 

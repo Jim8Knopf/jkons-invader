@@ -51,7 +51,6 @@ export class Player {
 		this._left = left;
 		this._right = right;
 		this._fire = fire;
-		this._sheet.src = "assets/img/ji-sheet.png";
 		// draw player on page load
 		this._render(true);
 	}
@@ -64,7 +63,7 @@ export class Player {
 
 		// update player
 		this._clear();
-		this._render();
+		this._render(true);
 	}
 
 	// moves left but not out of the screen
@@ -99,6 +98,7 @@ export class Player {
 		if (onload) {
 			const that = this;
 			this._sheet.onload = function () {
+				that._sheet.src = "assets/img/ji-sheet.png";
 				getContext().drawImage(
 					that._sheet,
 					0,
