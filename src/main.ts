@@ -5,6 +5,8 @@ import { Shot } from "./shot";
 import { BehaviorSubject, Observable, timer } from "rxjs";
 import { getCanvas, getContext } from "./gameHelper";
 import { setCanvasSize } from "./gameSettings";
+import { url } from "../web";
+
 
 // timer(7000, 7000).subscribe(() => {
 // 	enemyRows.push(new EnemyRow(shots, 0, 0));
@@ -111,8 +113,11 @@ if (audio.canPlayType("audio/mp3")) {
 //Function to play the exact file format
 function playAudio() {
 	var audio = new Audio(
-		"../assets/sounds/jkons-invader_title_theme.mp3"
-		// "../assets/sounds/jkons-invader_title_theme" + audioType
+		if (url) {
+			this._sheet.src = url + "../assets/sounds/jkons-invader_title_theme" + audioType;
+		} else {
+			"../assets/sounds/jkons-invader_title_theme" + audioType
+		}
 	);
 	audio.play();
 }
