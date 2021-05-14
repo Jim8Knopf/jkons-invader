@@ -95,10 +95,10 @@ export class Player {
 
 	// draw player on screen
 	private _render(onload?: boolean) {
+		this._sheet.src = "assets/img/ji-sheet.png";
 		if (onload) {
 			const that = this;
 			this._sheet.onload = function () {
-				that._sheet.src = "assets/img/ji-sheet.png";
 				getContext().drawImage(
 					that._sheet,
 					0,
