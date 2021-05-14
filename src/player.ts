@@ -1,7 +1,7 @@
 import { fromEvent, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { Shot } from "./shot";
-
+import { url } from "../web";
 export class Player {
 	// canvas context for drawing shapes
 	private _context: CanvasRenderingContext2D;
@@ -76,7 +76,11 @@ export class Player {
 		this._x = (context.canvas.width - this._zoomedSize) / 2;
 
 		// assign tile sheet
-		this._sheet.src = "/jkons-invader/img/ji-sheet.png";
+		if (url) {
+			this._sheet.src = url + "/img/ji-sheet.png";
+		} else {
+			this._sheet.src = "/img/ji-sheet.png";
+		}
 
 		// draw player on page load
 		this._render(true);

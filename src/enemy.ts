@@ -1,7 +1,7 @@
 import { EnemyRow, RowDirection } from "./enemyRow";
 import { score, stop } from "./main";
 import { Shot } from "./shot";
-
+import { url } from "../web";
 export class Enemy {
 	private _context: CanvasRenderingContext2D;
 	private _live: number = 1;
@@ -58,7 +58,11 @@ export class Enemy {
 			top: 0,
 			bottom: this._context.canvas.height - this._zoomedHeight * 2,
 		};
-		this._sheet.src = "/jkons-invader/img/ji-sheet.png";
+		if (url) {
+			this._sheet.src = url + "/img/ji-sheet.png";
+		} else {
+			this._sheet.src = "/img/ji-sheet.png";
+		}
 	}
 
 	private _translate(x: number, y: number) {
