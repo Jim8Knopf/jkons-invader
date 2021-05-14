@@ -30,7 +30,7 @@ export function init() {
 			case "r":
 				if (gameStarted === false) {
 					gameStarted = true;
-					// playAudio();
+					playAudio();
 					animate();
 				} else {
 					init();
@@ -81,6 +81,8 @@ function playAudio() {
 	var audio = new Audio(
 		u + "assets/sounds/jkons-invader_title_theme" + audioType
 	);
+	audio.loop = true;
+	audio.volume = 0.05;
 	audio.play();
 }
 

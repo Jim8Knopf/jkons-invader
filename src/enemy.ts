@@ -97,14 +97,14 @@ export class Enemy {
 		}
 
 		this._dead();
-		this._gameOver();
+		// this._gameOver();
 	}
 
 	/**
 	 * moveDown
 	 */
 	public moveDown() {
-		this._translate(0, this._speedY);
+		this._translate(0, 36);
 	}
 
 	public moveHorizontally() {
