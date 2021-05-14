@@ -28,31 +28,12 @@ export class EnemyHandler {
 
 	moveEnemies() {
 		for (let i = 0; i < this.enemies.length; i++) {
-			// if (this.enemies.length - 1 === i && this.getMoveDown) {
-			// 	this.enemies[i].moveEnemy();
-			// 	this.setMoveDown = false;
-			// }
-			// if (0 === i && this.getMoveDown) {
-			// 	this.enemies[i].moveEnemy();
-			// 	this.setMoveDown = false;
-			// 	i++;
-			// }
-			if (
-				this.enemies.length - 1 === i &&
-				this.getRowDirection === RowDirection.right &&
-				this.getMoveDown
-			) {
-				this.enemies[i].moveEnemy();
-			}
-
 			if (this.enemies.length - 1 === i) {
+				if (this.getRowDirection === RowDirection.right && this.getMoveDown) {
+					this.enemies[i].moveEnemy();
+				}
 				this.setMoveDown = false;
 			}
-
-			// if (this.enemies.length - 1 === i) {
-			// 	this.enemies[i].moveEnemy();
-			// 	this.setMoveDown = false;
-			// }
 
 			this.enemies[i].moveEnemy();
 		}
