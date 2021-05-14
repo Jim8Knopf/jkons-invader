@@ -35,6 +35,7 @@ export function init() {
 			case "r":
 				if (gameStarted === false) {
 					gameStarted = true;
+					playAudio();
 					animate();
 				} else {
 					init();
@@ -86,6 +87,22 @@ function initEnemyRows() {
 	for (let i = 0; i < 3; i++) {
 		enemyRows.push(new EnemyRow(shots, 15, 0, i * 36, 2));
 	}
+}
+
+let audioType: string;
+let audio = new Audio();
+if (audio.canPlayType("audio/mp3")) {
+	audioType = ".mp3";
+} else {
+	audioType = ".wav";
+}
+
+//Function to play the exact file format
+function playAudio() {
+	var audio = new Audio(
+		"../assets/sounds/jkons-invader_title_theme" + audioType
+	);
+	audio.play();
 }
 
 init();
