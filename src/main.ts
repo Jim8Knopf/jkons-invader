@@ -111,7 +111,8 @@ if (audio.canPlayType("audio/mp3")) {
 //Function to play the exact file format
 function playAudio() {
 	var audio = new Audio(
-		"../assets/sounds/jkons-invader_title_theme" + audioType
+		"../assets/sounds/jkons-invader_title_theme.mp3"
+		// "../assets/sounds/jkons-invader_title_theme" + audioType
 	);
 	audio.play();
 }
