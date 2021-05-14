@@ -1,42 +1,41 @@
 import { Enemy } from "./enemy";
-import { player } from "./player";
-import { EnemyHandler } from "./enemyHandler";
-import { shoot } from "./shoot";
-import { GameSettings } from "./game-settings";
-import { BehaviorSubject, Observable } from "rxjs";
+import { Player } from "./player";
+import { EnemyRow } from "./enemyRow";
+import { Shot } from "./shot";
+import { BehaviorSubject, Observable, timer } from "rxjs";
+import { getCanvas, getContext } from "./gameHelper";
+import { setCanvasSize } from "./gameSettings";
 
-const subject = new BehaviorSubject(23);
-const canvas: HTMLCanvasElement = <HTMLCanvasElement>(
-	document.getElementById("jkonsInvader")
-);
-window.onunload = unloadPage;
-const context: CanvasRenderingContext2D = canvas.getContext(
-	"2d"
-) as CanvasRenderingContext2D;
-const enemyHandler: EnemyHandler = new EnemyHandler();
-const settings: GameSettings = new GameSettings(canvas);
-context.imageSmoothingEnabled = false;
+// timer(7000, 7000).subscribe(() => {
+// 	enemyRows.push(new EnemyRow(shots, 0, 0));
+// 	for (let i = 0; i < enemyRows.length; i++) {
+// 		if (i === enemyRows.length - 1) {
+// 			enemyRows[i].createEnemyRow(10, 0, 0, 0);
+// 		}
+// 	}
+// });
 
-subject.subscribe(console.log);
-let shoots = new Array();
+setCanvasSize();
+let animationSpeed: number = 1 / 60;
+
+let shots = new Array();
 let players = new Array();
+let enemyRows = new Array();
 let gameStarted: boolean = false;
 let actualScore: number = 0;
 let scoreElement: HTMLOutputElement = <HTMLOutputElement>(
 	document.getElementById("score")
 );
-let animationSpeed: number = 1 / 60;
-newPlayer("a", "d", " ");
-// ! Should not be, but dummy enemy for zoom and tile size, till game settings and tile config is created.
-const enemy: Enemy = new Enemy(context, shoots, enemyHandler, 1, 0, 0);
-const spaceBetween = settings.zoom * enemy.tileWidth;
 
+const player = newPlayer("a", "d", " ");
+initEnemyRows();
 export function init() {
 	document.addEventListener("keyup", (keyboard) => {
 		switch (keyboard.key) {
 			case "r":
 				if (gameStarted === false) {
 					gameStarted = true;
+					playAudio();
 					animate();
 				} else {
 					init();
@@ -49,43 +48,74 @@ export function init() {
 		}
 	});
 }
-for (let i = 0; i < 20; i++) {
-	enemyHandler.addEnemy(
-		new Enemy(context, shoots, enemyHandler, settings.zoom, i * spaceBetween, 0)
-	);
-}
 
 export function gameOver() {}
 
+// TODO Maybe changing to enemy rows
+
 function animate(): void {
+	// ? Is this a good idea ?
+
 	setTimeout(() => {
-		enemyHandler.moveEnemies();
-		for (let j = 0; j < shoots.length; j++) {
-			shoots[j].shootMovement();
+		player.handleInput();
+		for (let j = 0; j < enemyRows.length; j++) {
+			enemyRows[j].moveEnemyRow();
 		}
-		requestAnimationFrame(animate);
+		for (let j = 0; j < shots.length; j++) {
+			shots[j].shootAnimation();
+		}
+		if (animationActive) {
+			animation = requestAnimationFrame(animate);
+		}
 	}, animationSpeed);
 }
 
 export function score() {
 	actualScore++;
-	scoreElement.value = actualScore.toString();
+	// scoreElement.value = actualScore.toString();
 }
 
-function newPlayer(left: string, right: string, fire: string) {
-	const s = new shoot(context);
-	shoots.push(s);
-	let p: player = new player(context, s, settings.zoom, left, right, fire);
-	players.push(p);
+function newPlayer(left: string, right: string, fire: string): Player {
+	const shot: Shot = new Shot(getContext());
+	const player: Player = new Player(getContext(), shot, left, right, fire, 4);
+
+	shots.push(shot);
+	players.push(player);
+
+	return player;
 }
 
-function unloadPage() {
-	alert("unload event detected!");
-	document.removeEventListener("keydown", function (event) {
-		for (let j = 0; j < players.length; j++) {
-			players[j].move(event);
-		}
-	});
+function initEnemyRows() {
+	for (let i = 0; i < 3; i++) {
+		enemyRows.push(new EnemyRow(shots, 15, 0, i * 36, 2));
+	}
+}
+
+let audioType: string;
+let audio = new Audio();
+if (audio.canPlayType("audio/mp3")) {
+	audioType = ".mp3";
+} else {
+	audioType = ".wav";
+}
+
+//Function to play the exact file format
+function playAudio() {
+	var audio = new Audio(
+		"../assets/sounds/jkons-invader_title_theme" + audioType
+	);
+	audio.play();
+}
+
+export function stop() {
+	console.log("stop");
+	animationActive = false;
+	cancelAnimationFrame(animation);
+	let fontsize: number = 160;
+	let x = (canvas.width - fontsize * 5) / 2;
+	let y = canvas.height / 2;
+	context.font = `${fontsize}px Arial`;
+	context.fillText("Game Over", x, y);
 }
 
 init();

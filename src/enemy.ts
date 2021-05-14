@@ -1,12 +1,12 @@
-import { EnemyHandler } from "./enemyHandler";
-import { shoot } from "./shoot";
+import { EnemyRow, RowDirection } from "./enemyRow";
 import { score } from "./main";
+import { Shot } from "./shot";
 
 export class Enemy {
 	private _context: CanvasRenderingContext2D;
 	private _live: number = 1;
-	private _shoots: Array<shoot>;
-	private _handler: EnemyHandler;
+	private _shoots: Array<Shot>;
+	private _handler: EnemyRow;
 
 	// TODO maybe a tile service
 	private _sheet = new Image();
@@ -34,30 +34,31 @@ export class Enemy {
 
 	constructor(
 		context: CanvasRenderingContext2D,
-		shoots: Array<shoot>,
-		handler: EnemyHandler,
+		shoots: Array<Shot>,
+		handler: EnemyRow,
 		zoom: number,
 		x: number,
 		y: number
 	) {
+		this._context = context;
+
 		this._x = x;
 		this._y = y;
-		this._speedX = 5;
-		this._speedY = 35;
+		this._speedX = 2;
+		this._speedY = 36;
 		this._zoom = zoom;
 		this._zoomedWidth = this._tileWidth * this._zoom;
 		this._zoomedHeight = this._tileHeight * this._zoom;
 		this._shoots = shoots;
 		this._handler = handler;
-		this._context = context;
 
 		this._canvasCollision = {
 			right: this._context.canvas.width - this._zoomedWidth,
 			left: 0,
 			top: 0,
-			bottom: this._context.canvas.width - this._zoomedHeight * 9,
+			bottom: this._context.canvas.height - this._zoomedHeight * 2,
 		};
-		this._sheet.src = "../img/ji-sheet.png";
+		this._sheet.src = "../jkons-invader/img/ji-sheet.png";
 	}
 
 	private _translate(x: number, y: number) {
@@ -90,21 +91,40 @@ export class Enemy {
 		// check hit function
 		this._hit();
 		this._spriteAnimation();
-		if (
-			(this._speedX > 0 && this._x <= this._canvasCollision.right) ||
-			(this._speedX < 0 && this._x >= this._canvasCollision.left)
-		) {
+
+		if (this._handler.getRowDirection === RowDirection.right) {
 			this._translate(this._speedX, 0);
+		} else {
+			this._translate(-this._speedX, 0);
 		}
-		if (
-			(this._speedX > 0 && this._x >= this._canvasCollision.right) ||
-			(this._speedX < 0 && this._x <= this._canvasCollision.left)
-		) {
-			this._speedX = -this._speedX;
+
+		if (this._x >= this._canvasCollision.right) {
+			this._handler.setRowDirection = RowDirection.left;
+			this._handler.setMoveDown = true;
+		} else if (this._x <= this._canvasCollision.left) {
+			this._handler.setRowDirection = RowDirection.right;
+			this._handler.setMoveDown = true;
+		}
+		if (this._handler.getMoveDown) {
 			this._translate(0, this._speedY);
 		}
+
 		this._dead();
-		this._gameOver();
+		// this._gameOver();
+	}
+
+	/**
+	 * moveDown
+	 */
+	public moveDown() {
+		this._translate(0, 36);
+	}
+
+	public moveHorizontally() {
+		this._translate(this._speedX, 0);
+	}
+	public changeDirection() {
+		this._speedX = -this._speedX;
 	}
 
 	private _spriteAnimation() {
@@ -121,8 +141,8 @@ export class Enemy {
 
 	private _hit() {
 		for (let j = 0; j < this._shoots.length; j++) {
-			let shootX = this._shoots[j].getPositionX;
-			let shootY = this._shoots[j].getPositionY;
+			let shootX = this._shoots[j].getX;
+			let shootY = this._shoots[j].getY;
 			if (
 				shootY > this._y &&
 				shootY <= this._y + this._zoomedHeight &&
@@ -134,7 +154,7 @@ export class Enemy {
 				this._live--;
 				score();
 			}
-			this._shoots[j].getPositionX;
+			this._shoots[j].getX;
 		}
 	}
 	private _dead() {
@@ -146,38 +166,8 @@ export class Enemy {
 				this._zoomedWidth,
 				this._zoomedHeight
 			);
-			const randomX =
-				Math.floor(Math.random() * (this._context.canvas.width / 9)) * 9;
-			let randomY = Math.floor(
-				Math.random() * (this._canvasCollision.bottom / 9) * 9
-			);
-			while (
-				this._handler.getEnemiesY.find((y) => {
-					randomY >= y && randomY <= randomY + this._zoomedHeight;
-				})
-			) {
-				randomY =
-					Math.floor(Math.random() * (this._context.canvas.height / 9)) * 9;
-			}
-
-			setTimeout(() => {
-				this._handler.addEnemy(
-					new Enemy(
-						this._context,
-						this._shoots,
-						this._handler,
-						this._zoom,
-						randomX,
-						randomY
-					)
-				);
-			}, 10000);
-		}
-	}
-
-	private _gameOver() {
-		if (this._y > this._canvasCollision.bottom) {
-			console.log("finish");
+			// * removed random spawn for classic mode
+			// * for the classic mode spawning look in the main
 		}
 	}
 
@@ -193,7 +183,11 @@ export class Enemy {
 		return this._tileHeight;
 	}
 
-	public get y(): number {
+	public get getX(): number {
+		return this._x;
+	}
+
+	public get getY(): number {
 		return this._y;
 	}
 }
