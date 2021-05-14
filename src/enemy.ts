@@ -178,6 +178,10 @@ export class Enemy {
 		}
 	}
 
+	/**
+	 * the Game Over function is caled during the enemy movement.
+	 * it stops the animation
+	 */
 	private _gameOver() {
 		if (this._y > this._canvasCollision.bottom) {
 			console.log("finish");
