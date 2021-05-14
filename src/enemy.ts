@@ -92,7 +92,7 @@ export class Enemy {
 		}
 
 		this._dead();
-		this._gameOver();
+		// this._gameOver();
 	}
 
 	/**
