@@ -1,6 +1,7 @@
 import { getCanvas, getContext } from "./gameHelper";
 import { getEnemyRow, getShots, initEnemyRows, newPlayer } from "./gameObjects";
 import { getScaledTileSize, setCanvasSize } from "./gameSettings";
+import { setCanvasSize } from "./gameSettings";
 setCanvasSize();
 
 // timer(7000, 7000).subscribe(() => {
@@ -74,6 +75,7 @@ function playAudio() {
 	let audio = new Audio("/assets/sounds/jkons-invader_title_theme" + audioType);
 	audio.loop = true;
 	audio.volume = 0.05;
+
 	audio.play();
 }
 

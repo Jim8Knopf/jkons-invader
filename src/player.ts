@@ -4,6 +4,7 @@ import { getCanvas, getContext } from "./gameHelper";
 import { getShot } from "./gameObjects";
 import { getScaledTileSize, getTileSize } from "./gameSettings";
 import { Shot } from "./shot";
+
 export class Player {
 	private _shot: Shot = getShot();
 
