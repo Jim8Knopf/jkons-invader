@@ -1,9 +1,6 @@
-import { EnemyRow } from "./enemyRow";
 import { getCanvas, getContext } from "./gameHelper";
 import { getEnemyRow, getShots, initEnemyRows, newPlayer } from "./gameObjects";
 import { getScaledTileSize, setCanvasSize } from "./gameSettings";
-import { url } from "../web";
-setCanvasSize();
 
 // timer(7000, 7000).subscribe(() => {
 // 	enemyRows.push(new EnemyRow(getShots(), 0, 0));
@@ -72,15 +69,8 @@ if (audio.canPlayType("audio/mp3")) {
 	audioType = ".wav";
 }
 
-//Function to play the exact file format
 function playAudio() {
-	let u: string = "../";
-	if (url) {
-		u = url;
-	}
-	var audio = new Audio(
-		u + "assets/sounds/jkons-invader_title_theme" + audioType
-	);
+	let audio = new Audio("assets/sounds/jkons-invader_title_theme" + audioType);
 	audio.loop = true;
 	audio.volume = 0.05;
 	audio.play();

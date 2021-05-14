@@ -51,14 +51,6 @@ export class Player {
 		this._left = left;
 		this._right = right;
 		this._fire = fire;
-
-		// assign tile sheet
-		if (url) {
-			this._sheet.src = url + "/img/ji-sheet.png";
-		} else {
-			this._sheet.src = "/img/ji-sheet.png";
-		}
-
 		// draw player on page load
 		this._render(true);
 	}
@@ -71,7 +63,7 @@ export class Player {
 
 		// update player
 		this._clear();
-		this._render();
+		this._render(true);
 	}
 
 	// moves left but not out of the screen
@@ -103,6 +95,7 @@ export class Player {
 
 	// draw player on screen
 	private _render(onload?: boolean) {
+		this._sheet.src = "assets/img/ji-sheet.png";
 		if (onload) {
 			const that = this;
 			this._sheet.onload = function () {
