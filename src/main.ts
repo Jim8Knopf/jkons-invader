@@ -15,7 +15,16 @@ import { setCanvasSize } from "./gameSettings";
 // 	}
 // });
 
+const canvas: HTMLCanvasElement = <HTMLCanvasElement>(
+	document.getElementById("jkonsInvader")
+);
+const context: CanvasRenderingContext2D = getCanvas().getContext(
+	"2d"
+) as CanvasRenderingContext2D;
+
 setCanvasSize();
+let animation: number;
+let animationActive: boolean = true;
 let animationSpeed: number = 1 / 60;
 
 let shots = new Array();
@@ -108,14 +117,14 @@ function playAudio() {
 }
 
 export function stop() {
-	console.log("stop");
 	animationActive = false;
 	cancelAnimationFrame(animation);
 	let fontsize: number = 160;
-	let x = (canvas.width - fontsize * 5) / 2;
-	let y = canvas.height / 2;
-	context.font = `${fontsize}px Arial`;
-	context.fillText("Game Over", x, y);
+	let x = (getCanvas().width - fontsize * 5) / 2;
+	let y = getCanvas().height / 2;
+	getContext().font = `${fontsize}px Arial`;
+	getContext().fillText("Game Over", x, y);
+	console.log("stop");
 }
 
 init();
