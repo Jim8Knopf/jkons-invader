@@ -4,7 +4,7 @@ import { getCanvas, getContext } from "./gameHelper";
 import { getShot } from "./gameObjects";
 import { getScaledTileSize, getTileSize } from "./gameSettings";
 import { Shot } from "./shot";
-
+import { url } from "../web";
 export class Player {
 	private _shot: Shot = getShot();
 
@@ -53,7 +53,11 @@ export class Player {
 		this._fire = fire;
 
 		// assign tile sheet
-		this._sheet.src = "../img/ji-sheet.png";
+		if (url) {
+			this._sheet.src = url + "/img/ji-sheet.png";
+		} else {
+			this._sheet.src = "/img/ji-sheet.png";
+		}
 
 		// draw player on page load
 		this._render(true);

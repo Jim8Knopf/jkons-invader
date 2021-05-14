@@ -2,6 +2,7 @@ import { EnemyRow } from "./enemyRow";
 import { getCanvas, getContext } from "./gameHelper";
 import { getEnemyRow, getShots, initEnemyRows, newPlayer } from "./gameObjects";
 import { getScaledTileSize, setCanvasSize } from "./gameSettings";
+import { url } from "../web";
 setCanvasSize();
 
 // timer(7000, 7000).subscribe(() => {
@@ -73,8 +74,12 @@ if (audio.canPlayType("audio/mp3")) {
 
 //Function to play the exact file format
 function playAudio() {
+	let u: string = "../";
+	if (url) {
+		u = url;
+	}
 	var audio = new Audio(
-		"../assets/sounds/jkons-invader_title_theme" + audioType
+		u + "assets/sounds/jkons-invader_title_theme" + audioType
 	);
 	audio.play();
 }
