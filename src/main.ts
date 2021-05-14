@@ -64,7 +64,9 @@ function animate(): void {
 		for (let j = 0; j < shots.length; j++) {
 			shots[j].shootAnimation();
 		}
-		requestAnimationFrame(animate);
+		if (animationActive) {
+			animation = requestAnimationFrame(animate);
+		}
 	}, animationSpeed);
 }
 
@@ -103,6 +105,17 @@ function playAudio() {
 		"../assets/sounds/jkons-invader_title_theme" + audioType
 	);
 	audio.play();
+}
+
+export function stop() {
+	console.log("stop");
+	animationActive = false;
+	cancelAnimationFrame(animation);
+	let fontsize: number = 160;
+	let x = (canvas.width - fontsize * 5) / 2;
+	let y = canvas.height / 2;
+	context.font = `${fontsize}px Arial`;
+	context.fillText("Game Over", x, y);
 }
 
 init();
