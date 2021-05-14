@@ -1,14 +1,12 @@
-import { Enemy } from "./enemy";
-import { Player } from "./player";
 import { EnemyRow } from "./enemyRow";
-import { Shot } from "./shot";
-import { BehaviorSubject, Observable, timer } from "rxjs";
 import { getCanvas, getContext } from "./gameHelper";
-import { setCanvasSize } from "./gameSettings";
+import { getEnemyRow, getShots, initEnemyRows, newPlayer } from "./gameObjects";
+import { getScaledTileSize, setCanvasSize } from "./gameSettings";
 import { url } from "../web";
+setCanvasSize();
 
 // timer(7000, 7000).subscribe(() => {
-// 	enemyRows.push(new EnemyRow(shots, 0, 0));
+// 	enemyRows.push(new EnemyRow(getShots(), 0, 0));
 // 	for (let i = 0; i < enemyRows.length; i++) {
 // 		if (i === enemyRows.length - 1) {
 // 			enemyRows[i].createEnemyRow(10, 0, 0, 0);
@@ -16,36 +14,23 @@ import { url } from "../web";
 // 	}
 // });
 
-const canvas: HTMLCanvasElement = <HTMLCanvasElement>(
-	document.getElementById("jkonsInvader")
-);
-const context: CanvasRenderingContext2D = getCanvas().getContext(
-	"2d"
-) as CanvasRenderingContext2D;
-
-setCanvasSize();
 let animation: number;
 let animationActive: boolean = true;
 let animationSpeed: number = 1 / 60;
 
-let shots = new Array();
-let players = new Array();
-let enemyRows = new Array();
 let gameStarted: boolean = false;
 let actualScore: number = 0;
-let scoreElement: HTMLOutputElement = <HTMLOutputElement>(
-	document.getElementById("score")
-);
 
 const player = newPlayer("a", "d", " ");
 initEnemyRows();
+
 export function init() {
 	document.addEventListener("keyup", (keyboard) => {
 		switch (keyboard.key) {
 			case "r":
 				if (gameStarted === false) {
 					gameStarted = true;
-					playAudio();
+					// playAudio();
 					animate();
 				} else {
 					init();
@@ -59,20 +44,14 @@ export function init() {
 	});
 }
 
-export function gameOver() {}
-
-// TODO Maybe changing to enemy rows
-
 function animate(): void {
-	// ? Is this a good idea ?
-
 	setTimeout(() => {
 		player.handleInput();
-		for (let j = 0; j < enemyRows.length; j++) {
-			enemyRows[j].moveEnemyRow();
+		for (let j = 0; j < getEnemyRow().length; j++) {
+			getEnemyRow()[j].moveEnemyRow();
 		}
-		for (let j = 0; j < shots.length; j++) {
-			shots[j].shootAnimation();
+		for (let j = 0; j < getShots().length; j++) {
+			getShots()[j].shootAnimation();
 		}
 		if (animationActive) {
 			animation = requestAnimationFrame(animate);
@@ -83,22 +62,6 @@ function animate(): void {
 export function score() {
 	actualScore++;
 	// scoreElement.value = actualScore.toString();
-}
-
-function newPlayer(left: string, right: string, fire: string): Player {
-	const shot: Shot = new Shot(getContext());
-	const player: Player = new Player(getContext(), shot, left, right, fire, 4);
-
-	shots.push(shot);
-	players.push(player);
-
-	return player;
-}
-
-function initEnemyRows() {
-	for (let i = 0; i < 3; i++) {
-		enemyRows.push(new EnemyRow(shots, 15, 0, i * 36, 2));
-	}
 }
 
 let audioType: string;
@@ -121,15 +84,18 @@ function playAudio() {
 	audio.play();
 }
 
-export function stop() {
+export function stopGame() {
 	animationActive = false;
 	cancelAnimationFrame(animation);
-	let fontsize: number = 160;
+	_renderGameOver();
+}
+
+function _renderGameOver() {
+	let fontsize: number = 4 * getScaledTileSize();
 	let x = (getCanvas().width - fontsize * 5) / 2;
 	let y = getCanvas().height / 2;
 	getContext().font = `${fontsize}px Arial`;
 	getContext().fillText("Game Over", x, y);
-	console.log("stop");
 }
 
 init();

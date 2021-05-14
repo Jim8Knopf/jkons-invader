@@ -1,21 +1,19 @@
+import { getContext } from "./gameHelper";
+
 export class Shot {
 	// canvas context for drawing shapes
-	private _context: CanvasRenderingContext2D;
+	private _context: CanvasRenderingContext2D = getContext();
 
 	// shot coordinates and velocity
-	private _x: number;
-	private _y: number;
+	private _x: number = 0;
+	private _y: number = 0;
 	private _velocity: number = 20;
 
 	// defines the shot length and thickness for the drawing of shot
 	private _length: number = 10;
 	private _thickness: number = 5;
 
-	constructor(context: CanvasRenderingContext2D) {
-		this._context = context;
-		this._x = 0;
-		this._y = 0;
-	}
+	constructor() {}
 
 	/**
 	 * shoot if there is no actual shoot an the field
@@ -28,7 +26,7 @@ export class Shot {
 		}
 	}
 	/**
-	 * hit should be called when anything is hitten by the shot
+	 * hit should be called when anything is hit by the shot
 	 */
 	public hit() {
 		this._clear();
