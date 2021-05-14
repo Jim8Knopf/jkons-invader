@@ -1,5 +1,5 @@
 import { EnemyRow, RowDirection } from "./enemyRow";
-import { score } from "./main";
+import { score, stop } from "./main";
 import { Shot } from "./shot";
 
 export class Enemy {
@@ -44,7 +44,7 @@ export class Enemy {
 
 		this._x = x;
 		this._y = y;
-		this._speedX = 2;
+		this._speedX = 1;
 		this._speedY = 36;
 		this._zoom = zoom;
 		this._zoomedWidth = this._tileWidth * this._zoom;
@@ -58,7 +58,7 @@ export class Enemy {
 			top: 0,
 			bottom: this._context.canvas.height - this._zoomedHeight * 2,
 		};
-		this._sheet.src = "../jkons-invader/img/ji-sheet.png";
+		this._sheet.src = "../img/ji-sheet.png";
 	}
 
 	private _translate(x: number, y: number) {
@@ -110,7 +110,7 @@ export class Enemy {
 		}
 
 		this._dead();
-		// this._gameOver();
+		this._gameOver();
 	}
 
 	/**
@@ -168,6 +168,12 @@ export class Enemy {
 			);
 			// * removed random spawn for classic mode
 			// * for the classic mode spawning look in the main
+		}
+	}
+
+	private _gameOver() {
+		if (this._y > this._canvasCollision.bottom) {
+			stop();
 		}
 	}
 

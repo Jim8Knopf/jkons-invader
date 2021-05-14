@@ -76,7 +76,7 @@ export class Player {
 		this._x = (context.canvas.width - this._zoomedSize) / 2;
 
 		// assign tile sheet
-		this._sheet.src = "../jkons-invader/img/ji-sheet.png";
+		this._sheet.src = "../img/ji-sheet.png";
 
 		// draw player on page load
 		this._render(true);
