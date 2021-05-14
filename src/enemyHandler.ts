@@ -7,7 +7,7 @@ export class EnemyHandler {
 	private _context: CanvasRenderingContext2D;
 	private enemies: Enemy[];
 	private direction: RowDirection = RowDirection.right;
-	private moveDown: number = 0;
+	private moveDown: boolean = false;
 
 	constructor(context: CanvasRenderingContext2D) {
 		this._context = context;
@@ -27,15 +27,34 @@ export class EnemyHandler {
 	}
 
 	moveEnemies() {
-		// if (this.getMoveDown) {
-		// 	this.setMoveDown = false;
-		// }
 		for (let i = 0; i < this.enemies.length; i++) {
-			this.enemies[i].moveEnemy();
+			// if (this.enemies.length - 1 === i && this.getMoveDown) {
+			// 	this.enemies[i].moveEnemy();
+			// 	this.setMoveDown = false;
+			// }
+			// if (0 === i && this.getMoveDown) {
+			// 	this.enemies[i].moveEnemy();
+			// 	this.setMoveDown = false;
+			// 	i++;
+			// }
+			if (
+				this.enemies.length - 1 === i &&
+				this.getRowDirection === RowDirection.right &&
+				this.getMoveDown
+			) {
+				this.enemies[i].moveEnemy();
+			}
 
 			if (this.enemies.length - 1 === i) {
-				this.setMoveDown = 0;
+				this.setMoveDown = false;
 			}
+
+			// if (this.enemies.length - 1 === i) {
+			// 	this.enemies[i].moveEnemy();
+			// 	this.setMoveDown = false;
+			// }
+
+			this.enemies[i].moveEnemy();
 		}
 	}
 
@@ -47,11 +66,11 @@ export class EnemyHandler {
 		this.direction = rowDirection;
 	}
 
-	public get getMoveDown(): number {
+	public get getMoveDown(): boolean {
 		return this.moveDown;
 	}
 
-	public set setMoveDown(moveDown: number) {
+	public set setMoveDown(moveDown: boolean) {
 		this.moveDown = moveDown;
 	}
 
@@ -62,4 +81,7 @@ export class EnemyHandler {
 		}
 		return yList;
 	}
+
+	// // ! debugging function
+	// public get getArray
 }

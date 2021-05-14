@@ -94,22 +94,21 @@ export class Enemy {
 		this._hit();
 		this._spriteAnimation();
 
-		// if (this._handler.getMoveDown) {
-		// 	this._translate(0, this._speedY);
-		// }
-		if (this._x <= this._canvasCollision.left) {
-			this._handler.setRowDirection = RowDirection.right;
-			this._handler.setMoveDown = 1;
-		}
-		if (this._x >= this._canvasCollision.right) {
-			this._handler.setRowDirection = RowDirection.left;
-			this._handler.setMoveDown = 1;
+		if (this._handler.getRowDirection === RowDirection.right) {
+			this._translate(this._speedX, 0);
+		} else {
+			this._translate(-this._speedX, 0);
 		}
 
-		if (this._handler.getRowDirection === RowDirection.right) {
-			this._translate(this._speedX, this._handler.getMoveDown);
-		} else {
-			this._translate(-this._speedX, this._handler.getMoveDown);
+		if (this._x >= this._canvasCollision.right) {
+			this._handler.setRowDirection = RowDirection.left;
+			this._handler.setMoveDown = true;
+		} else if (this._x <= this._canvasCollision.left) {
+			this._handler.setRowDirection = RowDirection.right;
+			this._handler.setMoveDown = true;
+		}
+		if (this._handler.getMoveDown) {
+			this._translate(0, this._speedY);
 		}
 
 		this._dead();
@@ -169,32 +168,8 @@ export class Enemy {
 				this._zoomedWidth,
 				this._zoomedHeight
 			);
-			const randomX =
-				Math.floor(Math.random() * (this._context.canvas.width / 9)) * 9;
-			let randomY = Math.floor(
-				Math.random() * (this._canvasCollision.bottom / 9) * 9
-			);
-			while (
-				this._handler.getEnemiesY.find((y) => {
-					randomY >= y && randomY <= randomY + this._zoomedHeight;
-				})
-			) {
-				randomY =
-					Math.floor(Math.random() * (this._context.canvas.height / 9)) * 9;
-			}
-
-			setTimeout(() => {
-				this._handler.addEnemy(
-					new Enemy(
-						this._context,
-						this._shoots,
-						this._handler,
-						this._zoom,
-						randomX,
-						randomY
-					)
-				);
-			}, 10000);
+			// * removed random spawn for classic mode
+			// * for the classic mode spawning look in the main
 		}
 	}
 

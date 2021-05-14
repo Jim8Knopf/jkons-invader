@@ -3,20 +3,35 @@ import { Player } from "./player";
 import { EnemyHandler } from "./enemyHandler";
 import { Shot } from "./shot";
 import { GameSettings } from "./game-settings";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, Observable, timer } from "rxjs";
 
-const subject = new BehaviorSubject(23);
+// timer(7000, 7000).subscribe(() => {
+// 	for (let i = 0; i < 15; i++) {
+// 		enemyHandler.addEnemy(
+// 			new Enemy(
+// 				context,
+// 				shots,
+// 				enemyHandler,
+// 				settings.zoom,
+// 				i * spaceBetween,
+// 				0
+// 			)
+// 		);
+// 	}
+// });
+
 const canvas: HTMLCanvasElement = <HTMLCanvasElement>(
 	document.getElementById("jkonsInvader")
 );
 const context: CanvasRenderingContext2D = canvas.getContext(
 	"2d"
 ) as CanvasRenderingContext2D;
+
+// TODO Maybe changing to enemy rows
 const enemyHandler: EnemyHandler = new EnemyHandler(context);
 const settings: GameSettings = new GameSettings(canvas);
 context.imageSmoothingEnabled = false;
 
-subject.subscribe(console.log);
 let shots = new Array();
 let players = new Array();
 let gameStarted: boolean = false;
@@ -48,7 +63,8 @@ export function init() {
 		}
 	});
 }
-for (let i = 0; i < 20; i++) {
+
+for (let i = 0; i < 15; i++) {
 	enemyHandler.addEnemy(
 		new Enemy(context, shots, enemyHandler, settings.zoom, i * spaceBetween, 0)
 	);
