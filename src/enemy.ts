@@ -1,11 +1,14 @@
 import { EnemyRow, RowDirection } from "./enemyRow";
-import { score } from "./main";
+import { getContext } from "./gameHelper";
+import { getShots } from "./gameObjects";
+import { getScaledTileSize, getTileSize } from "./gameSettings";
+import { score, stopGame } from "./main";
 import { Shot } from "./shot";
-
+import { url } from "../web";
 export class Enemy {
-	private _context: CanvasRenderingContext2D;
+	private _context: CanvasRenderingContext2D = getContext();
 	private _live: number = 1;
-	private _shoots: Array<Shot>;
+	private _shoots: Array<Shot> = getShots();
 	private _handler: EnemyRow;
 
 	// TODO maybe a tile service
@@ -13,17 +16,12 @@ export class Enemy {
 	private _tileFrameX = 0;
 	private _tileFrameY = 2;
 	// TODO get tile from tile config
-	private _tileWidth: number = 9;
-	private _tileHeight: number = 9;
 	private _spriteChangeCounter = 0;
-	private _zoom: number;
-	private _zoomedWidth: number;
-	private _zoomedHeight: number;
 
 	private _x: number;
 	private _y: number;
-	private _speedX: number;
-	private _speedY: number;
+	private _speedX: number = 5;
+	private _speedY: number = getScaledTileSize();
 
 	private _canvasCollision: {
 		right: number;
@@ -32,43 +30,30 @@ export class Enemy {
 		bottom: number;
 	};
 
-	grid = 900 / 36;
-
-	constructor(
-		context: CanvasRenderingContext2D,
-		shoots: Array<Shot>,
-		handler: EnemyRow,
-		zoom: number,
-		x: number,
-		y: number
-	) {
-		this._context = context;
-
+	constructor(handler: EnemyRow, x: number, y: number) {
 		this._x = x;
 		this._y = y;
-		this._speedX = 2;
-		this._speedY = 36;
-		this._zoom = zoom;
-		this._zoomedWidth = this._tileWidth * this._zoom;
-		this._zoomedHeight = this._tileHeight * this._zoom;
-		this._shoots = shoots;
 		this._handler = handler;
 
 		this._canvasCollision = {
-			right: this._context.canvas.width - this._zoomedWidth,
+			right: this._context.canvas.width - getScaledTileSize(),
 			left: 0,
 			top: 0,
-			bottom: this._context.canvas.width - this._zoomedHeight * 9,
+			bottom: this._context.canvas.height - getScaledTileSize() * 2,
 		};
-		this._sheet.src = "../img/ji-sheet.png";
+		if (url) {
+			this._sheet.src = url + "/img/ji-sheet.png";
+		} else {
+			this._sheet.src = "/img/ji-sheet.png";
+		}
 	}
 
 	private _translate(x: number, y: number) {
 		this._context.clearRect(
 			this._x,
 			this._y,
-			this._zoomedWidth,
-			this._zoomedHeight
+			getScaledTileSize(),
+			getScaledTileSize()
 		);
 		this._x += x;
 		this._y += y;
@@ -78,14 +63,14 @@ export class Enemy {
 	private _renderEnemy(): void {
 		this._context.drawImage(
 			this._sheet,
-			this._tileWidth * this._tileFrameX,
-			this._tileWidth * this._tileFrameY,
-			this._tileWidth,
-			this._tileWidth,
+			getTileSize() * this._tileFrameX,
+			getTileSize() * this._tileFrameY,
+			getTileSize(),
+			getTileSize(),
 			this._x,
 			this._y,
-			this._zoomedWidth,
-			this._zoomedHeight
+			getScaledTileSize(),
+			getScaledTileSize()
 		);
 	}
 
@@ -147,16 +132,14 @@ export class Enemy {
 			let shootY = this._shoots[j].getY;
 			if (
 				shootY > this._y &&
-				shootY <= this._y + this._zoomedHeight &&
+				shootY <= this._y + getScaledTileSize() &&
 				shootX >= this._x &&
-				shootX <= this._x + this._zoomedWidth
+				shootX <= this._x + getScaledTileSize()
 			) {
-				console.log("HIT");
 				this._shoots[j].hit();
 				this._live--;
 				score();
 			}
-			this._shoots[j].getX;
 		}
 	}
 	private _dead() {
@@ -165,37 +148,17 @@ export class Enemy {
 			this._context.clearRect(
 				this._x,
 				this._y,
-				this._zoomedWidth,
-				this._zoomedHeight
+				getScaledTileSize(),
+				getScaledTileSize()
 			);
 			// * removed random spawn for classic mode
 			// * for the classic mode spawning look in the main
 		}
 	}
 
-	// private _gameOver() {
-	// 	if (this._y > this._canvasCollision.bottom) {
-	// 		console.log("finish");
-	// 	}
-	// }
-
-	public get zoom(): number {
-		return this._zoom;
-	}
-
-	public get tileWidth(): number {
-		return this._tileWidth;
-	}
-
-	public get tileHeight(): number {
-		return this._tileHeight;
-	}
-
-	public get getX(): number {
-		return this._x;
-	}
-
-	public get getY(): number {
-		return this._y;
+	private _gameOver() {
+		if (this._y > this._canvasCollision.bottom) {
+			stopGame();
+		}
 	}
 }

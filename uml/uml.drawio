@@ -1,1 +1,22 @@
-<mxfile><diagram id="eytjVthPBlMdNpsndXKb" name="Page-1">7Zbfb5swEMf/GqTtYRM/QtrXQrruIZWiZtKeXbiAVeNDxvlB//qdsQkhpFKUTnuahBTue2fju88dxIvS6vCkWF0+Yw7CC/384EULLwyD6C6mH6O0Vpn5d1YoFM9d0CCs+Ts40XfqlufQjAI1otC8HosZSgmZHmlMKdyPwzYoxk+tWQETYZ0xMVV/81yXVr2P/UH/Cbwo+ycHvvNUrA92QlOyHPcnUvToRalC1PauOqQgTPH6uth1Pz7wHg+mQOprFoR2wY6JrcttJVgLyp1Ot33KzZ5Xgkmykg1KvXaegGwmeCHpPqNn0soo2YHSnKr14Bwaa1Kzkot8yVrcmpM1mmVvvZWUqPg7bcuE25PcSjvw4XwUsTYrSfZJVdBQzKpPNziTntlhFLhkjXZChkKwuuGvxzQqpgouE9QaKxc0raYrsMkQDieSq+4TYAVatRRyOLK3S9ozez80ThQ5rTxpmvu561fXq8Vx6wEn3Tiil+lGE7pemJiG52A6/sHMTVvDBDblpjsICt8gRYFEdSHR0udCnEl9AwjY6A/xNzXLuCyWXcxiNigvLmcjIa3diG4gSp7nIA061Ewzy8lAqZFL3RUlTuii0qX+99iL6eAp2cFg02XClU5RUi6MdxSBmmAPphEu8A2v5ut4hvPrcIZ/AefsAs4zcoJ3RCy5/t0U3IStIgACBk6/DMbFt2DCMpqyjC5wE+wVxAobrjma/ZWNPeP5D5DF4ZUT+Hli8YRYZk7fvWK/0NfJDpqZw5TJHWteQOagqJCp9YWLr/+H83bS8yvftTcMJ5nDV7rznfzXiR7/AA==</diagram></mxfile>
+<mxfile>
+    <diagram id="eytjVthPBlMdNpsndXKb" name="Page-1">
+        <mxGraphModel dx="1115" dy="490" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="Player" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="80" y="120" width="330" height="86" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="2" vertex="1">
+                    <mxGeometry y="26" width="330" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="2" vertex="1">
+                    <mxGeometry y="52" width="330" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="c player(context: CanvasRenderingContext2D)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="2" vertex="1">
+                    <mxGeometry y="60" width="330" height="26" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

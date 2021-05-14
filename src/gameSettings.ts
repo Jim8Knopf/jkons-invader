@@ -3,17 +3,27 @@ import { getCanvas, getContext } from "./gameHelper";
 const canvas: HTMLCanvasElement = getCanvas();
 let zoom: number = 1;
 let size: number = 0;
+const _tileSize: number = 9;
 
 export function setCanvasSize() {
-	resizeCanvas();
+	_resizeCanvas();
 
 	// Webkit/Blink will fire this on load, but Gecko doesn't.
 	window.addEventListener("resize", () => {
-		resizeCanvas();
+		_resizeCanvas();
 	});
 }
 
-function resizeCanvas() {
+export function getTileSize(): number {
+	return _tileSize;
+}
+
+let _scaledTileSize: number = 0;
+export function getScaledTileSize(): number {
+	return _scaledTileSize;
+}
+
+function _resizeCanvas() {
 	// resize canvas if the window size reached a specific size
 	if (innerHeight <= 450) {
 		zoom = 1;
@@ -29,5 +39,6 @@ function resizeCanvas() {
 	// Set canvas height and with in JS, because with and height set in CSS distort drawn shapes
 	canvas.width = size;
 	canvas.height = size;
+	_scaledTileSize = _tileSize * zoom;
 	getContext().imageSmoothingEnabled = false;
 }
