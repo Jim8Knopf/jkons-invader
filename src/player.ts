@@ -1,12 +1,12 @@
 import { fromEvent, Observable } from "rxjs";
 import { map } from "rxjs/operators";
+import { getCanvas, getContext } from "./gameHelper";
+import { getShot } from "./gameObjects";
+import { getScaledTileSize, getTileSize } from "./gameSettings";
 import { Shot } from "./shot";
-import { url } from "../web";
-export class Player {
-	// canvas context for drawing shapes
-	private _context: CanvasRenderingContext2D;
 
-	private _shot: Shot;
+export class Player {
+	private _shot: Shot = getShot();
 
 	// complete tile sheet
 	private _sheet = new Image();
@@ -17,8 +17,9 @@ export class Player {
 	private _fire: string;
 
 	// player coordinates and velocity
-	private _x: number;
-	private _y: number;
+	private _x: number =
+		getCanvas().height - (getCanvas().width - getScaledTileSize()) / 2;
+	private _y: number = getCanvas().height - getScaledTileSize();
 	private _velocity: number = 4;
 
 	// save a list of pressed keys to allow multiple pressed keys at the same time
@@ -45,43 +46,12 @@ export class Player {
 	keydownSubscription = this._keydown$.subscribe();
 	keyupSubscription = this._keyup$.subscribe();
 
-	// tile settings
-	private _zoomedSize: number;
-	private _tileSize: number = 9;
-
-	constructor(
-		context: CanvasRenderingContext2D,
-		shot: Shot,
-		left: string,
-		right: string,
-		fire: string,
-		zoom: number
-	) {
-		// assign context
-		this._context = context;
-
-		// assign shot
-		this._shot = shot;
-
+	constructor(left: string, right: string, fire: string) {
 		// assign player controls
 		this._left = left;
 		this._right = right;
 		this._fire = fire;
-
-		// assign zoomed size
-		this._zoomedSize = zoom * this._tileSize;
-
-		// assign coordinates
-		this._y = context.canvas.height - this._zoomedSize;
-		this._x = (context.canvas.width - this._zoomedSize) / 2;
-
-		// assign tile sheet
-		if (url) {
-			this._sheet.src = url + "/img/ji-sheet.png";
-		} else {
-			this._sheet.src = "/img/ji-sheet.png";
-		}
-
+		this._sheet.src = "/assets/img/ji-sheet.png";
 		// draw player on page load
 		this._render(true);
 	}
@@ -105,22 +75,22 @@ export class Player {
 	// moves right but not out of the screen
 	private _moveRight() {
 		this._x =
-			this._x + this._zoomedSize <= this._context.canvas.width
+			this._x + getScaledTileSize() <= getCanvas().width
 				? this._x + this._velocity
 				: this._x;
 	}
 
 	private _fireShot() {
-		this._shot.shoot(this._x + this._zoomedSize / 2, this._y);
+		this._shot.shoot(this._x + getScaledTileSize() / 2, this._y);
 	}
 
 	// clear player on screen
 	private _clear() {
-		this._context.clearRect(
+		getContext().clearRect(
 			this._x - this._velocity,
 			this._y,
-			this._context.canvas.width,
-			this._context.canvas.height
+			getCanvas().width,
+			getCanvas().height
 		);
 	}
 
@@ -129,29 +99,29 @@ export class Player {
 		if (onload) {
 			const that = this;
 			this._sheet.onload = function () {
-				that._context.drawImage(
+				getContext().drawImage(
 					that._sheet,
 					0,
 					0,
-					9,
-					9,
+					getTileSize(),
+					getTileSize(),
 					that._x,
 					that._y,
-					that._zoomedSize,
-					that._zoomedSize
+					getScaledTileSize(),
+					getScaledTileSize()
 				);
 			};
 		} else {
-			this._context.drawImage(
+			getContext().drawImage(
 				this._sheet,
 				0,
 				0,
-				9,
-				9,
+				getTileSize(),
+				getTileSize(),
 				this._x,
 				this._y,
-				this._zoomedSize,
-				this._zoomedSize
+				getScaledTileSize(),
+				getScaledTileSize()
 			);
 		}
 	}
