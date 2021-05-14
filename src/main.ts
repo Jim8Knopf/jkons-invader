@@ -105,9 +105,4 @@ function newPlayer(left: string, right: string, fire: string): Player {
 	return player;
 }
 
-context.fillStyle = "red";
-for (let index = 0; index < 9; index++) {
-	context.fillRect(index * 36 * 2, 0, 36, 36);
-}
-
 init();
