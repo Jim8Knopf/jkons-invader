@@ -18,7 +18,7 @@
 	"bugs": {
 		"url": "https://github.com/jk-o-ns/jkons-invader/issues"
 	},
-	"homepage": "https://github.com/jk-o-ns/jkons-invader#readme",
+	"homepage": "https://jk-o-ns.github.io/jkons-invader/",
 	"dependencies": {
 		"@reactivex/rxjs": "^6.6.7",
 		"chokidar": "^3.5.1",
