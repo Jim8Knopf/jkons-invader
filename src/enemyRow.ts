@@ -1,7 +1,7 @@
 import { Enemy } from "./enemy";
 import { getCanvas, getContext } from "./gameHelper";
 import { getScaledTileSize } from "./gameSettings";
-import { Shot } from "./shot";
+import { shotPlayer } from "./shotPlayer";
 export enum RowDirection {
 	right,
 	left,
@@ -40,7 +40,7 @@ export class EnemyRow {
 
 			let enemyX = rowX;
 			for (let i = 0; i < length; i++) {
-				enemies.push(new Enemy(this, enemyX, rowY));
+				enemies.push(new Enemy(this, enemyX, rowY, i));
 				enemyX += spaceXBetween;
 				// enemyY += spaceYBetween;
 			}
@@ -89,5 +89,9 @@ export class EnemyRow {
 
 	public set setMoveDown(moveDown: boolean) {
 		this.moveDown = moveDown;
+	}
+
+	public get getEnemies(): Enemy[] {
+		return this._enemies;
 	}
 }
