@@ -1,10 +1,6 @@
+import { EnemyCorp } from "./enemyCorp";
 import { getCanvas, getContext } from "./gameHelper";
-import {
-	getEnemyRows,
-	getShots,
-	initEnemyRows,
-	newPlayer,
-} from "./gameObjects";
+import { getShots, newPlayer } from "./gameObjects";
 import { getScaledTileSize, setCanvasSize } from "./gameSettings";
 setCanvasSize();
 
@@ -19,14 +15,13 @@ setCanvasSize();
 
 let animation: number;
 let animationActive: boolean = true;
-let animationSpeed: number = 6000 / 60;
+let animationSpeed: number = 1000000000000000000 / 60;
 
 let gameStarted: boolean = false;
 let actualScore: number = 0;
 
 const player = newPlayer("a", "d", " ");
-initEnemyRows();
-
+const enemyCorp = new EnemyCorp(16);
 export function init() {
 	document.addEventListener("keyup", (keyboard) => {
 		switch (keyboard.key) {
@@ -47,12 +42,14 @@ export function init() {
 	});
 }
 
+enemyCorp.corpAnimation();
 function animate(): void {
 	setTimeout(() => {
 		player.handleInput();
-		for (let j = 0; j < getEnemyRows().length; j++) {
-			getEnemyRows()[j].moveEnemyRow();
-		}
+		enemyCorp.corpAnimation();
+		// for (let j = 0; j < enemyCorp.getEnemyCorp().length; j++) {
+		// 	enemyCorp.getEnemyCorp()[j].moveEnemyRow();
+		// }
 		for (let j = 0; j < getShots().length; j++) {
 			getShots()[j].shootAnimation();
 		}

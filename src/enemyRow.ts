@@ -1,4 +1,4 @@
-import { Enemy } from "./enemy";
+import { Enemy } from "./enemy copy";
 import { getCanvas, getContext } from "./gameHelper";
 import { getScaledTileSize } from "./gameSettings";
 import { shotPlayer } from "./shotPlayer";
@@ -64,14 +64,13 @@ export class EnemyRow {
 
 	public moveEnemyRow() {
 		for (let i = 0; i < this._enemies.length; i++) {
-			if (this._enemies.length - 1 === i) {
-				if (this.getRowDirection === RowDirection.right && this.getMoveDown) {
-					this._enemies[i].moveEnemy();
-				}
-				this.setMoveDown = false;
-			}
-
+			// 	if (this._enemies.length - 1 === i) {
+			// 		if (this.getRowDirection === RowDirection.right && this.getMoveDown) {
 			this._enemies[i].moveEnemy();
+			// 		}
+			// 		this.setMoveDown = false;
+			// 	}
+			// 	this._enemies[i].moveEnemy();
 		}
 	}
 
