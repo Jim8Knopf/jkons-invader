@@ -5,10 +5,11 @@ import { getScaledTileSize, getTileSize } from "./gameSettings";
 import { addShot } from "./gameObjects";
 import { shotPlayer } from "./shotPlayer";
 import { who } from "./shot";
+import { playShotSound } from "./soundHandler";
 
 export class Player {
 	private _shot: shotPlayer;
-
+	private _audioEnded: boolean = true;
 	// complete tile sheet
 	private _sheet = new Image();
 
@@ -85,6 +86,7 @@ export class Player {
 	}
 
 	private _fireShot() {
+		playShotSound();
 		this._shot.shoot(this._x + getScaledTileSize() / 2, this._y);
 	}
 

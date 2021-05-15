@@ -2,6 +2,7 @@ import { EnemyCorp } from "./enemyCorp";
 import { getCanvas, getContext } from "./gameHelper";
 import { getShots, newPlayer } from "./gameObjects";
 import { getScaledTileSize, setCanvasSize } from "./gameSettings";
+import { playTitleTheme } from "./soundHandler";
 setCanvasSize();
 
 // timer(7000, 7000).subscribe(() => {
@@ -15,7 +16,7 @@ setCanvasSize();
 
 let animation: number;
 let animationActive: boolean = true;
-let animationSpeed: number = 1000000000000000000 / 60;
+let animationSpeed: number = 1 / 60;
 
 let gameStarted: boolean = false;
 let actualScore: number = 0;
@@ -28,7 +29,7 @@ export function init() {
 			case "r":
 				if (gameStarted === false) {
 					gameStarted = true;
-					playAudio();
+					playTitleTheme();
 					animate();
 				} else {
 					init();
@@ -62,21 +63,6 @@ function animate(): void {
 export function score() {
 	actualScore++;
 	// scoreElement.value = actualScore.toString();
-}
-
-let audioType: string;
-let audio = new Audio();
-if (audio.canPlayType("audio/mp3")) {
-	audioType = ".mp3";
-} else {
-	audioType = ".wav";
-}
-
-function playAudio() {
-	let audio = new Audio("assets/sounds/jkons-invader_title_theme" + audioType);
-	audio.loop = true;
-	audio.volume = 0.05;
-	audio.play();
 }
 
 export function stopGame() {
