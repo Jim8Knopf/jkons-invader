@@ -2,9 +2,10 @@ import { EnemyColumn } from "./enemyColumn";
 import { getCanvas, getContext } from "./gameHelper";
 import { addShot, getShots } from "./gameObjects";
 import { getScaledTileSize } from "./gameSettings";
-import { stopGame } from "./main";
+import { score, stopGame } from "./main";
 import { Shot, who } from "./shot";
 import { shotEnemy } from "./shotEnemy";
+import { playEnemyDeadSound, playHitSound } from "./soundHandler";
 
 export abstract class Enemy {
 	protected _y: number;
@@ -62,14 +63,16 @@ export abstract class Enemy {
 			) {
 				this._shoots[j].hit();
 				this._live--;
+				playHitSound();
 				this._dead();
-				// score();
+				score();
 			}
 		}
 	}
 	protected _dead() {
 		if (this._live <= 0) {
 			this._enemyColumn.removeEnemy(this);
+			playEnemyDeadSound();
 			// * removed random spawn for classic mode
 			// * for the classic mode spawning look in the main
 		}

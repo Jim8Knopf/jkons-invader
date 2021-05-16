@@ -62,7 +62,10 @@ function animate(): void {
 
 export function score() {
 	actualScore++;
-	// scoreElement.value = actualScore.toString();
+	let scoreElement = <HTMLOutputElement>(
+		window.document.getElementById("score")!
+	);
+	scoreElement.value = actualScore.toString();
 }
 
 export function stopGame() {

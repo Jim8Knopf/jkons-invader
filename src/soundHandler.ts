@@ -25,3 +25,19 @@ shotSFX.volume = 0.015;
 export function playShotSound() {
 	shotSFX.play();
 }
+
+export function playEnemyDeadSound() {
+	let enemyDeadSFX: HTMLAudioElement = new Audio(
+		"assets/sounds/enemy_dead" + audioType
+	) as HTMLAudioElement;
+	enemyDeadSFX.volume = 0.015;
+	enemyDeadSFX.play();
+}
+
+export function playHitSound() {
+	let hitSFX: HTMLAudioElement = new Audio(
+		"assets/sounds/hit" + audioType
+	) as HTMLAudioElement;
+	hitSFX.volume = 0.015;
+	hitSFX.play();
+}
