@@ -22,7 +22,6 @@ export class EnemyCorp {
 	// }
 
 	public corpAnimation(): void {
-		// this._clearCorp();
 		this._renderCorp();
 	}
 
