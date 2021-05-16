@@ -12,6 +12,7 @@ let titleTheme = new Audio(
 );
 titleTheme.loop = true;
 titleTheme.volume = 0.05;
+
 export function playTitleTheme() {
 	titleTheme.play();
 }
@@ -20,6 +21,7 @@ let shotSFX: HTMLAudioElement = new Audio(
 	"assets/sounds/laser" + audioType
 ) as HTMLAudioElement;
 shotSFX.volume = 0.015;
+
 export function playShotSound() {
 	shotSFX.play();
 }
