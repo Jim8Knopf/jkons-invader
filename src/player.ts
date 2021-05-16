@@ -86,7 +86,6 @@ export class Player {
 	}
 
 	private _fireShot() {
-		playShotSound();
 		this._shot.shoot(this._x + getScaledTileSize() / 2, this._y);
 	}
 

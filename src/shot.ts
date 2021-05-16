@@ -1,4 +1,5 @@
 import { getContext } from "./gameHelper";
+import { playShotSound } from "./soundHandler";
 export enum who {
 	player = "player",
 	enemy = "enemy",
@@ -28,6 +29,7 @@ export abstract class Shot {
 	 */
 	public shoot(positionX: number, positionY: number) {
 		if (this._y <= 0 || this._y > this._context.canvas.height) {
+			playShotSound();
 			this._clear();
 			this._x = positionX;
 			this._y = positionY;
