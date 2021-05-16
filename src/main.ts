@@ -1,13 +1,8 @@
-import { EnemyRow } from "./enemyRow";
+import { EnemyCorp } from "./enemyCorp";
 import { getCanvas, getContext } from "./gameHelper";
-import {
-	getEnemyRows,
-	getShots,
-	initEnemyRows,
-	newPlayer,
-} from "./gameObjects";
+import { getShots, newPlayer } from "./gameObjects";
 import { getScaledTileSize, setCanvasSize } from "./gameSettings";
-import { url } from "../web";
+import { playTitleTheme } from "./soundHandler";
 setCanvasSize();
 
 // timer(7000, 7000).subscribe(() => {
@@ -20,22 +15,21 @@ setCanvasSize();
 // });
 
 let animation: number;
-let animationActive: boolean = true;
-let animationSpeed: number = 6000 / 60;
+let animationActive: boolean = t
+let animationSpeed: number = 1 / 60;
 
 let gameStarted: boolean = false;
 let actualScore: number = 0;
 
 const player = newPlayer("a", "d", " ");
-initEnemyRows();
-
+const enemyCorp = new EnemyCorp(16);
 export function init() {
 	document.addEventListener("keyup", (keyboard) => {
 		switch (keyboard.key) {
 			case "r":
 				if (gameStarted === false) {
 					gameStarted = true;
-					// playAudio();
+					playTitleTheme();
 					animate();
 				} else {
 					init();
@@ -49,12 +43,14 @@ export function init() {
 	});
 }
 
+enemyCorp.corpAnimation();
 function animate(): void {
 	setTimeout(() => {
 		player.handleInput();
-		for (let j = 0; j < getEnemyRows().length; j++) {
-			getEnemyRows()[j].moveEnemyRow();
-		}
+		enemyCorp.corpAnimation();
+		// for (let j = 0; j < enemyCorp.getEnemyCorp().length; j++) {
+		// 	enemyCorp.getEnemyCorp()[j].moveEnemyRow();
+		// }
 		for (let j = 0; j < getShots().length; j++) {
 			getShots()[j].shootAnimation();
 		}
@@ -67,26 +63,6 @@ function animate(): void {
 export function score() {
 	actualScore++;
 	// scoreElement.value = actualScore.toString();
-}
-
-let audioType: string;
-let audio = new Audio();
-if (audio.canPlayType("audio/mp3")) {
-	audioType = ".mp3";
-} else {
-	audioType = ".wav";
-}
-
-//Function to play the exact file format
-function playAudio() {
-	let u: string = "../";
-	if (url) {
-		u = url;
-	}
-	var audio = new Audio(
-		u + "assets/sounds/jkons-invader_title_theme" + audioType
-	);
-	audio.play();
 }
 
 export function stopGame() {

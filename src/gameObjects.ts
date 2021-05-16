@@ -22,15 +22,3 @@ export function getShots(): Array<Shot> {
 export function addShot(shot: Shot) {
 	shots.push(shot);
 }
-
-// TODO Enemy Row Handler
-let enemyRows = new Array();
-export function initEnemyRows() {
-	for (let i = 3; i > 0; i--) {
-		enemyRows.push(new EnemyRow(15, 0, i * getScaledTileSize(), 2));
-	}
-}
-
-export function getEnemyRows(): Array<EnemyRow> {
-	return enemyRows;
-}
