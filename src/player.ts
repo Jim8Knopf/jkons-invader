@@ -9,7 +9,6 @@ import { playShotSound } from "./soundHandler";
 
 export class Player {
 	private _shot: shotPlayer;
-	private _audioEnded: boolean = true;
 	// complete tile sheet
 	private _sheet = new Image();
 

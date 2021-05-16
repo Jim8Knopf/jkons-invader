@@ -5,6 +5,7 @@ import { getScaledTileSize } from "./gameSettings";
 import { stopGame } from "./main";
 import { Shot, who } from "./shot";
 import { shotEnemy } from "./shotEnemy";
+import { playEnemyDeadSound, playHitSound } from "./soundHandler";
 
 export abstract class Enemy {
 	protected _y: number;
@@ -62,6 +63,7 @@ export abstract class Enemy {
 			) {
 				this._shoots[j].hit();
 				this._live--;
+				playHitSound();
 				this._dead();
 				// score();
 			}
@@ -70,6 +72,7 @@ export abstract class Enemy {
 	protected _dead() {
 		if (this._live <= 0) {
 			this._enemyColumn.removeEnemy(this);
+			playEnemyDeadSound();
 			// * removed random spawn for classic mode
 			// * for the classic mode spawning look in the main
 		}
