@@ -1,164 +1,129 @@
-import { EnemyRow, RowDirection } from "./enemyRow";
-import { getContext } from "./gameHelper";
-import { getShots } from "./gameObjects";
-import { getScaledTileSize, getTileSize } from "./gameSettings";
+import { EnemyColumn } from "./enemyColumn";
+import { getCanvas, getContext } from "./gameHelper";
+import { addShot, getShots } from "./gameObjects";
+import { getScaledTileSize } from "./gameSettings";
 import { score, stopGame } from "./main";
-import { Shot } from "./shot";
-import { url } from "../web";
-export class Enemy {
-	private _context: CanvasRenderingContext2D = getContext();
-	private _live: number = 1;
-	private _shoots: Array<Shot> = getShots();
-	private _handler: EnemyRow;
+import { Shot, who } from "./shot";
+import { shotEnemy } from "./shotEnemy";
+import { playEnemyDeadSound, playHitSound } from "./soundHandler";
 
-	// TODO maybe a tile service
-	private _sheet = new Image();
-	private _tileFrameX = 0;
-	private _tileFrameY = 2;
-	// TODO get tile from tile config
-	private _spriteChangeCounter = 0;
+export abstract class Enemy {
+	protected _y: number;
+	protected _live: number = 1;
+	protected _speed: number = 36;
+	protected _enemyColumn: EnemyColumn;
+	protected _shot: Shot;
+	protected _shoots: Array<Shot> = getShots();
+	protected _dummy: boolean = false;
+	protected _sheet = new Image();
 
-	private _x: number;
-	private _y: number;
-	private _speedX: number = 5;
-	private _speedY: number = getScaledTileSize();
-
-	private _canvasCollision: {
-		right: number;
-		left: number;
-		top: number;
-		bottom: number;
-	};
-
-	constructor(handler: EnemyRow, x: number, y: number) {
-		this._x = x;
+	constructor(enemyColumn: EnemyColumn, y: number) {
+		this._enemyColumn = enemyColumn;
 		this._y = y;
-		this._handler = handler;
-
-		this._canvasCollision = {
-			right: this._context.canvas.width - getScaledTileSize(),
-			left: 0,
-			top: 0,
-			bottom: this._context.canvas.height - getScaledTileSize() * 2,
-		};
-		if (url) {
-			this._sheet.src = url + "/img/ji-sheet.png";
-		} else {
-			this._sheet.src = "/img/ji-sheet.png";
-		}
+		this._shot = new shotEnemy(who.enemy);
+		addShot(this._shot);
+		this._sheet.src = "assets/img/ji-sheet.png";
 	}
 
-	private _translate(x: number, y: number) {
-		this._context.clearRect(
-			this._x,
-			this._y,
-			getScaledTileSize(),
-			getScaledTileSize()
-		);
-		this._x += x;
-		this._y += y;
-		this._renderEnemy();
+	public renderEnemy() {
+		this._renderImg();
+		this._shoot();
 	}
-	// Render enemy
-	private _renderEnemy(): void {
-		this._context.drawImage(
-			this._sheet,
-			getTileSize() * this._tileFrameX,
-			getTileSize() * this._tileFrameY,
-			getTileSize(),
-			getTileSize(),
-			this._x,
-			this._y,
-			getScaledTileSize(),
-			getScaledTileSize()
-		);
-	}
-
-	public moveEnemy() {
-		// check hit function
-		this._hit();
-		this._spriteAnimation();
-
-		if (this._handler.getRowDirection === RowDirection.right) {
-			this._translate(this._speedX, 0);
-		} else {
-			this._translate(-this._speedX, 0);
-		}
-
-		if (this._x >= this._canvasCollision.right) {
-			this._handler.setRowDirection = RowDirection.left;
-			this._handler.setMoveDown = true;
-		} else if (this._x <= this._canvasCollision.left) {
-			this._handler.setRowDirection = RowDirection.right;
-			this._handler.setMoveDown = true;
-		}
-		if (this._handler.getMoveDown) {
-			this._translate(0, this._speedY);
-		}
-
-		this._dead();
-		// this._gameOver();
-	}
-
-	/**
-	 * moveDown
-	 */
 	public moveDown() {
-		this._translate(0, 36);
-	}
-
-	public moveHorizontally() {
-		this._translate(this._speedX, 0);
-	}
-	public changeDirection() {
-		this._speedX = -this._speedX;
-	}
-
-	private _spriteAnimation() {
-		// count's up till a specified number, then reset
-		if (this._spriteChangeCounter >= 50) {
-			this._spriteChangeCounter = 0;
-			// change current frame
-			if (this._tileFrameX < 1) this._tileFrameX++;
-			else this._tileFrameX = 0;
-		} else {
-			this._spriteChangeCounter++;
+		if (this._enemyColumn.getCorp.getDown) {
+			this._y += this._speed;
+			// this.renderEnemy();
+			this._gameOver();
 		}
 	}
 
-	private _hit() {
+	public clear(x: number) {
+		getContext().clearRect(
+			x,
+			this._y,
+			getScaledTileSize(),
+			getScaledTileSize()
+		);
+		// this._renderEnemy();
+	}
+	/**
+	 * dummy
+	 */
+	public dummy(): boolean {
+		return this._dummy;
+	}
+
+	public hit() {
 		for (let j = 0; j < this._shoots.length; j++) {
 			let shootX = this._shoots[j].getX;
 			let shootY = this._shoots[j].getY;
 			if (
 				shootY > this._y &&
 				shootY <= this._y + getScaledTileSize() &&
-				shootX >= this._x &&
-				shootX <= this._x + getScaledTileSize()
+				shootX >= this._enemyColumn.getX &&
+				shootX <= this._enemyColumn.getX + getScaledTileSize()
 			) {
 				this._shoots[j].hit();
 				this._live--;
+				playHitSound();
+				this._dead();
 				score();
 			}
 		}
 	}
-	private _dead() {
+	protected _dead() {
 		if (this._live <= 0) {
-			this._handler.removeEnemy(this);
-			this._context.clearRect(
-				this._x,
-				this._y,
-				getScaledTileSize(),
-				getScaledTileSize()
-			);
+			this._enemyColumn.removeEnemy(this);
+			playEnemyDeadSound();
 			// * removed random spawn for classic mode
 			// * for the classic mode spawning look in the main
 		}
 	}
 
-	private _gameOver() {
-		if (this._y > this._canvasCollision.bottom) {
+	/**
+	 * render the dummy square for simplicity
+	 */
+	protected _renderDummy() {
+		let borderThickness: number = 1;
+		getContext().fillStyle = "white";
+		getContext().fillRect(
+			this._enemyColumn.getX,
+			this._y,
+			getScaledTileSize(),
+			getScaledTileSize()
+		);
+		getContext().clearRect(
+			this._enemyColumn.getX + borderThickness,
+			this._y + borderThickness,
+			getScaledTileSize() - borderThickness * 2,
+			getScaledTileSize() - borderThickness * 2
+		);
+	}
+	protected abstract _renderImg(): void;
+
+	protected _gameOver() {
+		if (
+			this._y + getScaledTileSize() >
+			getContext().canvas.height - getScaledTileSize()
+		) {
 			stopGame();
 		}
+	}
+	/**
+	 * the enemy shoot function
+	 */
+	protected _shoot() {
+		let random = Math.random() * 10000;
+		if (random > 9991 && this._enemyColumn.getEnemyIndex(this) === 0) {
+			// this._canIShoot();
+			console.log("peng");
+			this._fireShot();
+		}
+	}
+	private _fireShot() {
+		this._shot.shoot(
+			this._enemyColumn.getX + getScaledTileSize() / 2,
+			this._y + getScaledTileSize() + 20
+		);
 	}
 }
