@@ -33,17 +33,6 @@ export abstract class Shot {
 			this._y = positionY;
 		}
 	}
-	/**
-	 * clears the current shoot
-	 */
-	protected _clear() {
-		this._context.clearRect(
-			this._x - this._thickness / 2,
-			this._y - this._length,
-			this._thickness + 0.5,
-			this._length + 0.1
-		);
-	}
 
 	/**
 	 * checks if the shoot is in the field
@@ -71,6 +60,18 @@ export abstract class Shot {
 	public hit() {
 		this._clear();
 		this._y = this._w === who.player ? 0 : this._context.canvas.height + 1;
+	}
+
+	/**
+	 * clears the current shoot
+	 */
+	protected _clear() {
+		this._context.clearRect(
+			this._x - this._thickness / 2,
+			this._y - this._length,
+			this._thickness + 0.5,
+			this._length + 0.1
+		);
 	}
 
 	/**
