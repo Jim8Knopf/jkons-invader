@@ -1,7 +1,7 @@
 import { EnemyCorp } from "./enemyCorp";
 import { getCanvas, getContext } from "./gameHelper";
 import { getShots, newPlayer } from "./gameObjects";
-import { getScaledTileSize, setCanvasSize } from "./gameSettings";
+import { getScaledTileSize, getTileSize, setCanvasSize } from "./gameSettings";
 import { playTitleTheme } from "./soundHandler";
 setCanvasSize();
 
@@ -70,14 +70,19 @@ export function stopGame() {
 	cancelAnimationFrame(animation);
 	_renderGameOver();
 }
-
+const gameOverImage = new Image();
+gameOverImage.src = "assets/img/game_over.png";
 function _renderGameOver() {
 	let fontsize: number = 4 * getScaledTileSize();
-	let x = (getCanvas().width - fontsize * 5) / 2;
-	let y = getCanvas().height / 2;
-	getContext().fillStyle = "red";
-	getContext().font = `${fontsize}px Arial`;
-	getContext().fillText("Game Over", x, y);
+	let x = (getCanvas().width - (71 * getScaledTileSize()) / 9) / 2;
+	let y = (getCanvas().height - (33 * getScaledTileSize()) / 9) / 2;
+	getContext().drawImage(
+		gameOverImage,
+		x,
+		y,
+		(71 * getScaledTileSize()) / 9,
+		(33 * getScaledTileSize()) / 9
+	);
 }
 
 init();
