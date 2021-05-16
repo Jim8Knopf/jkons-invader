@@ -22,7 +22,7 @@ let gameStarted: boolean = false;
 let actualScore: number = 0;
 
 const player = newPlayer("a", "d", " ");
-const enemyCorp = new EnemyCorp(16, 2);
+const enemyCorp = new EnemyCorp(16, 5);
 export function init() {
 	document.addEventListener("keyup", (keyboard) => {
 		switch (keyboard.key) {
@@ -62,7 +62,10 @@ function animate(): void {
 
 export function score() {
 	actualScore++;
-	// scoreElement.value = actualScore.toString();
+	let scoreElement = <HTMLOutputElement>(
+		window.document.getElementById("score")!
+	);
+	scoreElement.value = actualScore.toString();
 }
 
 export function stopGame() {

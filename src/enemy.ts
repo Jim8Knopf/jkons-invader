@@ -2,7 +2,7 @@ import { EnemyColumn } from "./enemyColumn";
 import { getCanvas, getContext } from "./gameHelper";
 import { addShot, getShots } from "./gameObjects";
 import { getScaledTileSize } from "./gameSettings";
-import { stopGame } from "./main";
+import { score, stopGame } from "./main";
 import { Shot, who } from "./shot";
 import { shotEnemy } from "./shotEnemy";
 
@@ -63,7 +63,7 @@ export abstract class Enemy {
 				this._shoots[j].hit();
 				this._live--;
 				this._dead();
-				// score();
+				score();
 			}
 		}
 	}
