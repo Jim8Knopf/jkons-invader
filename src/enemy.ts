@@ -2,7 +2,7 @@ import { EnemyColumn } from "./enemyColumn";
 import { getCanvas, getContext } from "./gameHelper";
 import { addShot, getShots } from "./gameObjects";
 import { getScaledTileSize } from "./gameSettings";
-import { stopGame } from "./main";
+import { score, stopGame } from "./main";
 import { Shot, who } from "./shot";
 import { shotEnemy } from "./shotEnemy";
 import { playEnemyDeadSound, playHitSound } from "./soundHandler";
@@ -15,16 +15,18 @@ export abstract class Enemy {
 	protected _shot: Shot;
 	protected _shoots: Array<Shot> = getShots();
 	protected _dummy: boolean = false;
+	protected _sheet = new Image();
 
 	constructor(enemyColumn: EnemyColumn, y: number) {
 		this._enemyColumn = enemyColumn;
 		this._y = y;
 		this._shot = new shotEnemy(who.enemy);
 		addShot(this._shot);
+		this._sheet.src = "assets/img/ji-sheet.png";
 	}
 
 	public renderEnemy() {
-		this._renderDummy();
+		this._renderImg();
 		this._shoot();
 	}
 	public moveDown() {
@@ -65,7 +67,7 @@ export abstract class Enemy {
 				this._live--;
 				playHitSound();
 				this._dead();
-				// score();
+				score();
 			}
 		}
 	}
@@ -97,6 +99,8 @@ export abstract class Enemy {
 			getScaledTileSize() - borderThickness * 2
 		);
 	}
+	protected abstract _renderImg(): void;
+
 	protected _gameOver() {
 		if (
 			this._y + getScaledTileSize() >
