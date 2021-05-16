@@ -2,7 +2,11 @@ import { EnemyCorp } from "./enemyCorp";
 import { getCanvas, getContext } from "./gameHelper";
 import { getShots, newPlayer } from "./gameObjects";
 import { getScaledTileSize, getTileSize, setCanvasSize } from "./gameSettings";
-import { playTitleTheme } from "./soundHandler";
+import {
+	playGameOverMusic,
+	playTitleTheme,
+	stopTitleTheme,
+} from "./soundHandler";
 setCanvasSize();
 
 // timer(7000, 7000).subscribe(() => {
@@ -72,6 +76,8 @@ export function stopGame() {
 	animationActive = false;
 	cancelAnimationFrame(animation);
 	_renderGameOver();
+	stopTitleTheme();
+	playGameOverMusic();
 }
 const gameOverImage = new Image();
 gameOverImage.src = "assets/img/game_over.png";

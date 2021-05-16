@@ -7,14 +7,24 @@ if (audio.canPlayType("audio/mp3")) {
 	audioType = ".wav";
 }
 
-let titleTheme = new Audio(
-	"assets/sounds/jkons-invader_title_theme" + audioType
-);
+let titleTheme = new Audio("assets/sounds/title_theme" + audioType);
 titleTheme.loop = true;
 titleTheme.volume = 0.05;
 
 export function playTitleTheme() {
 	titleTheme.play();
+}
+
+export function stopTitleTheme() {
+	titleTheme.pause();
+	titleTheme.currentTime = 0;
+}
+
+let gameOverMusic = new Audio("assets/sounds/game_over" + audioType);
+gameOverMusic.volume = 0.05;
+
+export function playGameOverMusic() {
+	gameOverMusic.play();
 }
 
 let shotSFX: HTMLAudioElement = new Audio(

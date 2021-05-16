@@ -7,7 +7,7 @@ import { enemyDummy } from "./enemyDummy";
 
 export class EnemyColumn {
 	private _x: number;
-	private _speed: number = 100;
+	private _speed: number = 3;
 	private _enemyCorp: EnemyCorp;
 	private _enemyColumn: Array<Enemy> = new Array();
 	constructor(enemyCorp: EnemyCorp, rows: number, x: number) {
