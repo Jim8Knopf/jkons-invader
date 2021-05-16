@@ -2,10 +2,11 @@ import { EnemyRow, RowDirection } from "./enemyRow";
 import { getContext } from "./gameHelper";
 import { addShot, getShots } from "./gameObjects";
 import { getScaledTileSize, getTileSize } from "./gameSettings";
-import { score, stopGame } from "./main";
+import { stopGame } from "./main";
 import { shotPlayer } from "./shotPlayer";
 import { who } from "./shot";
 import { shotEnemy } from "./shotEnemy";
+import { countScore } from "./save";
 export class Enemy {
 	private _context: CanvasRenderingContext2D = getContext();
 	private _live: number = 1;
@@ -169,7 +170,7 @@ export class Enemy {
 			) {
 				this._shoots[j].hit();
 				this._live--;
-				score();
+				countScore();
 			}
 		}
 	}

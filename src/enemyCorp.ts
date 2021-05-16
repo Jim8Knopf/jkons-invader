@@ -2,6 +2,7 @@ import { Enemy } from "./enemy";
 import { EnemyColumn } from "./enemyColumn";
 import { getCanvas, getContext } from "./gameHelper";
 import { getScaledTileSize, getTileSize } from "./gameSettings";
+import { stopGame } from "./main";
 
 export class EnemyCorp {
 	private _enemyCorp: Array<EnemyColumn> = new Array();
@@ -23,6 +24,10 @@ export class EnemyCorp {
 
 	public corpAnimation(): void {
 		this._renderCorp();
+
+		if (this._enemyCorp.length === 0) {
+			stopGame();
+		}
 	}
 
 	// // ! TODO into enemy level
