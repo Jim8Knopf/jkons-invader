@@ -15,7 +15,7 @@ setCanvasSize();
 // });
 
 let animation: number;
-let animationActive: boolean = t
+let animationActive: boolean = true;
 let animationSpeed: number = 1 / 60;
 
 let gameStarted: boolean = false;
