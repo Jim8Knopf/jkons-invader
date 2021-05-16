@@ -48,7 +48,7 @@ export abstract class Shot {
 
 		this._clear();
 		if (this._w === who.enemy) {
-			this._y += this._velocity + this._length;
+			this._y += this._velocity;
 		}
 		if (this._w === who.player) {
 			this._y -= this._velocity;

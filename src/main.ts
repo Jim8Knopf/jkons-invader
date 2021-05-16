@@ -22,7 +22,7 @@ let gameStarted: boolean = false;
 let actualScore: number = 0;
 
 const player = newPlayer("a", "d", " ");
-const enemyCorp = new EnemyCorp(16);
+const enemyCorp = new EnemyCorp(16, 2);
 export function init() {
 	document.addEventListener("keyup", (keyboard) => {
 		switch (keyboard.key) {
@@ -75,6 +75,7 @@ function _renderGameOver() {
 	let fontsize: number = 4 * getScaledTileSize();
 	let x = (getCanvas().width - fontsize * 5) / 2;
 	let y = getCanvas().height / 2;
+	getContext().fillStyle = "red";
 	getContext().font = `${fontsize}px Arial`;
 	getContext().fillText("Game Over", x, y);
 }

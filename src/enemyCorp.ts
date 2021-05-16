@@ -9,9 +9,11 @@ export class EnemyCorp {
 	private _y: number = 0;
 	private _right: boolean = true;
 	private _down: boolean = false;
-	constructor(columns: number) {
+	constructor(columns: number, rows: number) {
 		for (let i = 0; i < columns; i++) {
-			this._enemyCorp.push(new EnemyColumn(this, getScaledTileSize() + i * 42));
+			this._enemyCorp.push(
+				new EnemyColumn(this, rows, getScaledTileSize() + i * 42)
+			);
 		}
 	}
 
@@ -20,19 +22,19 @@ export class EnemyCorp {
 	// }
 
 	public corpAnimation(): void {
-		this._clearCorp();
+		// this._clearCorp();
 		this._renderCorp();
 	}
 
-	// ! TODO into enemy level
-	private _clearCorp() {
-		getContext().clearRect(
-			this._x,
-			this._y,
-			getCanvas().width,
-			getCanvas().height
-		);
-	}
+	// // ! TODO into enemy level
+	// private _clearCorp() {
+	// 	getContext().clearRect(
+	// 		this._x,
+	// 		this._y,
+	// 		getCanvas().width,
+	// 		getCanvas().height
+	// 	);
+	// }
 	// Render enemy
 	private _renderCorp(): void {
 		let localRight: boolean = false;
