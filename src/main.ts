@@ -1,6 +1,9 @@
+import { EnemyCorp } from "./enemyCorp";
 import { getCanvas, getContext } from "./gameHelper";
-import { getEnemyRow, getShots, initEnemyRows, newPlayer } from "./gameObjects";
+import { getShots, newPlayer } from "./gameObjects";
 import { getScaledTileSize, setCanvasSize } from "./gameSettings";
+import { playTitleTheme } from "./soundHandler";
+setCanvasSize();
 
 // timer(7000, 7000).subscribe(() => {
 // 	enemyRows.push(new EnemyRow(getShots(), 0, 0));
@@ -19,15 +22,14 @@ let gameStarted: boolean = false;
 let actualScore: number = 0;
 
 const player = newPlayer("a", "d", " ");
-initEnemyRows();
-
+const enemyCorp = new EnemyCorp(16, 4);
 export function init() {
 	document.addEventListener("keyup", (keyboard) => {
 		switch (keyboard.key) {
 			case "r":
 				if (gameStarted === false) {
 					gameStarted = true;
-					playAudio();
+					playTitleTheme();
 					animate();
 				} else {
 					init();
@@ -41,12 +43,14 @@ export function init() {
 	});
 }
 
+enemyCorp.corpAnimation();
 function animate(): void {
 	setTimeout(() => {
 		player.handleInput();
-		for (let j = 0; j < getEnemyRow().length; j++) {
-			getEnemyRow()[j].moveEnemyRow();
-		}
+		enemyCorp.corpAnimation();
+		// for (let j = 0; j < enemyCorp.getEnemyCorp().length; j++) {
+		// 	enemyCorp.getEnemyCorp()[j].moveEnemyRow();
+		// }
 		for (let j = 0; j < getShots().length; j++) {
 			getShots()[j].shootAnimation();
 		}
@@ -58,22 +62,10 @@ function animate(): void {
 
 export function score() {
 	actualScore++;
-	// scoreElement.value = actualScore.toString();
-}
-
-let audioType: string;
-let audio = new Audio();
-if (audio.canPlayType("audio/mp3")) {
-	audioType = ".mp3";
-} else {
-	audioType = ".wav";
-}
-
-function playAudio() {
-	let audio = new Audio("assets/sounds/jkons-invader_title_theme" + audioType);
-	audio.loop = true;
-	audio.volume = 0.05;
-	audio.play();
+	let scoreElement = <HTMLOutputElement>(
+		window.document.getElementById("score")!
+	);
+	scoreElement.value = actualScore.toString();
 }
 
 export function stopGame() {
@@ -86,6 +78,7 @@ function _renderGameOver() {
 	let fontsize: number = 4 * getScaledTileSize();
 	let x = (getCanvas().width - fontsize * 5) / 2;
 	let y = getCanvas().height / 2;
+	getContext().fillStyle = "red";
 	getContext().font = `${fontsize}px Arial`;
 	getContext().fillText("Game Over", x, y);
 }

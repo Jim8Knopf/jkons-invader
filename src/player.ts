@@ -1,13 +1,14 @@
 import { fromEvent, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { getCanvas, getContext } from "./gameHelper";
-import { getShot } from "./gameObjects";
 import { getScaledTileSize, getTileSize } from "./gameSettings";
-import { Shot } from "./shot";
-import { url } from "../web";
-export class Player {
-	private _shot: Shot = getShot();
+import { addShot } from "./gameObjects";
+import { shotPlayer } from "./shotPlayer";
+import { who } from "./shot";
+import { playShotSound } from "./soundHandler";
 
+export class Player {
+	private _shot: shotPlayer;
 	// complete tile sheet
 	private _sheet = new Image();
 
@@ -51,6 +52,10 @@ export class Player {
 		this._left = left;
 		this._right = right;
 		this._fire = fire;
+		// new shot
+		this._shot = new shotPlayer(who.player);
+		addShot(this._shot);
+
 		// draw player on page load
 		this._render(true);
 	}
