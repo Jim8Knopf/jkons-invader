@@ -24,7 +24,6 @@ export class EnemyCorp {
 
 	public corpAnimation(): void {
 		this._renderCorp();
-
 		if (this._enemyCorp.length === 0) {
 			stopGame();
 		}

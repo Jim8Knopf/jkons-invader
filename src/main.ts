@@ -60,7 +60,6 @@ function animate(): void {
 		}
 	}, animationSpeed);
 }
-
 export function stopGame() {
 	animationActive = false;
 	cancelAnimationFrame(animation);
