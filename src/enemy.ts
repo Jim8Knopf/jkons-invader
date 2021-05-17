@@ -2,7 +2,8 @@ import { EnemyColumn } from "./enemyColumn";
 import { getCanvas, getContext } from "./gameHelper";
 import { addShot, getShots } from "./gameObjects";
 import { getScaledTileSize } from "./gameSettings";
-import { score, stopGame } from "./main";
+import { stopGame } from "./main";
+import { countScore } from "./save";
 import { Shot, who } from "./shot";
 import { shotEnemy } from "./shotEnemy";
 import { playEnemyDeadSound, playHitSound } from "./soundHandler";
@@ -67,7 +68,7 @@ export abstract class Enemy {
 				this._live--;
 				playHitSound();
 				this._dead();
-				score();
+				countScore();
 			}
 		}
 	}

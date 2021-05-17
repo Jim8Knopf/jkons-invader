@@ -1,8 +1,13 @@
 import { EnemyCorp } from "./enemyCorp";
 import { getCanvas, getContext } from "./gameHelper";
 import { getShots, newPlayer } from "./gameObjects";
-import { getScaledTileSize, setCanvasSize } from "./gameSettings";
-import { playTitleTheme } from "./soundHandler";
+import { getScaledTileSize, getTileSize, setCanvasSize } from "./gameSettings";
+import { displayForm, loadScoreboard } from "./save";
+import {
+	playGameOverMusic,
+	playTitleTheme,
+	stopTitleTheme,
+} from "./soundHandler";
 setCanvasSize();
 
 // timer(7000, 7000).subscribe(() => {
@@ -19,7 +24,6 @@ let animationActive: boolean = true;
 let animationSpeed: number = 1 / 60;
 
 let gameStarted: boolean = false;
-let actualScore: number = 0;
 
 const player = newPlayer("a", "d", " ");
 const enemyCorp = new EnemyCorp(16, 4);
@@ -28,8 +32,8 @@ export function init() {
 		switch (keyboard.key) {
 			case "r":
 				if (gameStarted === false) {
-					gameStarted = true;
 					playTitleTheme();
+					gameStarted = true;
 					animate();
 				} else {
 					init();
@@ -42,15 +46,12 @@ export function init() {
 		}
 	});
 }
-
+loadScoreboard();
 enemyCorp.corpAnimation();
 function animate(): void {
 	setTimeout(() => {
 		player.handleInput();
 		enemyCorp.corpAnimation();
-		// for (let j = 0; j < enemyCorp.getEnemyCorp().length; j++) {
-		// 	enemyCorp.getEnemyCorp()[j].moveEnemyRow();
-		// }
 		for (let j = 0; j < getShots().length; j++) {
 			getShots()[j].shootAnimation();
 		}
@@ -59,28 +60,26 @@ function animate(): void {
 		}
 	}, animationSpeed);
 }
-
-export function score() {
-	actualScore++;
-	let scoreElement = <HTMLOutputElement>(
-		window.document.getElementById("score")!
-	);
-	scoreElement.value = actualScore.toString();
-}
-
 export function stopGame() {
 	animationActive = false;
 	cancelAnimationFrame(animation);
 	_renderGameOver();
+	stopTitleTheme();
+	playGameOverMusic();
+	displayForm();
 }
-
+const gameOverImage = new Image();
+gameOverImage.src = "assets/img/game_over.png";
 function _renderGameOver() {
-	let fontsize: number = 4 * getScaledTileSize();
-	let x = (getCanvas().width - fontsize * 5) / 2;
-	let y = getCanvas().height / 2;
-	getContext().fillStyle = "red";
-	getContext().font = `${fontsize}px Arial`;
-	getContext().fillText("Game Over", x, y);
+	let x = (getCanvas().width - (71 * getScaledTileSize()) / 9) / 2;
+	let y = (getCanvas().height - (33 * getScaledTileSize()) / 9) / 2;
+	getContext().drawImage(
+		gameOverImage,
+		x,
+		y,
+		(71 * getScaledTileSize()) / 9,
+		(33 * getScaledTileSize()) / 9
+	);
 }
 
 init();
