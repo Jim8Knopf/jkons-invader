@@ -10,15 +10,6 @@ import {
 } from "./soundHandler";
 setCanvasSize();
 
-// timer(7000, 7000).subscribe(() => {
-// 	enemyRows.push(new EnemyRow(getShots(), 0, 0));
-// 	for (let i = 0; i < enemyRows.length; i++) {
-// 		if (i === enemyRows.length - 1) {
-// 			enemyRows[i].createEnemyRow(10, 0, 0, 0);
-// 		}
-// 	}
-// });
-
 let animation: number;
 let animationActive: boolean = true;
 let animationSpeed: number = 1 / 60;

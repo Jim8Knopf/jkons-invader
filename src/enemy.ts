@@ -33,7 +33,6 @@ export abstract class Enemy {
 	public moveDown() {
 		if (this._enemyColumn.getCorp.getDown) {
 			this._y += this._speed;
-			// this.renderEnemy();
 			this._gameOver();
 		}
 	}
@@ -45,7 +44,6 @@ export abstract class Enemy {
 			getScaledTileSize(),
 			getScaledTileSize()
 		);
-		// this._renderEnemy();
 	}
 	/**
 	 * dummy
@@ -116,8 +114,6 @@ export abstract class Enemy {
 	protected _shoot() {
 		let random = Math.random() * 10000;
 		if (random > 9991 && this._enemyColumn.getEnemyIndex(this) === 0) {
-			// this._canIShoot();
-			console.log("peng");
 			this._fireShot();
 		}
 	}
