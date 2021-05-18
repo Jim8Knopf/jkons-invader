@@ -1,14 +1,47 @@
 // browser styles
 html,
 body {
-  height: 100%;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+	margin: 0;
+	font-family: Arial, Helvetica, sans-serif;
+}
+#pageLayout {
+	display: grid;
+	grid-template-areas:
+		"header header header"
+		". main scoreSide"
+		"footer footer footer";
+	grid-template-columns: 1fr 1fr 1fr;
+}
+
+#gameContainer {
+	grid-area: main;
+
+	form {
+		position: absolute;
+		grid-area: main;
+		top: 65%;
+		left: 50%;
+		width: 45%;
+		transform: translate(-50%);
+		display: none;
+		justify-content: center;
+
+		input {
+			width: 35%;
+		}
+	}
 }
 
 // canvas styles
 #jkonsInvader {
-  background-color: black;
+	background-color: black;
+}
+
+#scoreSide {
+	grid-area: scoreSide;
+}
+
+table {
+	width: 100%;
+	border: 1px solid black;
 }

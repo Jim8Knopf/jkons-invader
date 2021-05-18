@@ -1,8 +1,13 @@
-import { EnemyRow } from "./enemyRow";
+import { EnemyCorp } from "./enemyCorp";
 import { getCanvas, getContext } from "./gameHelper";
-import { getEnemyRow, getShots, initEnemyRows, newPlayer } from "./gameObjects";
-import { getScaledTileSize, setCanvasSize } from "./gameSettings";
-import { url } from "../web";
+import { getShots, newPlayer } from "./gameObjects";
+import { getScaledTileSize, getTileSize, setCanvasSize } from "./gameSettings";
+import { displayForm, loadScoreboard } from "./save";
+import {
+	playGameOverMusic,
+	playTitleTheme,
+	stopTitleTheme,
+} from "./soundHandler";
 setCanvasSize();
 
 // timer(7000, 7000).subscribe(() => {
@@ -19,18 +24,16 @@ let animationActive: boolean = true;
 let animationSpeed: number = 1 / 60;
 
 let gameStarted: boolean = false;
-let actualScore: number = 0;
 
 const player = newPlayer("a", "d", " ");
-initEnemyRows();
-
+const enemyCorp = new EnemyCorp(16, 4);
 export function init() {
 	document.addEventListener("keyup", (keyboard) => {
 		switch (keyboard.key) {
 			case "r":
 				if (gameStarted === false) {
+					playTitleTheme();
 					gameStarted = true;
-					// playAudio();
 					animate();
 				} else {
 					init();
@@ -43,13 +46,12 @@ export function init() {
 		}
 	});
 }
-
+loadScoreboard();
+enemyCorp.corpAnimation();
 function animate(): void {
 	setTimeout(() => {
 		player.handleInput();
-		for (let j = 0; j < getEnemyRow().length; j++) {
-			getEnemyRow()[j].moveEnemyRow();
-		}
+		enemyCorp.corpAnimation();
 		for (let j = 0; j < getShots().length; j++) {
 			getShots()[j].shootAnimation();
 		}
@@ -58,44 +60,26 @@ function animate(): void {
 		}
 	}, animationSpeed);
 }
-
-export function score() {
-	actualScore++;
-	// scoreElement.value = actualScore.toString();
-}
-
-let audioType: string;
-let audio = new Audio();
-if (audio.canPlayType("audio/mp3")) {
-	audioType = ".mp3";
-} else {
-	audioType = ".wav";
-}
-
-//Function to play the exact file format
-function playAudio() {
-	let u: string = "../";
-	if (url) {
-		u = url;
-	}
-	var audio = new Audio(
-		u + "assets/sounds/jkons-invader_title_theme" + audioType
-	);
-	audio.play();
-}
-
 export function stopGame() {
 	animationActive = false;
 	cancelAnimationFrame(animation);
 	_renderGameOver();
+	stopTitleTheme();
+	playGameOverMusic();
+	displayForm();
 }
-
+const gameOverImage = new Image();
+gameOverImage.src = "assets/img/game_over.png";
 function _renderGameOver() {
-	let fontsize: number = 4 * getScaledTileSize();
-	let x = (getCanvas().width - fontsize * 5) / 2;
-	let y = getCanvas().height / 2;
-	getContext().font = `${fontsize}px Arial`;
-	getContext().fillText("Game Over", x, y);
+	let x = (getCanvas().width - (71 * getScaledTileSize()) / 9) / 2;
+	let y = (getCanvas().height - (33 * getScaledTileSize()) / 9) / 2;
+	getContext().drawImage(
+		gameOverImage,
+		x,
+		y,
+		(71 * getScaledTileSize()) / 9,
+		(33 * getScaledTileSize()) / 9
+	);
 }
 
 init();

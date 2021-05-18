@@ -1,13 +1,14 @@
 import { fromEvent, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { getCanvas, getContext } from "./gameHelper";
-import { getShot } from "./gameObjects";
 import { getScaledTileSize, getTileSize } from "./gameSettings";
-import { Shot } from "./shot";
-import { url } from "../web";
-export class Player {
-	private _shot: Shot = getShot();
+import { addShot } from "./gameObjects";
+import { shotPlayer } from "./shotPlayer";
+import { who } from "./shot";
+import { playShotSound } from "./soundHandler";
 
+export class Player {
+	private _shot: shotPlayer;
 	// complete tile sheet
 	private _sheet = new Image();
 
@@ -51,13 +52,9 @@ export class Player {
 		this._left = left;
 		this._right = right;
 		this._fire = fire;
-
-		// assign tile sheet
-		if (url) {
-			this._sheet.src = url + "/img/ji-sheet.png";
-		} else {
-			this._sheet.src = "/img/ji-sheet.png";
-		}
+		// new shot
+		this._shot = new shotPlayer(who.player);
+		addShot(this._shot);
 
 		// draw player on page load
 		this._render(true);
@@ -71,7 +68,7 @@ export class Player {
 
 		// update player
 		this._clear();
-		this._render();
+		this._render(true);
 	}
 
 	// moves left but not out of the screen
@@ -103,6 +100,7 @@ export class Player {
 
 	// draw player on screen
 	private _render(onload?: boolean) {
+		this._sheet.src = "assets/img/ji-sheet.png";
 		if (onload) {
 			const that = this;
 			this._sheet.onload = function () {
