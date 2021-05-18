@@ -6,6 +6,9 @@ import { getScaledTileSize, getTileSize } from "./gameSettings";
 export class EnemyL1 extends Enemy {
 	private _tileFrameX = 0;
 	private _tileFrameY = 2;
+	/**
+	 * renders the enemy image
+	 */
 	_renderImg(): void {
 		getContext().drawImage(
 			this._sheet,
