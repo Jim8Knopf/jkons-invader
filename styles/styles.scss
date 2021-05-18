@@ -8,7 +8,7 @@ body {
 	display: grid;
 	grid-template-areas:
 		"header header header"
-		". main scoreSide"
+		"guideSide main scoreSide"
 		"footer footer footer";
 	grid-template-columns: 1fr 1fr 1fr;
 }
@@ -44,4 +44,10 @@ body {
 table {
 	width: 100%;
 	border: 1px solid black;
+}
+
+img {
+	image-rendering: pixelated;
+	grid-area: guideSide;
+	width: 75%;
 }

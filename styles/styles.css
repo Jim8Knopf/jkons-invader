@@ -7,7 +7,7 @@ body {
 #pageLayout {
   display: -ms-grid;
   display: grid;
-      grid-template-areas: "header header header" ". main scoreSide" "footer footer footer";
+      grid-template-areas: "header header header" "guideSide main scoreSide" "footer footer footer";
   -ms-grid-columns: 1fr 1fr 1fr;
       grid-template-columns: 1fr 1fr 1fr;
 }
@@ -51,5 +51,17 @@ body {
 table {
   width: 100%;
   border: 1px solid black;
+}
+
+img {
+  -ms-interpolation-mode: nearest-neighbor;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: -o-pixelated;
+      image-rendering: pixelated;
+  -ms-grid-row: 2;
+  -ms-grid-column: 1;
+  grid-area: guideSide;
+  width: 75%;
 }
 /*# sourceMappingURL=styles.css.map */
