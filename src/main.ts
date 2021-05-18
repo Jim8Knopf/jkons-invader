@@ -1,7 +1,7 @@
 import { EnemyCorp } from "./enemyCorp";
 import { getCanvas, getContext } from "./gameHelper";
 import { getShots, newPlayer } from "./gameObjects";
-import { getScaledTileSize, getTileSize, setCanvasSize } from "./gameSettings";
+import { getScaledTileSize, setCanvasSize } from "./gameSettings";
 import { displayForm, loadScoreboard } from "./save";
 import {
 	playGameOverMusic,

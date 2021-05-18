@@ -5,7 +5,6 @@ import { getScaledTileSize } from "./gameSettings";
 import { stopGame } from "./main";
 import { countScore } from "./save";
 import { Shot, who } from "./shot";
-import { shotEnemy } from "./shotEnemy";
 import { playEnemyDeadSound, playHitSound } from "./soundHandler";
 
 export abstract class Enemy {
@@ -21,7 +20,7 @@ export abstract class Enemy {
 	constructor(enemyColumn: EnemyColumn, y: number) {
 		this._enemyColumn = enemyColumn;
 		this._y = y;
-		this._shot = new shotEnemy(who.enemy);
+		this._shot = new Shot(who.enemy);
 		addShot(this._shot);
 		this._sheet.src = "assets/img/ji-sheet.png";
 	}
@@ -100,6 +99,10 @@ export abstract class Enemy {
 	}
 	protected abstract _renderImg(): void;
 
+	/**
+	 * the game over function checks if an enemy reaches the bottom.
+	 * if it reaches the bottom it stops the game.
+	 */
 	protected _gameOver() {
 		if (
 			this._y + getScaledTileSize() >

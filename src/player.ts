@@ -3,11 +3,10 @@ import { map } from "rxjs/operators";
 import { getCanvas, getContext } from "./gameHelper";
 import { getScaledTileSize, getTileSize } from "./gameSettings";
 import { addShot } from "./gameObjects";
-import { shotPlayer } from "./shotPlayer";
-import { who } from "./shot";
+import { Shot, who } from "./shot";
 
 export class Player {
-	private _shot: shotPlayer;
+	private _shot: Shot;
 	// complete tile sheet
 	private _sheet = new Image();
 
@@ -52,7 +51,7 @@ export class Player {
 		this._right = right;
 		this._fire = fire;
 		// new shot
-		this._shot = new shotPlayer(who.player);
+		this._shot = new Shot(who.player);
 		addShot(this._shot);
 
 		// draw player on page load
