@@ -72,15 +72,15 @@ export class Player {
 
 	// moves left but not out of the screen
 	private _moveLeft() {
-		this._x = this._x - this._velocity >= 0 ? this._x - this._velocity : 0;
+		this._x = this._x - this._velocity > 0 ? this._x - this._velocity : 0;
 	}
 
 	// moves right but not out of the screen
 	private _moveRight() {
 		this._x =
-			this._x + getScaledTileSize() <= getCanvas().width
+			this._x + getScaledTileSize() < getCanvas().width
 				? this._x + this._velocity
-				: this._x;
+				: getCanvas().width - getScaledTileSize();
 	}
 
 	private _fireShot() {
