@@ -29,7 +29,7 @@ export class EnemyColumn {
 		for (let i = 0; i < this._enemyColumn.length; i++) {
 			this._enemyColumn[i]?.clear(this._x - this._speed);
 			this._enemyColumn[i]?.hit();
-			this._enemyColumn[i]?.moveDown();
+			this._enemyColumn[i]?.moveDown?.();
 			this._enemyColumn[i]?.renderEnemy();
 		}
 	}
