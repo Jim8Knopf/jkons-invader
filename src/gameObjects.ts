@@ -1,7 +1,5 @@
-import { getScaledTileSize } from "./gameSettings";
 import { Player } from "./player";
-import { Shot, who } from "./shot";
-import { shotPlayer } from "./shotPlayer";
+import { Shot } from "./shot";
 
 // TODO Maybe export object functions here to the object classes
 

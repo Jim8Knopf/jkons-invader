@@ -4,7 +4,7 @@ export enum who {
 	player = "player",
 	enemy = "enemy",
 }
-export abstract class Shot {
+export class Shot {
 	// canvas context for drawing shapes
 	protected _context: CanvasRenderingContext2D = getContext();
 
@@ -97,5 +97,11 @@ export abstract class Shot {
 	/**
 	 * get y position of the shot
 	 */
-	abstract get getY(): number;
+	public get getY(): number {
+		let y: number = this._y;
+		if (this._w === who.enemy) {
+			y += this._length;
+		}
+		return y;
+	}
 }
