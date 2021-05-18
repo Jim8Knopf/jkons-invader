@@ -3,11 +3,10 @@ import { EnemyCorp } from "./enemyCorp";
 import { Enemy } from "./enemy";
 import { getScaledTileSize } from "./gameSettings";
 import { EnemyL1 } from "./enemyL1";
-import { enemyDummy } from "./enemyDummy";
 
 export class EnemyColumn {
 	private _x: number;
-	private _speed: number = 4;
+	private _speed: number = 2;
 	private _enemyCorp: EnemyCorp;
 	private _enemyColumn: Array<Enemy> = new Array();
 	constructor(enemyCorp: EnemyCorp, rows: number, x: number) {
@@ -29,10 +28,19 @@ export class EnemyColumn {
 		for (let i = 0; i < this._enemyColumn.length; i++) {
 			this._enemyColumn[i]?.clear(this._x - this._speed);
 			this._enemyColumn[i]?.hit();
-			this._enemyColumn[i]?.moveDown();
+			this._enemyColumn[i]?.moveDown?.();
+
 			this._enemyColumn[i]?.renderEnemy();
 		}
 	}
+
+	/**
+	 * addEnemy adds an enemy to the column
+	 */
+	public addEnemy() {
+		this._enemyColumn.push(new EnemyL1(this, 0));
+	}
+
 	public get getCorp(): EnemyCorp {
 		return this._enemyCorp;
 	}

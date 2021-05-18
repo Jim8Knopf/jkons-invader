@@ -5,7 +5,6 @@ import { getScaledTileSize, getTileSize } from "./gameSettings";
 import { addShot } from "./gameObjects";
 import { shotPlayer } from "./shotPlayer";
 import { who } from "./shot";
-import { playShotSound } from "./soundHandler";
 
 export class Player {
 	private _shot: shotPlayer;

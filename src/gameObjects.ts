@@ -1,4 +1,3 @@
-import { EnemyRow } from "./enemyRow";
 import { getScaledTileSize } from "./gameSettings";
 import { Player } from "./player";
 import { Shot, who } from "./shot";
