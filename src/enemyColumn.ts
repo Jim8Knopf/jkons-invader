@@ -27,10 +27,10 @@ export class EnemyColumn {
 		}
 		this._x += this._speed;
 		for (let i = 0; i < this._enemyColumn.length; i++) {
-			this._enemyColumn[i].clear(this._x - this._speed);
-			this._enemyColumn[i].hit();
-			this._enemyColumn[i].moveDown();
-			this._enemyColumn[i].renderEnemy();
+			this._enemyColumn[i]?.clear(this._x - this._speed);
+			this._enemyColumn[i]?.hit();
+			this._enemyColumn[i]?.moveDown();
+			this._enemyColumn[i]?.renderEnemy();
 		}
 	}
 	public get getCorp(): EnemyCorp {
@@ -43,10 +43,8 @@ export class EnemyColumn {
 
 	public removeEnemy(enemy: Enemy) {
 		const index = this._enemyColumn.indexOf(enemy);
-		const dummy = new enemyDummy(this, 0);
-		this._enemyColumn[index] = dummy;
-		if (this._enemyColumn.length > 1 && this._enemyColumn[0].dummy()) {
-			this._enemyColumn.shift();
+		if (index > -1) {
+			this._enemyColumn.splice(index, 1);
 		}
 	}
 
