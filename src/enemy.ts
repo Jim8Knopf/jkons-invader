@@ -8,13 +8,12 @@ import { Shot, who } from "./shot";
 import { playEnemyDeadSound, playHitSound } from "./soundHandler";
 
 export abstract class Enemy {
+	protected abstract _live: number;
 	protected _y: number;
-	protected _live: number = 1;
 	protected _speed: number = 36;
 	protected _enemyColumn: EnemyColumn;
 	protected _shot: Shot;
 	protected _shoots: Array<Shot> = getShots();
-	protected _dummy: boolean = false;
 	protected _sheet = new Image();
 
 	constructor(enemyColumn: EnemyColumn, y: number) {
@@ -25,18 +24,18 @@ export abstract class Enemy {
 		this._sheet.src = "assets/img/ji-sheet.png";
 	}
 
-	public renderEnemy() {
+	public renderEnemy(): void {
 		this._renderImg();
 		this._shoot();
 	}
-	public moveDown() {
+	public moveDown(): void {
 		if (this._enemyColumn.getCorp.getDown) {
 			this._y += this._speed;
 			this._gameOver();
 		}
 	}
 
-	public clear(x: number) {
+	public clear(x: number): void {
 		getContext().clearRect(
 			x,
 			this._y,
@@ -44,14 +43,8 @@ export abstract class Enemy {
 			getScaledTileSize()
 		);
 	}
-	/**
-	 * dummy
-	 */
-	public dummy(): boolean {
-		return this._dummy;
-	}
 
-	public hit() {
+	public hit(): void {
 		for (let j = 0; j < this._shoots.length; j++) {
 			let shootX = this._shoots[j].getX;
 			let shootY = this._shoots[j].getY;
@@ -69,7 +62,7 @@ export abstract class Enemy {
 			}
 		}
 	}
-	protected _dead() {
+	protected _dead(): void {
 		if (this._live <= 0) {
 			this._enemyColumn.removeEnemy(this);
 			playEnemyDeadSound();
@@ -81,7 +74,7 @@ export abstract class Enemy {
 	/**
 	 * render the dummy square for simplicity
 	 */
-	protected _renderDummy() {
+	protected _renderDummy(): void {
 		let borderThickness: number = 1;
 		getContext().fillStyle = "white";
 		getContext().fillRect(
@@ -103,7 +96,7 @@ export abstract class Enemy {
 	 * the game over function checks if an enemy reaches the bottom.
 	 * if it reaches the bottom it stops the game.
 	 */
-	protected _gameOver() {
+	protected _gameOver(): void {
 		if (
 			this._y + getScaledTileSize() >
 			getContext().canvas.height - getScaledTileSize()
@@ -114,13 +107,13 @@ export abstract class Enemy {
 	/**
 	 * the enemy shoot function
 	 */
-	protected _shoot() {
+	protected _shoot(): void {
 		let random = Math.random() * 10000;
 		if (random > 9991 && this._enemyColumn.getEnemyIndex(this) === 0) {
 			this._fireShot();
 		}
 	}
-	private _fireShot() {
+	private _fireShot(): void {
 		this._shot.shoot(
 			this._enemyColumn.getX + getScaledTileSize() / 2,
 			this._y + getScaledTileSize() + 20

@@ -1,4 +1,3 @@
-import { Enemy } from "./enemy";
 import { EnemyColumn } from "./enemyColumn";
 import { getCanvas, getContext } from "./gameHelper";
 import { getScaledTileSize, getTileSize } from "./gameSettings";
@@ -7,11 +6,10 @@ import { getScore } from "./save";
 
 export class EnemyCorp {
 	private _enemyCorp: Array<EnemyColumn> = new Array();
-	private _x: number = 0;
-	private _y: number = 0;
 	private _right: boolean = true;
 	private _down: boolean = false;
 	private _newLine: number = 10;
+
 	constructor(columns: number, rows: number) {
 		for (let i = 0; i < columns; i++) {
 			this._enemyCorp.push(
@@ -19,10 +17,6 @@ export class EnemyCorp {
 			);
 		}
 	}
-
-	// public getEnemyCorp(): EnemyColumn[] {
-	// 	return this._enemyCorp;
-	// }
 
 	public corpAnimation(): void {
 		this._renderCorp();
