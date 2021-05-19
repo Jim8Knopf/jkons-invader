@@ -1,7 +1,5 @@
-import { getContext } from "./gameHelper";
 import { EnemyCorp } from "./enemyCorp";
 import { Enemy } from "./enemy";
-import { getScaledTileSize } from "./gameSettings";
 import { EnemyL1 } from "./enemyL1";
 
 export class EnemyColumn {
@@ -9,6 +7,7 @@ export class EnemyColumn {
 	private _speed: number = 2;
 	private _enemyCorp: EnemyCorp;
 	private _enemyColumn: Array<Enemy> = new Array();
+
 	constructor(enemyCorp: EnemyCorp, rows: number, x: number) {
 		this._enemyCorp = enemyCorp;
 		this._x = x;
@@ -18,7 +17,7 @@ export class EnemyColumn {
 		}
 	}
 
-	public move() {
+	public move(): void {
 		if (this._enemyCorp.getRight) {
 			this._speed = Math.abs(this._speed);
 		} else {
@@ -36,7 +35,7 @@ export class EnemyColumn {
 	/**
 	 * addEnemy adds an enemy to the column
 	 */
-	public addEnemy() {
+	public addEnemy(): void {
 		this._enemyColumn.push(new EnemyL1(this, 0));
 	}
 
@@ -48,7 +47,7 @@ export class EnemyColumn {
 		return this._x;
 	}
 
-	public removeEnemy(enemy: Enemy) {
+	public removeEnemy(enemy: Enemy): void {
 		const index = this._enemyColumn.indexOf(enemy);
 		if (index > -1) {
 			this._enemyColumn.splice(index, 1);
