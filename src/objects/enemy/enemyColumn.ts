@@ -48,10 +48,13 @@ export class EnemyColumn {
 	}
 
 	public removeEnemy(enemy: Enemy): void {
-		const index = this._enemyColumn.indexOf(enemy);
-		if (index > -1) {
-			this._enemyColumn.splice(index, 1);
-		}
+		const index = this._enemyColumn.indexOf(enemy, 0);
+		// if (index > -1) {
+		// 	console.log("remove");
+		// 	this._enemyColumn.splice(index, 1);
+		// }
+		// let foo_object // Item to remove
+		this._enemyColumn = this._enemyColumn.filter((obj) => obj !== enemy);
 	}
 
 	public getEnemyIndex(enemy: Enemy): number {

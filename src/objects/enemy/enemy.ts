@@ -2,7 +2,7 @@ import { EnemyColumn } from "./enemyColumn";
 import { getCanvas, getContext } from "../../helper/gameHelper";
 import { addShot, getShots } from "../../helper/gameObjects";
 import { getScaledTileSize } from "../../helper/gameSettings";
-import { stopGame } from "../../main";
+import { stopGame } from "../../helper/gameHelper";
 import { countScore } from "../../helper/save";
 import { Shot, who } from "../shot";
 import { playEnemyDeadSound, playHitSound } from "../../helper/soundHandler";

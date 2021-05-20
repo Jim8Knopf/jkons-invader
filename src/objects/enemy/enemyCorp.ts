@@ -1,7 +1,7 @@
 import { EnemyColumn } from "./enemyColumn";
 import { getCanvas, getContext } from "../../helper/gameHelper";
 import { getScaledTileSize, getTileSize } from "../../helper/gameSettings";
-import { stopGame } from "../../main";
+import { stopGame } from "../../helper/gameHelper";
 import { getScore } from "../../helper/save";
 
 export class EnemyCorp {
@@ -18,11 +18,12 @@ export class EnemyCorp {
 		}
 	}
 
-	public corpAnimation(): void {
+	public updateEnemyCorp(): void {
 		this._renderCorp();
 		if (this._enemyCorp.length === 0) {
 			stopGame();
 		}
+
 		/**
 		 * adds the new row
 		 */

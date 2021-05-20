@@ -41,7 +41,7 @@ export class Shot {
 	 * than it clears the old shoot
 	 * than it moves the shoot up and paint it
 	 */
-	public shootAnimation() {
+	public animateShot() {
 		if (this._y <= 0 || this._y > this._context.canvas.height) {
 			this._clear();
 		}

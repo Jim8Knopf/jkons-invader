@@ -6,10 +6,12 @@ import { Shot } from "../objects/shot";
 let shots: Array<Shot> = new Array();
 let players: Array<Player> = new Array();
 
-export function newPlayer(left: string, right: string, fire: string): Player {
-	const player: Player = new Player(left, right, fire);
-	players.push(player);
-	return player;
+export function newPlayer(left: string, right: string, fire: string): void {
+	players.push(new Player(left, right, fire));
+}
+
+export function getPlayers(): Array<Player> {
+	return players;
 }
 
 export function getShots(): Array<Shot> {

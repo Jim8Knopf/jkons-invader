@@ -1,6 +1,5 @@
 import { getCanvas, getContext } from "./gameHelper";
 
-const canvas: HTMLCanvasElement = getCanvas();
 let zoom: number = 1;
 let size: number = 0;
 const _tileSize: number = 9;
@@ -23,6 +22,7 @@ export function getScaledTileSize(): number {
 	return _scaledTileSize;
 }
 
+const _canvas = getCanvas();
 function _resizeCanvas() {
 	// resize canvas if the window size reached a specific size
 	if (innerHeight <= 450) {
@@ -37,8 +37,8 @@ function _resizeCanvas() {
 
 	size = 225 * zoom;
 	// Set canvas height and with in JS, because with and height set in CSS distort drawn shapes
-	canvas.width = size;
-	canvas.height = size;
+	_canvas.width = size;
+	_canvas.height = size;
 	_scaledTileSize = _tileSize * zoom;
 	getContext().imageSmoothingEnabled = false;
 }
