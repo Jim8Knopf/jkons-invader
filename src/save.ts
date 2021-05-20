@@ -73,3 +73,11 @@ export function displayForm() {
 export function vanishForm() {
 	form.style.display = "none";
 }
+
+/**
+ * the getter function for the score variable
+ * @returns score
+ */
+export function getScore(): number {
+	return score;
+}
