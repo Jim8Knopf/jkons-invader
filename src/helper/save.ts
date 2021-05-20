@@ -21,6 +21,11 @@ if (!localStorage.getItem("scores")) {
 	localStorage.setItem("scores", "[]");
 }
 
+export function resetScore() {
+	score = 0;
+	scoreElement.value = score.toString();
+}
+
 export function saveUserScore() {
 	vanishForm();
 	const localStorageValue: string | null = localStorage.getItem("scores");
@@ -35,6 +40,7 @@ export function saveUserScore() {
 }
 
 export function loadScoreboard() {
+	score = 0;
 	const localStorageValue: string | null = localStorage.getItem("scores");
 	let parsedLocalStorageValues: UserScore[];
 
