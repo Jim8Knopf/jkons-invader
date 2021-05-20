@@ -1,8 +1,8 @@
 import { EnemyColumn } from "./enemyColumn";
-import { getCanvas, getContext } from "./gameHelper";
-import { getScaledTileSize, getTileSize } from "./gameSettings";
-import { stopGame } from "./main";
-import { getScore } from "./save";
+import { getCanvas, getContext } from "../../helper/gameHelper";
+import { getScaledTileSize, getTileSize } from "../../helper/gameSettings";
+import { stopGame } from "../../main";
+import { getScore } from "../../helper/save";
 
 export class EnemyCorp {
 	private _enemyCorp: Array<EnemyColumn> = new Array();

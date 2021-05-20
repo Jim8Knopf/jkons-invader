@@ -1,5 +1,5 @@
-import { getContext } from "./gameHelper";
-import { playShotSound } from "./soundHandler";
+import { getContext } from "../helper/gameHelper";
+import { playShotSound } from "../helper/soundHandler";
 export enum who {
 	player = "player",
 	enemy = "enemy",

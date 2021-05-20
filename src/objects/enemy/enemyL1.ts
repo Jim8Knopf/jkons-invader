@@ -1,6 +1,6 @@
 import { Enemy } from "./enemy";
-import { getContext } from "./gameHelper";
-import { getScaledTileSize, getTileSize } from "./gameSettings";
+import { getContext } from "../../helper/gameHelper";
+import { getScaledTileSize, getTileSize } from "../../helper/gameSettings";
 
 export class EnemyL1 extends Enemy {
 	_live = 1;
