@@ -1,6 +1,6 @@
 import { fromEvent, Observable } from "rxjs";
 import { map } from "rxjs/operators";
-import { getCanvas, getContext } from "../helper/gameHelper";
+import { getCanvas, getContext, stopGame } from "../helper/gameHelper";
 import { getScaledTileSize, getTileSize } from "../helper/gameSettings";
 import { addShot, getShots } from "../helper/gameObjects";
 import { Shot, who } from "./shot";
@@ -23,6 +23,8 @@ export class Player {
 		getCanvas().height - (getCanvas().width - getScaledTileSize()) / 2;
 	private _y: number = getCanvas().height - getScaledTileSize();
 	private _velocity: number = 4;
+
+	private liveElement = <HTMLOutputElement>document.getElementById("live");
 
 	// save a list of pressed keys to allow multiple pressed keys at the same time
 	private pressed_keys: string[] = [];
@@ -59,6 +61,8 @@ export class Player {
 
 		// draw player on page load
 		this._render(true);
+
+		this.liveElement.value = this._live.toString();
 	}
 
 	public handleInput() {
@@ -144,10 +148,16 @@ export class Player {
 			) {
 				this._shoots[j].hit();
 				this._live--;
+				this.liveElement.value = this._live.toString();
 				playHitSound();
-				// this._dead();
+				this._dead();
 				console.log(this._live);
 			}
+		}
+	}
+	private _dead(): void {
+		if (this._live <= 0) {
+			stopGame();
 		}
 	}
 }
