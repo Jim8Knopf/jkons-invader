@@ -160,4 +160,8 @@ export class Player {
 			stopGame();
 		}
 	}
+	public resetPlayerLive() {
+		this._live = 3;
+		this.liveElement.value = this._live.toString();
+	}
 }
