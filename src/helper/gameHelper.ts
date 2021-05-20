@@ -14,6 +14,7 @@ let animationActive: boolean = true;
 let animationSpeed: number = 1 / 60;
 
 let gameStarted: boolean = false;
+let gameOver: boolean = false;
 const gameOverImage = new Image();
 gameOverImage.src = "assets/img/game_over.png";
 let enemyCorp: EnemyCorp; // = new EnemyCorp(16, 4);
@@ -41,7 +42,9 @@ export function init() {
 	loadScoreboard();
 
 	document.addEventListener("keyup", (keyboard) => {
-		gameState(keyboard);
+		if (!gameOver) {
+			gameState(keyboard);
+		}
 	});
 	initClickListener();
 	enemyCorp = new EnemyCorp(16, 4);
@@ -98,6 +101,10 @@ function reset() {
 	enemyCorp.updateEnemyCorp();
 	animationActive = false;
 	gameStarted = false;
+	gameOver = false;
+	players.forEach((player) => {
+		player.resetPlayerLive();
+	});
 	startButton.innerHTML = "start";
 	startButton.disabled = false;
 	stopButton.disabled = true;
@@ -108,6 +115,7 @@ function reset() {
  * Stops the game.
  */
 export function stopGame() {
+	gameOver = true;
 	animationActive = false;
 	cancelAnimationFrame(animation);
 	_renderGameOver();
