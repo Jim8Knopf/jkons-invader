@@ -1,5 +1,5 @@
-import { Player } from "./player";
-import { Shot } from "./shot";
+import { Player } from "../objects/player";
+import { Shot } from "../objects/shot";
 
 // TODO Maybe export object functions here to the object classes
 

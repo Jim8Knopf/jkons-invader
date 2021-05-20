@@ -1,8 +1,8 @@
 import { fromEvent, Observable } from "rxjs";
 import { map } from "rxjs/operators";
-import { getCanvas, getContext } from "./gameHelper";
-import { getScaledTileSize, getTileSize } from "./gameSettings";
-import { addShot } from "./gameObjects";
+import { getCanvas, getContext } from "../helper/gameHelper";
+import { getScaledTileSize, getTileSize } from "../helper/gameSettings";
+import { addShot } from "../helper/gameObjects";
 import { Shot, who } from "./shot";
 
 export class Player {

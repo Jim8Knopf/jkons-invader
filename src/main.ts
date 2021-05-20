@@ -1,13 +1,13 @@
-import { EnemyCorp } from "./enemyCorp";
-import { getCanvas, getContext } from "./gameHelper";
-import { getShots, newPlayer } from "./gameObjects";
-import { getScaledTileSize, setCanvasSize } from "./gameSettings";
-import { displayForm, loadScoreboard } from "./save";
+import { EnemyCorp } from "./objects/enemy/enemyCorp";
+import { getCanvas, getContext } from "./helper/gameHelper";
+import { getShots, newPlayer } from "./helper/gameObjects";
+import { getScaledTileSize, setCanvasSize } from "./helper/gameSettings";
+import { displayForm, loadScoreboard } from "./helper/save";
 import {
 	playGameOverMusic,
 	playTitleTheme,
 	stopTitleTheme,
-} from "./soundHandler";
+} from "./helper/soundHandler";
 setCanvasSize();
 
 let animation: number;

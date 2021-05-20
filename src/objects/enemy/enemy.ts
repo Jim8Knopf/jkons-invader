@@ -1,11 +1,11 @@
 import { EnemyColumn } from "./enemyColumn";
-import { getCanvas, getContext } from "./gameHelper";
-import { addShot, getShots } from "./gameObjects";
-import { getScaledTileSize } from "./gameSettings";
-import { stopGame } from "./main";
-import { countScore } from "./save";
-import { Shot, who } from "./shot";
-import { playEnemyDeadSound, playHitSound } from "./soundHandler";
+import { getCanvas, getContext } from "../../helper/gameHelper";
+import { addShot, getShots } from "../../helper/gameObjects";
+import { getScaledTileSize } from "../../helper/gameSettings";
+import { stopGame } from "../../main";
+import { countScore } from "../../helper/save";
+import { Shot, who } from "../shot";
+import { playEnemyDeadSound, playHitSound } from "../../helper/soundHandler";
 
 export abstract class Enemy {
 	protected abstract _live: number;
