@@ -1,10 +1,10 @@
-import { getContext } from "./gameHelper";
-import { playShotSound } from "./soundHandler";
+import { getContext } from "../helper/gameHelper";
+import { playShotSound } from "../helper/soundHandler";
 export enum who {
 	player = "player",
 	enemy = "enemy",
 }
-export abstract class Shot {
+export class Shot {
 	// canvas context for drawing shapes
 	protected _context: CanvasRenderingContext2D = getContext();
 
@@ -12,7 +12,7 @@ export abstract class Shot {
 	protected _x: number = 0;
 	protected _y: number = 0;
 	protected _w: who;
-	protected _velocity: number = 20;
+	protected _velocity: number = 10;
 	// defines the shot length and thickness for the drawing of shot
 	protected _length: number = 10;
 	protected _thickness: number = 5;
@@ -41,7 +41,7 @@ export abstract class Shot {
 	 * than it clears the old shoot
 	 * than it moves the shoot up and paint it
 	 */
-	public shootAnimation() {
+	public animateShot() {
 		if (this._y <= 0 || this._y > this._context.canvas.height) {
 			this._clear();
 		}
@@ -97,5 +97,11 @@ export abstract class Shot {
 	/**
 	 * get y position of the shot
 	 */
-	abstract get getY(): number;
+	public get getY(): number {
+		let y: number = this._y;
+		if (this._w === who.enemy) {
+			y += this._length;
+		}
+		return y;
+	}
 }

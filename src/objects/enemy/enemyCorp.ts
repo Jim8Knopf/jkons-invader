@@ -1,14 +1,11 @@
-import { Enemy } from "./enemy";
 import { EnemyColumn } from "./enemyColumn";
-import { getCanvas, getContext } from "./gameHelper";
-import { getScaledTileSize, getTileSize } from "./gameSettings";
-import { stopGame } from "./main";
-import { getScore } from "./save";
+import { getCanvas, getContext } from "../../helper/gameHelper";
+import { getScaledTileSize, getTileSize } from "../../helper/gameSettings";
+import { stopGame } from "../../helper/gameHelper";
+import { getScore } from "../../helper/save";
 
 export class EnemyCorp {
 	private _enemyCorp: Array<EnemyColumn> = new Array();
-	private _x: number = 0;
-	private _y: number = 0;
 	private _right: boolean = true;
 	private _down: boolean = false;
 	private _newLine: number = 10;
@@ -20,11 +17,7 @@ export class EnemyCorp {
 		}
 	}
 
-	// public getEnemyCorp(): EnemyColumn[] {
-	// 	return this._enemyCorp;
-	// }
-
-	public corpAnimation(): void {
+	public updateEnemyCorp(): void {
 		this._renderCorp();
 		if (this._enemyCorp.length === 0) {
 			stopGame();

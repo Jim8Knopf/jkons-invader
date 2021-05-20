@@ -10,6 +10,7 @@
 	</head>
 	<body>
 		<div id="pageLayout">
+			<img src="assets/img/playerguide.gif" alt="" />
 			<div id="gameContainer">
 				<canvas id="jkonsInvader"></canvas>
 				<form id="enterUsername">
@@ -23,7 +24,12 @@
 				</form>
 			</div>
 			<div id="scoreSide">
-				<label for="score"> Your score is: </label> <br />
+				<button id="start">start</button>
+				<button id="stop" disabled>stop</button>
+				<button id="reset" disabled>reset</button><br />
+				<label for="live"> Live: </label>
+				<output id="live">0</output> <br />
+				<label for="score"> Your score is: </label>
 				<output id="score">0</output> <br />
 
 				<table id="scoreboard"></table>

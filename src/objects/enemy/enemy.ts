@@ -1,43 +1,45 @@
 import { EnemyColumn } from "./enemyColumn";
-import { getCanvas, getContext } from "./gameHelper";
-import { addShot, getShots } from "./gameObjects";
-import { getScaledTileSize } from "./gameSettings";
-import { stopGame } from "./main";
-import { countScore } from "./save";
-import { Shot, who } from "./shot";
-import { shotEnemy } from "./shotEnemy";
-import { playEnemyDeadSound, playHitSound } from "./soundHandler";
+import { getCanvas, getContext } from "../../helper/gameHelper";
+import { addShot, getShots } from "../../helper/gameObjects";
+import { getScaledTileSize } from "../../helper/gameSettings";
+import { stopGame } from "../../helper/gameHelper";
+import { countScore } from "../../helper/save";
+import { Shot, who } from "../shot";
+import { playEnemyDeadSound, playHitSound } from "../../helper/soundHandler";
 
 export abstract class Enemy {
+	protected abstract _live: number;
 	protected _y: number;
-	protected _live: number = 1;
 	protected _speed: number = 36;
 	protected _enemyColumn: EnemyColumn;
 	protected _shot: Shot;
 	protected _shoots: Array<Shot> = getShots();
-	protected _dummy: boolean = false;
 	protected _sheet = new Image();
+	private isGameOver: boolean = false;
 
 	constructor(enemyColumn: EnemyColumn, y: number) {
 		this._enemyColumn = enemyColumn;
 		this._y = y;
-		this._shot = new shotEnemy(who.enemy);
+		this._shot = new Shot(who.enemy);
 		addShot(this._shot);
 		this._sheet.src = "assets/img/ji-sheet.png";
 	}
 
-	public renderEnemy() {
+	public renderEnemy(): void {
 		this._renderImg();
 		this._shoot();
-	}
-	public moveDown() {
-		if (this._enemyColumn.getCorp.getDown) {
-			this._y += this._speed;
+		if (this.isGameOver) {
 			this._gameOver();
 		}
 	}
+	public moveDown(): void {
+		if (this._enemyColumn.getCorp.getDown) {
+			this._y += this._speed;
+			this.isGameOver = true;
+		}
+	}
 
-	public clear(x: number) {
+	public clear(x: number): void {
 		getContext().clearRect(
 			x,
 			this._y,
@@ -45,14 +47,8 @@ export abstract class Enemy {
 			getScaledTileSize()
 		);
 	}
-	/**
-	 * dummy
-	 */
-	public dummy(): boolean {
-		return this._dummy;
-	}
 
-	public hit() {
+	public hit(): void {
 		for (let j = 0; j < this._shoots.length; j++) {
 			let shootX = this._shoots[j].getX;
 			let shootY = this._shoots[j].getY;
@@ -70,7 +66,7 @@ export abstract class Enemy {
 			}
 		}
 	}
-	protected _dead() {
+	protected _dead(): void {
 		if (this._live <= 0) {
 			this._enemyColumn.removeEnemy(this);
 			playEnemyDeadSound();
@@ -82,7 +78,7 @@ export abstract class Enemy {
 	/**
 	 * render the dummy square for simplicity
 	 */
-	protected _renderDummy() {
+	protected _renderDummy(): void {
 		let borderThickness: number = 1;
 		getContext().fillStyle = "white";
 		getContext().fillRect(
@@ -100,7 +96,11 @@ export abstract class Enemy {
 	}
 	protected abstract _renderImg(): void;
 
-	protected _gameOver() {
+	/**
+	 * the game over function checks if an enemy reaches the bottom.
+	 * if it reaches the bottom it stops the game.
+	 */
+	protected _gameOver(): void {
 		if (
 			this._y + getScaledTileSize() >
 			getContext().canvas.height - getScaledTileSize()
@@ -111,16 +111,24 @@ export abstract class Enemy {
 	/**
 	 * the enemy shoot function
 	 */
-	protected _shoot() {
+	protected _shoot(): void {
 		let random = Math.random() * 10000;
 		if (random > 9991 && this._enemyColumn.getEnemyIndex(this) === 0) {
 			this._fireShot();
 		}
 	}
-	private _fireShot() {
+	private _fireShot(): void {
 		this._shot.shoot(
 			this._enemyColumn.getX + getScaledTileSize() / 2,
 			this._y + getScaledTileSize() + 20
 		);
+	}
+
+	public set setIsGameOver(gameOver: boolean) {
+		this.isGameOver = gameOver;
+	}
+
+	public get getIsGameOver(): boolean {
+		return this.isGameOver;
 	}
 }

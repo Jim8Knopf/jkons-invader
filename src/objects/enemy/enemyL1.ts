@@ -1,11 +1,11 @@
 import { Enemy } from "./enemy";
-import { EnemyColumn } from "./enemyColumn";
-import { getContext } from "./gameHelper";
-import { getScaledTileSize, getTileSize } from "./gameSettings";
+import { getContext } from "../../helper/gameHelper";
+import { getScaledTileSize, getTileSize } from "../../helper/gameSettings";
 
 export class EnemyL1 extends Enemy {
-	private _tileFrameX = 0;
-	private _tileFrameY = 2;
+	_live = 1;
+	private _tileFrameX: number = 0;
+	private _tileFrameY: number = 2;
 	/**
 	 * renders the enemy image
 	 */
