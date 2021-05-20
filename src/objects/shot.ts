@@ -12,7 +12,7 @@ export class Shot {
 	protected _x: number = 0;
 	protected _y: number = 0;
 	protected _w: who;
-	protected _velocity: number = 20;
+	protected _velocity: number = 10;
 	// defines the shot length and thickness for the drawing of shot
 	protected _length: number = 10;
 	protected _thickness: number = 5;
