@@ -162,14 +162,26 @@ function _updateShots() {
 }
 
 function _renderGameOver() {
-	let x = (getCanvas().width - (71 * getScaledTileSize()) / 9) / 2;
-	let y = (getCanvas().height - (33 * getScaledTileSize()) / 9) / 2;
+	const gameOverSize = 16;
+	const gameOverBorder = 16;
+	const gameOverWidth = getScaledTileSize() * gameOverSize;
+	const gameOverX = getCanvas().width / 2 - gameOverWidth / 2;
+
+	const gameOverHeight = (getScaledTileSize() * gameOverSize) / 2;
+	const gameOverY = getCanvas().height / 2 - gameOverHeight / 2;
+	getContext().fillStyle = "rgb(50, 0, 25)";
+	getContext().fillRect(
+		gameOverX - gameOverBorder,
+		gameOverY - gameOverBorder,
+		gameOverWidth + gameOverBorder * 2,
+		gameOverHeight + gameOverBorder * 2
+	);
 	getContext().drawImage(
 		gameOverImage,
-		x,
-		y,
-		(71 * getScaledTileSize()) / 9,
-		(33 * getScaledTileSize()) / 9
+		gameOverX,
+		gameOverY,
+		gameOverWidth,
+		gameOverHeight
 	);
 }
 

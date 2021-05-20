@@ -4,7 +4,7 @@ import { EnemyL1 } from "./enemyL1";
 
 export class EnemyColumn {
 	private _x: number;
-	private _speed: number = 2;
+	private _speed: number = 100;
 	private _enemyCorp: EnemyCorp;
 	private _enemyColumn: Array<Enemy> = new Array();
 

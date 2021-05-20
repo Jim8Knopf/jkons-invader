@@ -15,6 +15,7 @@ export abstract class Enemy {
 	protected _shot: Shot;
 	protected _shoots: Array<Shot> = getShots();
 	protected _sheet = new Image();
+	private isGameOver: boolean = false;
 
 	constructor(enemyColumn: EnemyColumn, y: number) {
 		this._enemyColumn = enemyColumn;
@@ -27,11 +28,14 @@ export abstract class Enemy {
 	public renderEnemy(): void {
 		this._renderImg();
 		this._shoot();
+		if (this.isGameOver) {
+			this._gameOver();
+		}
 	}
 	public moveDown(): void {
 		if (this._enemyColumn.getCorp.getDown) {
 			this._y += this._speed;
-			this._gameOver();
+			this.isGameOver = true;
 		}
 	}
 
@@ -118,5 +122,13 @@ export abstract class Enemy {
 			this._enemyColumn.getX + getScaledTileSize() / 2,
 			this._y + getScaledTileSize() + 20
 		);
+	}
+
+	public set setIsGameOver(gameOver: boolean) {
+		this.isGameOver = gameOver;
+	}
+
+	public get getIsGameOver(): boolean {
+		return this.isGameOver;
 	}
 }
