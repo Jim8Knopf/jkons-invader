@@ -1,24 +1,41 @@
+// Firebase App (the core Firebase SDK) is always required and must be listed first
+import firebase from "firebase/app";
+import "firebase/database";
+
 let scoreElement = <HTMLOutputElement>document.getElementById("score");
 let scoreboardElement = <HTMLTableElement>document.getElementById("scoreboard");
 let saveUserButtonElement = <HTMLButtonElement>(
 	document.getElementById("saveUser")
 );
 
+// Your web app's Firebase configuration
+const firebaseConfig = {
+	apiKey: "AIzaSyBZ53WGjhr1SnVr_86NkPD8krwnHlC2PVY",
+	authDomain: "jkioins-invader.firebaseapp.com",
+	projectId: "jkioins-invader",
+	storageBucket: "jkioins-invader.appspot.com",
+	messagingSenderId: "811260413997",
+	appId: "1:811260413997:web:4b0c3be03da20b4e2410a4",
+	// For databases not in the us-central1 location, databaseURL will be of the
+	// form https://[databaseName].[region].firebasedatabase.app.
+	// For example, https://your-database-123.europe-west1.firebasedatabase.app
+	databaseURL:
+		"https://jkioins-invader-default-rtdb.europe-west1.firebasedatabase.app",
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
 interface UserScore {
 	username: string;
 	score: number;
 }
-const userScore: UserScore[] = [];
+
 saveUserButtonElement.addEventListener("click", () => saveUserScore());
 let score: number = 0;
 
 export function countScore() {
 	score++;
 	scoreElement.value = score.toString();
-}
-
-if (!localStorage.getItem("scores")) {
-	localStorage.setItem("scores", "[]");
 }
 
 export function resetScore() {
@@ -28,42 +45,58 @@ export function resetScore() {
 
 export function saveUserScore() {
 	vanishForm();
-	const localStorageValue: string | null = localStorage.getItem("scores");
-	let parsedLocalStorageValues: UserScore[];
 
-	if (localStorageValue) {
-		parsedLocalStorageValues = JSON.parse(localStorageValue);
-		parsedLocalStorageValues.push({ username: getUsername(), score });
-		localStorage.setItem("scores", JSON.stringify(parsedLocalStorageValues));
-		loadScoreboard();
-	}
+	firebase
+		.database()
+		.ref("userScores")
+		.push()
+		.set({ username: getUsername(), score })
+		.then(
+			function (snapshot) {
+				// success(); // some success method
+				loadScoreboard();
+			},
+			function (error) {
+				console.log("error" + error);
+				// error(); // some error method
+			}
+		);
 }
 
 export function loadScoreboard() {
-	score = 0;
-	const localStorageValue: string | null = localStorage.getItem("scores");
-	let parsedLocalStorageValues: UserScore[];
+	let userScores: Array<UserScore> = [];
+	let userScoreData = firebase
+		.database()
+		.ref("userScores")
+		.once("value")
+		.then((snapshot) => {
+			let userScoreDB: { [key: string]: UserScore } = snapshot.val();
+			for (const score in userScoreDB) {
+				userScores.push(userScoreDB[score]);
+			}
 
-	if (localStorageValue) {
-		parsedLocalStorageValues = JSON.parse(localStorageValue);
-		parsedLocalStorageValues.sort((a, b) => b.score - a.score);
+			userScores.sort((a, b) => {
+				return b.score - a.score;
+			});
 
-		for (let i = 0; i < parsedLocalStorageValues.length; i++) {
-			let newRow = scoreboardElement.insertRow(-1);
+			updateScoreboardWithData(userScores);
+		});
+}
 
-			let placeNumberText = document.createTextNode(`${i + 1}.`);
-			let usernameText = document.createTextNode(
-				parsedLocalStorageValues[i].username
-			);
-			let scoreText = document.createTextNode(
-				parsedLocalStorageValues[i].score.toString()
-			);
+function updateScoreboardWithData(userScore: UserScore[]) {
+	const newTable = document.createElement("table");
+	for (let i = 0; i < userScore.length; i++) {
+		let newRow = newTable.insertRow(-1);
 
-			newRow.insertCell(0).appendChild(placeNumberText);
-			newRow.insertCell(1).appendChild(usernameText);
-			newRow.insertCell(2).appendChild(scoreText);
-		}
+		let placeNumberText = document.createTextNode(`${i + 1}.`);
+		let usernameText = document.createTextNode(userScore[i].username);
+		let scoreText = document.createTextNode(userScore[i].score.toString());
+
+		newRow.insertCell(0).appendChild(placeNumberText);
+		newRow.insertCell(1).appendChild(usernameText);
+		newRow.insertCell(2).appendChild(scoreText);
 	}
+	scoreboardElement.innerHTML = newTable.innerHTML;
 }
 
 export function getUsername() {

@@ -9,7 +9,6 @@ export class EnemyCorp {
 	private _right: boolean = true;
 	private _down: boolean = false;
 	private _newLine: number = 10;
-
 	constructor(columns: number, rows: number) {
 		for (let i = 0; i < columns; i++) {
 			this._enemyCorp.push(
@@ -23,7 +22,6 @@ export class EnemyCorp {
 		if (this._enemyCorp.length === 0) {
 			stopGame();
 		}
-
 		/**
 		 * adds the new row
 		 */
