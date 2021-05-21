@@ -6,7 +6,6 @@ import {
 	getScaledTileSize,
 	getTileSize,
 } from "../../helper/gameSettings";
-import { stopGame } from "../../helper/gameHelper";
 import { getScore } from "../../helper/save";
 import { stopGame } from "../../helper/gameStates";
 

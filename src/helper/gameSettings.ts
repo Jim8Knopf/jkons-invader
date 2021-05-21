@@ -3,13 +3,13 @@ import { getCanvas, getContext } from "./gameHelper";
 let zoom: number = 1;
 let size: number = 0;
 let enemyGap: number;
+let downSpeed: number;
 const _tileSize: number = 9;
 
 // game settings
 const enemys: number = 18;
 const rows: number = 4;
-const newEnemys: number = 5;
-const downSpeed: number = getTileSize();
+const newEnemys: number = 12;
 
 export function setCanvasSize() {
 	_resizeCanvas();
@@ -18,6 +18,7 @@ export function setCanvasSize() {
 	window.addEventListener("resize", () => {
 		_resizeCanvas();
 	});
+	downSpeed = (getScaledTileSize() * 2) / 3;
 	enemyGap = getScaledTileSize() / 6;
 }
 
