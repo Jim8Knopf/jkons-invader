@@ -111,6 +111,7 @@ function _reward() {
 			player.addLive();
 		});
 	}
+	scoreboardElement.innerHTML = newTable.innerHTML;
 }
 
 function _getUsername() {

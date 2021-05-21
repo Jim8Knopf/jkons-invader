@@ -26,7 +26,6 @@ export function init() {
 			gameState(keyboard);
 		}
 	});
-
 	initClickListener();
 	initEnemyCorp();
 }
