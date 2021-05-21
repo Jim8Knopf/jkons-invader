@@ -69,10 +69,10 @@ export class Shot {
 	 */
 	protected _clear() {
 		this._context.clearRect(
-			this._x - this._thickness / 2,
-			this._y - this._length,
-			this._thickness + 0.5,
-			this._length + 0.1
+			this._x - (this._thickness + 1) / 2,
+			this._y - this._length - 1,
+			this._thickness + 1,
+			this._length + 5
 		);
 	}
 

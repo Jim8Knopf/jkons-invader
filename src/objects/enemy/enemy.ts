@@ -1,7 +1,11 @@
 import { EnemyColumn } from "./enemyColumn";
 import { getCanvas, getContext } from "../../helper/gameHelper";
 import { addShot, getShots } from "../../helper/gameObjects";
-import { getScaledTileSize } from "../../helper/gameSettings";
+import {
+	getDownSpeed,
+	getScaledTileSize,
+	getEnemyGap,
+} from "../../helper/gameSettings";
 import { stopGame } from "../../helper/gameHelper";
 import { countScore } from "../../helper/save";
 import { Shot, who } from "../shot";
@@ -10,7 +14,7 @@ import { playEnemyDeadSound, playHitSound } from "../../helper/soundHandler";
 export abstract class Enemy {
 	protected abstract _live: number;
 	protected _y: number;
-	protected _speed: number = 36;
+	protected _speed: number = getDownSpeed();
 	protected _enemyColumn: EnemyColumn;
 	protected _shot: Shot;
 	protected _shoots: Array<Shot> = getShots();
@@ -41,10 +45,10 @@ export abstract class Enemy {
 
 	public clear(x: number): void {
 		getContext().clearRect(
-			x,
-			this._y,
-			getScaledTileSize(),
-			getScaledTileSize()
+			x - 2,
+			this._y - 1,
+			getScaledTileSize() + 4,
+			getScaledTileSize() + 2
 		);
 	}
 

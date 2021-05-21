@@ -2,7 +2,14 @@ import { getCanvas, getContext } from "./gameHelper";
 
 let zoom: number = 1;
 let size: number = 0;
+let enemyGap: number;
 const _tileSize: number = 9;
+
+// game settings
+const enemys: number = 18;
+const rows: number = 4;
+const newEnemys: number = 5;
+const downSpeed: number = getTileSize();
 
 export function setCanvasSize() {
 	_resizeCanvas();
@@ -11,6 +18,7 @@ export function setCanvasSize() {
 	window.addEventListener("resize", () => {
 		_resizeCanvas();
 	});
+	enemyGap = getScaledTileSize() / 6;
 }
 
 export function getTileSize(): number {
@@ -35,10 +43,53 @@ function _resizeCanvas() {
 		zoom = 4;
 	}
 
+	let body: HTMLElement = document.body;
+	let html = document.documentElement;
+
+	let height = Math.max(
+		body.scrollHeight,
+		body.offsetHeight,
+		html.clientHeight,
+		html.scrollHeight,
+		html.offsetHeight
+	);
+	let width =
+		Math.max(
+			body.scrollWidth,
+			body.offsetWidth,
+			html.clientWidth,
+			html.scrollWidth,
+			html.offsetWidth
+		) - 500;
+	let canvasSize = width > height ? height : width;
+	// height -= 5;
 	size = 225 * zoom;
+	// console.log(body.clientWidth);
+	// console.log(body.offsetWidth);
+	// console.log(body.scrollWidth);
+
 	// Set canvas height and with in JS, because with and height set in CSS distort drawn shapes
-	_canvas.width = size;
-	_canvas.height = size;
-	_scaledTileSize = _tileSize * zoom;
+	_canvas.width = canvasSize;
+	_canvas.height = canvasSize;
+	(
+		document.getElementById("pageLayout") as HTMLDivElement
+	).style.gridTemplateColumns = `20% ${canvasSize}px auto`;
+	_scaledTileSize = canvasSize / (getEnemys() + 8);
 	getContext().imageSmoothingEnabled = false;
+}
+
+export function getEnemys() {
+	return enemys;
+}
+export function getRows() {
+	return rows;
+}
+export function getNewEnemys() {
+	return newEnemys;
+}
+export function getEnemyGap() {
+	return enemyGap;
+}
+export function getDownSpeed() {
+	return downSpeed;
 }

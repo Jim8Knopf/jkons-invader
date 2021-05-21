@@ -1,7 +1,12 @@
 import { EnemyCorp } from "../objects/enemy/enemyCorp";
 import { getPlayers, getShots, newPlayer } from "./gameObjects";
 import { displayForm, loadScoreboard, vanishForm, resetScore } from "./save";
-import { getScaledTileSize, setCanvasSize } from "./gameSettings";
+import {
+	getEnemys,
+	getRows,
+	getScaledTileSize,
+	setCanvasSize,
+} from "./gameSettings";
 
 import {
 	playGameOverMusic,
@@ -47,7 +52,7 @@ export function init() {
 		}
 	});
 	initClickListener();
-	enemyCorp = new EnemyCorp(16, 4);
+	enemyCorp = new EnemyCorp(getEnemys(), getRows());
 	enemyCorp.updateEnemyCorp();
 }
 
@@ -97,7 +102,7 @@ function pause(): void {
 function reset() {
 	resetScore();
 	getContext().clearRect(0, 0, getCanvas().width, getCanvas().height);
-	enemyCorp = new EnemyCorp(16, 4);
+	enemyCorp = new EnemyCorp(getEnemys(), getRows());
 	enemyCorp.updateEnemyCorp();
 	animationActive = false;
 	gameStarted = false;

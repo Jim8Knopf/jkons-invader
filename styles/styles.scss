@@ -1,4 +1,8 @@
 // browser styles
+$height: 100%;
+$width: 100%;
+$h: #{$height}rem;
+$w: #{$width}rem;
 html,
 body {
 	margin: 0;
@@ -6,15 +10,13 @@ body {
 }
 #pageLayout {
 	display: grid;
-	grid-template-areas:
-		"header header header"
-		"guideSide main scoreSide"
-		"footer footer footer";
-	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-areas: "guideSide main scoreSide";
 }
 
 #gameContainer {
+	display: grid;
 	grid-area: main;
+	justify-content: center;
 
 	form {
 		position: absolute;
