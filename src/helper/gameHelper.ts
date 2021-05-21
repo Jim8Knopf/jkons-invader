@@ -121,6 +121,7 @@ export function stopGame() {
 	_renderGameOver();
 	stopTitleTheme();
 	playGameOverMusic();
+	loadScoreboard();
 	displayForm();
 }
 
