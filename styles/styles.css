@@ -2,12 +2,10 @@ html,
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
-  background-image: url("/assets/img/background.gif");
+  background-image: url("../assets/img/background.gif");
   background-size: 2.5%;
   -ms-interpolation-mode: nearest-neighbor;
-      image-rendering: -webkit-optimize-contrast;
       image-rendering: -moz-crisp-edges;
-      image-rendering: -o-pixelated;
       image-rendering: pixelated;
   color: white;
 }
@@ -42,6 +40,9 @@ body {
 
 #scoreSide {
   grid-area: scoreSide;
+}
+#scoreSide #playerValues {
+  background-color: black;
 }
 
 #scoreSide #playerValues {
