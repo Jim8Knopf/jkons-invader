@@ -53,7 +53,7 @@ export function saveUserScore() {
 		.database()
 		.ref("userScores")
 		.push()
-		.set({ username: getUsername(), score })
+		.set({ username: _getUsername(), score })
 		.then(
 			function (snapshot) {
 				// success(); // some success method
@@ -68,7 +68,8 @@ export function saveUserScore() {
 
 export function loadScoreboard() {
 	let userScores: Array<UserScore> = [];
-	let userScoreData = firebase
+
+	firebase
 		.database()
 		.ref("userScores")
 		.once("value")
@@ -112,7 +113,7 @@ function _reward() {
 	}
 }
 
-export function getUsername() {
+function _getUsername() {
 	let usernameInput = <HTMLInputElement>document.getElementById("username");
 	return usernameInput.value;
 }
