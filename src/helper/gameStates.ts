@@ -20,6 +20,9 @@ const _resetButton: HTMLButtonElement = <HTMLButtonElement>(
 const _stopButton: HTMLButtonElement = <HTMLButtonElement>(
 	document.getElementById("stop")
 );
+const _playerGuideGif: HTMLImageElement = <HTMLImageElement>(
+	document.getElementById("playerGuide")
+);
 
 // On window new load, remove event listener
 window.onunload = _unloadPage;
@@ -85,6 +88,7 @@ export function getGameOverState() {
  */
 function _start() {
 	if (!_gameStarted) {
+		_playerGuideGif.src = "assets/img/player-guide.png";
 		playTitleTheme();
 		vanishForm();
 		_gameStarted = true;
@@ -113,6 +117,7 @@ function _pause(): void {
  * Resets the game.
  */
 function _reset() {
+	_playerGuideGif.src = "assets/img/player-guide.gif";
 	stopGameOverMusic();
 	vanishForm();
 	resetScore();
