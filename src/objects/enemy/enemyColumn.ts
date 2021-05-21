@@ -1,6 +1,7 @@
 import { EnemyCorp } from "./enemyCorp";
 import { Enemy } from "./enemy";
 import { EnemyL1 } from "./enemyL1";
+import { getEnemyGap, getScaledTileSize } from "../../helper/gameSettings";
 
 export class EnemyColumn {
 	private _x: number;
@@ -13,7 +14,9 @@ export class EnemyColumn {
 		this._x = x;
 		rows = Math.abs(rows);
 		for (let i = rows; i > 0; i--) {
-			this._enemyColumn.push(new EnemyL1(this, i * 42));
+			this._enemyColumn.push(
+				new EnemyL1(this, i * (getScaledTileSize() + getEnemyGap()))
+			);
 		}
 	}
 
@@ -25,7 +28,7 @@ export class EnemyColumn {
 		}
 		this._x += this._speed;
 		for (let i = 0; i < this._enemyColumn.length; i++) {
-			this._enemyColumn[i]?.clear(this._x - this._speed);
+			this._enemyColumn[i]?.clear(this._x - this._speed * 1.5);
 			this._enemyColumn[i]?.hit();
 			this._enemyColumn[i]?.moveDown?.();
 			this._enemyColumn[i]?.renderEnemy();
@@ -48,7 +51,6 @@ export class EnemyColumn {
 	}
 
 	public removeEnemy(enemy: Enemy): void {
-		const index = this._enemyColumn.indexOf(enemy, 0);
 		this._enemyColumn = this._enemyColumn.filter((obj) => obj !== enemy);
 	}
 

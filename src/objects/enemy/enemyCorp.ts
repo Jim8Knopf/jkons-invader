@@ -1,18 +1,23 @@
 import { EnemyColumn } from "./enemyColumn";
 import { getCanvas, getContext } from "../../helper/gameHelper";
-import { getScaledTileSize, getTileSize } from "../../helper/gameSettings";
-import { stopGame } from "../../helper/gameHelper";
+import {
+	getEnemyGap,
+	getNewEnemys,
+	getScaledTileSize,
+	getTileSize,
+} from "../../helper/gameSettings";
 import { getScore } from "../../helper/save";
+import { stopGame } from "../../helper/gameStates";
 
 export class EnemyCorp {
 	private _enemyCorp: Array<EnemyColumn> = new Array();
 	private _right: boolean = true;
 	private _down: boolean = false;
-	private _newLine: number = 10;
+	private _newLine: number = getNewEnemys();
 	constructor(columns: number, rows: number) {
 		for (let i = 0; i < columns; i++) {
 			this._enemyCorp.push(
-				new EnemyColumn(this, rows, getScaledTileSize() + i * 42)
+				new EnemyColumn(this, rows, i * (getScaledTileSize() + getEnemyGap()))
 			);
 		}
 	}
@@ -26,7 +31,7 @@ export class EnemyCorp {
 		 * adds the new row
 		 */
 		if (getScore() >= this._newLine) {
-			this._newLine += 10;
+			this._newLine += getNewEnemys();
 			this._enemyCorp.forEach((column) => {
 				column.addEnemy();
 			});

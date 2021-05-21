@@ -1,5 +1,6 @@
 // Firebase App (the core Firebase SDK) is always required and must be listed first
 import firebase from "firebase/app";
+import { getPlayers } from "./gameObjects";
 import "firebase/database";
 
 let scoreElement = <HTMLOutputElement>document.getElementById("score");
@@ -32,9 +33,11 @@ interface UserScore {
 
 saveUserButtonElement.addEventListener("click", () => saveUserScore());
 let score: number = 0;
+let nextLive: number = 10;
 
 export function countScore() {
 	score++;
+	_reward();
 	scoreElement.value = score.toString();
 }
 
@@ -50,7 +53,7 @@ export function saveUserScore() {
 		.database()
 		.ref("userScores")
 		.push()
-		.set({ username: getUsername(), score })
+		.set({ username: _getUsername(), score })
 		.then(
 			function (snapshot) {
 				// success(); // some success method
@@ -65,7 +68,8 @@ export function saveUserScore() {
 
 export function loadScoreboard() {
 	let userScores: Array<UserScore> = [];
-	let userScoreData = firebase
+
+	firebase
 		.database()
 		.ref("userScores")
 		.once("value")
@@ -99,7 +103,18 @@ function updateScoreboardWithData(userScore: UserScore[]) {
 	scoreboardElement.innerHTML = newTable.innerHTML;
 }
 
-export function getUsername() {
+function _reward() {
+	if (nextLive === score) {
+		console.log("reward");
+		nextLive += nextLive;
+		getPlayers().forEach((player) => {
+			player.addLive();
+		});
+	}
+	// scoreboardElement.innerHTML = newTable.innerHTML;
+}
+
+function _getUsername() {
 	let usernameInput = <HTMLInputElement>document.getElementById("username");
 	return usernameInput.value;
 }
