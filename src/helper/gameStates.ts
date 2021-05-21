@@ -7,6 +7,7 @@ import {
 	playTitleTheme,
 	stopTitleTheme,
 	playGameOverMusic,
+	stopGameOverMusic,
 } from "./soundHandler";
 
 // * HTML Elements
@@ -49,6 +50,7 @@ export function gameState(keyboard: KeyboardEvent) {
  * Stops the game.
  */
 export function stopGame() {
+	_stopButton.disabled = true;
 	_isGameOver = true;
 	setAnimationState(false);
 	cancelAnimationFrame(getAnimation());
@@ -111,6 +113,8 @@ function _pause(): void {
  * Resets the game.
  */
 function _reset() {
+	stopGameOverMusic();
+	vanishForm();
 	resetScore();
 	getContext().clearRect(0, 0, getCanvas().width, getCanvas().height);
 	initEnemyCorp();
