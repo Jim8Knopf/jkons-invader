@@ -8,6 +8,7 @@ import {
 } from "../../helper/gameSettings";
 import { stopGame } from "../../helper/gameHelper";
 import { getScore } from "../../helper/save";
+import { stopGame } from "../../helper/gameStates";
 
 export class EnemyCorp {
 	private _enemyCorp: Array<EnemyColumn> = new Array();

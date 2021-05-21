@@ -1,10 +1,11 @@
 import { fromEvent, Observable } from "rxjs";
 import { map } from "rxjs/operators";
-import { getCanvas, getContext, stopGame } from "../helper/gameHelper";
+import { getCanvas, getContext } from "../helper/gameHelper";
 import { getScaledTileSize, getTileSize } from "../helper/gameSettings";
 import { addShot, getShots } from "../helper/gameObjects";
 import { Shot, who } from "./shot";
 import { playHitSound } from "../helper/soundHandler";
+import { stopGame } from "../helper/gameStates";
 
 export class Player {
 	private _shot: Shot;

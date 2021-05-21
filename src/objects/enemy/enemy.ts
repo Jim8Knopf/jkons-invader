@@ -10,6 +10,7 @@ import { stopGame } from "../../helper/gameHelper";
 import { countScore } from "../../helper/save";
 import { Shot, who } from "../shot";
 import { playEnemyDeadSound, playHitSound } from "../../helper/soundHandler";
+import { stopGame } from "../../helper/gameStates";
 
 export abstract class Enemy {
 	protected abstract _live: number;

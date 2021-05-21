@@ -30,8 +30,8 @@ export function getScaledTileSize(): number {
 	return _scaledTileSize;
 }
 
-const _canvas = getCanvas();
 function _resizeCanvas() {
+	const _canvas = getCanvas();
 	// resize canvas if the window size reached a specific size
 	if (innerHeight <= 450) {
 		zoom = 1;
