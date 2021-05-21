@@ -160,6 +160,13 @@ export class Player {
 			stopGame();
 		}
 	}
+	/**
+	 * addLive
+	 */
+	public addLive() {
+		this._live++;
+		this.liveElement.value = this._live.toString();
+	}
 	public resetPlayerLive() {
 		this._live = 3;
 		this.liveElement.value = this._live.toString();
