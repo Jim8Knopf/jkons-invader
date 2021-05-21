@@ -5,35 +5,25 @@ body {
 }
 
 #pageLayout {
-  display: -ms-grid;
   display: grid;
-      grid-template-areas: "header header header" "guideSide main scoreSide" "footer footer footer";
-  -ms-grid-columns: 1fr 1fr 1fr;
-      grid-template-columns: 1fr 1fr 1fr;
+  grid-template-areas: "guideSide main scoreSide";
 }
 
 #gameContainer {
-  -ms-grid-row: 2;
-  -ms-grid-column: 2;
+  display: grid;
   grid-area: main;
+  justify-content: center;
 }
-
 #gameContainer form {
   position: absolute;
-  -ms-grid-row: 2;
-  -ms-grid-column: 2;
   grid-area: main;
   top: 65%;
   left: 50%;
   width: 45%;
-  -webkit-transform: translate(-50%);
-          transform: translate(-50%);
+  transform: translate(-50%);
   display: none;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  justify-content: center;
 }
-
 #gameContainer form input {
   width: 35%;
 }
@@ -43,8 +33,6 @@ body {
 }
 
 #scoreSide {
-  -ms-grid-row: 2;
-  -ms-grid-column: 3;
   grid-area: scoreSide;
 }
 
@@ -55,13 +43,8 @@ table {
 
 img {
   -ms-interpolation-mode: nearest-neighbor;
-      image-rendering: -webkit-optimize-contrast;
       image-rendering: -moz-crisp-edges;
-      image-rendering: -o-pixelated;
       image-rendering: pixelated;
-  -ms-grid-row: 2;
-  -ms-grid-column: 1;
   grid-area: guideSide;
   width: 75%;
-}
-/*# sourceMappingURL=styles.css.map */
+}/*# sourceMappingURL=styles.css.map */

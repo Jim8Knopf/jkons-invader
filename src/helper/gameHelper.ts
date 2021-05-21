@@ -1,3 +1,4 @@
+
 import { initEnemyCorp, newPlayer } from "./gameObjects";
 import { setCanvasSize } from "./gameSettings";
 import { gameState, getGameOverState, initClickListener } from "./gameStates";
