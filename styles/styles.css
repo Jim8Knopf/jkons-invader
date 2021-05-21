@@ -45,6 +45,10 @@ body {
   background-color: black;
 }
 
+#scoreSide #playerValues {
+  background-color: black;
+}
+
 table {
   width: 100%;
   border: 1px solid black;
