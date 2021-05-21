@@ -1,5 +1,6 @@
 // Firebase App (the core Firebase SDK) is always required and must be listed first
 import firebase from "firebase/app";
+import { getPlayers } from "./gameObjects";
 import "firebase/database";
 
 let scoreElement = <HTMLOutputElement>document.getElementById("score");
@@ -32,9 +33,11 @@ interface UserScore {
 
 saveUserButtonElement.addEventListener("click", () => saveUserScore());
 let score: number = 0;
+let nextLive: number = 10;
 
 export function countScore() {
 	score++;
+	_reward();
 	scoreElement.value = score.toString();
 }
 
@@ -97,6 +100,16 @@ function updateScoreboardWithData(userScore: UserScore[]) {
 		newRow.insertCell(2).appendChild(scoreText);
 	}
 	scoreboardElement.innerHTML = newTable.innerHTML;
+}
+
+function _reward() {
+	if (nextLive === score) {
+		console.log("reward");
+		nextLive += nextLive;
+		getPlayers().forEach((player) => {
+			player.addLive();
+		});
+	}
 }
 
 export function getUsername() {
