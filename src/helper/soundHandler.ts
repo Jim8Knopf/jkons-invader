@@ -7,33 +7,38 @@ if (audio.canPlayType("audio/mp3")) {
 	audioType = ".wav";
 }
 
-let titleTheme = new Audio("assets/sounds/title_theme" + audioType);
-titleTheme.loop = true;
-titleTheme.volume = 0.05;
+const _titleTheme = new Audio("assets/sounds/title_theme" + audioType);
+_titleTheme.loop = true;
+_titleTheme.volume = 0.05;
 
 export function playTitleTheme() {
-	titleTheme.play();
+	_titleTheme.play();
 }
 
 export function stopTitleTheme() {
-	titleTheme.pause();
-	titleTheme.currentTime = 0;
+	_titleTheme.pause();
+	_titleTheme.currentTime = 0;
 }
 
-let gameOverMusic = new Audio("assets/sounds/game_over" + audioType);
-gameOverMusic.volume = 0.05;
+const _gameOverMusic = new Audio("assets/sounds/game_over" + audioType);
+_gameOverMusic.volume = 0.05;
 
 export function playGameOverMusic() {
-	gameOverMusic.play();
+	_gameOverMusic.play();
 }
 
-let shotSFX: HTMLAudioElement = new Audio(
+export function stopGameOverMusic() {
+	_gameOverMusic.pause();
+	_gameOverMusic.currentTime = 0;
+}
+
+const _shotSFX: HTMLAudioElement = new Audio(
 	"assets/sounds/laser" + audioType
 ) as HTMLAudioElement;
-shotSFX.volume = 0.015;
+_shotSFX.volume = 0.015;
 
 export function playShotSound() {
-	shotSFX.play();
+	_shotSFX.play();
 }
 
 export function playEnemyDeadSound() {

@@ -65,7 +65,8 @@ export function saveUserScore() {
 
 export function loadScoreboard() {
 	let userScores: Array<UserScore> = [];
-	let userScoreData = firebase
+
+	firebase
 		.database()
 		.ref("userScores")
 		.once("value")
@@ -99,7 +100,7 @@ function updateScoreboardWithData(userScore: UserScore[]) {
 	scoreboardElement.innerHTML = newTable.innerHTML;
 }
 
-export function getUsername() {
+function getUsername() {
 	let usernameInput = <HTMLInputElement>document.getElementById("username");
 	return usernameInput.value;
 }

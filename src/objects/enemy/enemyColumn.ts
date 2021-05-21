@@ -48,7 +48,6 @@ export class EnemyColumn {
 	}
 
 	public removeEnemy(enemy: Enemy): void {
-		const index = this._enemyColumn.indexOf(enemy, 0);
 		this._enemyColumn = this._enemyColumn.filter((obj) => obj !== enemy);
 	}
 
