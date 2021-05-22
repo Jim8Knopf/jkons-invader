@@ -3,7 +3,7 @@
 ## Descripton of the task
 
 [Teacher](https://github.com/staudtwvss):  
-Do something with canvas
+Do something with a HTML canvas.
 
 ## The project begun with a conversation...
 
