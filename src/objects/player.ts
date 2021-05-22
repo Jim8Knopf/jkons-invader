@@ -5,19 +5,24 @@ import { getScaledTileSize, getTileSize } from "../helper/gameSettings";
 import { addShot, getShots } from "../helper/gameObjects";
 import { Shot, who } from "./shot";
 import { playHitSound } from "../helper/soundHandler";
-import { stopGame } from "../helper/gameStates";
+import { gameState, stopGame } from "../helper/gameStates";
 
 export class Player {
 	private _shot: Shot;
+
 	// complete tile sheet
 	private _sheet = new Image();
 
 	// control keys for moving left and right and fire a shot
 	private _left: string;
 	private _right: string;
-	private _live: number = 3;
 	private _fire: string;
-	protected _shoots: Array<Shot> = getShots();
+
+	// player life
+	private _life: number = 3;
+
+	// shots shoot by the player
+	protected _shots: Array<Shot> = getShots();
 
 	// player coordinates and velocity
 	private _x: number =
@@ -25,7 +30,8 @@ export class Player {
 	private _y: number = getCanvas().height - getScaledTileSize();
 	private _velocity: number = 4;
 
-	private liveElement = <HTMLOutputElement>document.getElementById("live");
+	// displays player life
+	private lifeOutElement = <HTMLOutputElement>document.getElementById("live");
 
 	// save a list of pressed keys to allow multiple pressed keys at the same time
 	private pressed_keys: string[] = [];
@@ -56,6 +62,7 @@ export class Player {
 		this._left = left;
 		this._right = right;
 		this._fire = fire;
+
 		// new shot
 		this._shot = new Shot(who.player);
 		addShot(this._shot);
@@ -63,7 +70,7 @@ export class Player {
 		// draw player on page load
 		this._render(true);
 
-		this.liveElement.value = this._live.toString();
+		this.lifeOutElement.value = this._life.toString();
 	}
 
 	public handleInput() {
@@ -138,38 +145,89 @@ export class Player {
 		}
 	}
 	public _hit(): void {
-		for (let j = 0; j < this._shoots.length; j++) {
-			let shootX = this._shoots[j].getX;
-			let shootY = this._shoots[j].getY;
+		for (let j = 0; j < this._shots.length; j++) {
+			let shootX = this._shots[j].getX;
+			let shootY = this._shots[j].getY;
 			if (
 				shootY > this._y &&
 				shootY <= this._y + getScaledTileSize() &&
 				shootX >= this._x &&
 				shootX <= this._x + getScaledTileSize()
 			) {
-				this._shoots[j].hit();
-				this._live--;
-				this.liveElement.value = this._live.toString();
+				this._shots[j].hit();
+				this._life--;
+				this.lifeOutElement.value = this._life.toString();
 				playHitSound();
 				this._dead();
-				console.log(this._live);
+				console.log(this._life);
 			}
 		}
 	}
 	private _dead(): void {
-		if (this._live <= 0) {
+		if (this._life <= 0) {
 			stopGame();
 		}
 	}
 	/**
-	 * addLive
+	 * Add life.
 	 */
-	public addLive() {
-		this._live++;
-		this.liveElement.value = this._live.toString();
+	public addLife() {
+		this._life++;
+		this.lifeOutElement.value = this._life.toString();
 	}
-	public resetPlayerLive() {
-		this._live = 3;
-		this.liveElement.value = this._live.toString();
+
+	/**
+	 * Reset life.
+	 */
+	public resetLife() {
+		this._life = 3;
+		this.lifeOutElement.value = this._life.toString();
+	}
+
+	/**
+	 * Activate and handle gamepad input.
+	 */
+	public handleGamepadInput() {
+		// Configured for Xbox One Controller
+		const gp = (navigator.getGamepads ? navigator.getGamepads() : [])[0];
+
+		// Exit when no controller is connected
+		if (!gp) {
+			return;
+		}
+
+		/**
+		 * Move right when left stick is left,
+		 * right stick is left or
+		 * left is pressed on control pad
+		 * added tolerance of 0.25 for sticks
+		 */
+		if (gp.axes[0] < -0.25 || gp.axes[2] < -0.25 || gp.buttons[14].pressed) {
+			this._moveLeft();
+			/**
+			 * Move right when left stick is right,
+			 * right stick is right or
+			 * right is pressed on control pad
+			 * added tolerance of -0.25 for sticks
+			 */
+		} else if (
+			gp.axes[0] > 0.25 ||
+			gp.axes[2] > 0.25 ||
+			gp.buttons[15].pressed
+		) {
+			this._moveRight();
+		}
+
+		// Fire when right trigger, left trigger or "A" button is pressed.
+		if (
+			// right trigger
+			gp.buttons[7].pressed ||
+			// left trigger
+			gp.buttons[6].pressed ||
+			// "A" button
+			gp.buttons[0].pressed
+		) {
+			this._fireShot();
+		}
 	}
 }
