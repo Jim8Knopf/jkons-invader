@@ -1,4 +1,5 @@
 import { getEnemyCorp, getPlayers, getShots } from "./gameObjects";
+import { gamepadChangeState } from "./gameStates";
 
 // * Vars
 let animation: number;
@@ -14,7 +15,6 @@ export function update(): void {
 		_updatePlayers();
 		_updateShots();
 		getEnemyCorp().updateEnemyCorp();
-
 		if (isAnimationActive) {
 			animation = requestAnimationFrame(update);
 		}
@@ -54,6 +54,7 @@ export function getAnimationState() {
 function _updatePlayers() {
 	getPlayers().forEach((player) => {
 		player.handleInput();
+		player.handleGamepadInput();
 	});
 }
 

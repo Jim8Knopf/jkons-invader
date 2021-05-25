@@ -35,7 +35,7 @@ _gameOverImage.src = "assets/img/game_over.png";
 // * Public Functions
 export function gameState(keyboard: KeyboardEvent) {
 	switch (keyboard.key) {
-		case "r":
+		case " ":
 			if (!_gameStarted) {
 				_start();
 			}
@@ -46,6 +46,26 @@ export function gameState(keyboard: KeyboardEvent) {
 
 		default:
 			break;
+	}
+}
+
+// ! Unpause game doesn't work with gamepad, because gamepad input must be in game loop and when cancel animation frame game loop is left.
+export function gamepadChangeState() {
+	const gp = (navigator.getGamepads ? navigator.getGamepads() : [])[0];
+	// Configured for Xbox One Controller
+
+	// Exit when no controller is connected
+	if (!gp) {
+		return;
+	}
+	// if (gp.buttons[9].pressed) {
+	// 	_gameStarted ? _pause() : _start();
+	// }
+
+	while (!_gameStarted) {
+		if (gp.connected) {
+			_start();
+		}
 	}
 }
 
@@ -128,7 +148,7 @@ function _reset() {
 	_gameStarted = false;
 	_isGameOver = false;
 	getPlayers().forEach((player) => {
-		player.resetPlayerLive();
+		player.resetLife();
 	});
 	_startButton.innerHTML = "start";
 	_startButton.disabled = false;

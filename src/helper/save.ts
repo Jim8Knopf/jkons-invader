@@ -108,7 +108,7 @@ function _reward() {
 		console.log("reward");
 		nextLive += nextLive;
 		getPlayers().forEach((player) => {
-			player.addLive();
+			player.addLife();
 		});
 	}
 	// scoreboardElement.innerHTML = newTable.innerHTML;
