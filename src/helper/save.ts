@@ -3,6 +3,9 @@ import firebase from "firebase/app";
 import { getPlayers } from "./gameObjects";
 import "firebase/database";
 
+let lifeElement: HTMLOutputElement = <HTMLOutputElement>(
+	document.getElementById("live")
+);
 let scoreElement = <HTMLOutputElement>document.getElementById("score");
 let scoreboardElement = <HTMLTableElement>document.getElementById("scoreboard");
 let saveUserButtonElement = <HTMLButtonElement>(
@@ -29,6 +32,7 @@ firebase.initializeApp(firebaseConfig);
 interface UserScore {
 	username: string;
 	score: number;
+	life: string;
 }
 
 saveUserButtonElement.addEventListener("click", () => saveUserScore());
@@ -53,7 +57,7 @@ export function saveUserScore() {
 		.database()
 		.ref("userScores")
 		.push()
-		.set({ username: _getUsername(), score })
+		.set({ username: _getUsername(), score, life: lifeElement.value })
 		.then(
 			function (snapshot) {
 				// success(); // some success method
@@ -95,10 +99,14 @@ function updateScoreboardWithData(userScore: UserScore[]) {
 		let placeNumberText = document.createTextNode(`${i + 1}.`);
 		let usernameText = document.createTextNode(userScore[i].username);
 		let scoreText = document.createTextNode(userScore[i].score.toString());
+		let lifeText = document.createTextNode(
+			userScore[i].life != null ? userScore[i].life?.toString() : ""
+		);
 
 		newRow.insertCell(0).appendChild(placeNumberText);
 		newRow.insertCell(1).appendChild(usernameText);
 		newRow.insertCell(2).appendChild(scoreText);
+		newRow.insertCell(3).appendChild(lifeText);
 	}
 	scoreboardElement.innerHTML = newTable.innerHTML;
 }

@@ -1,4 +1,3 @@
-
 import { initEnemyCorp, newPlayer } from "./gameObjects";
 import { setCanvasSize } from "./gameSettings";
 import { gameState, getGameOverState, initClickListener } from "./gameStates";
@@ -11,6 +10,10 @@ const canvas: HTMLCanvasElement = <HTMLCanvasElement>(
 const context: CanvasRenderingContext2D = getCanvas().getContext(
 	"2d"
 ) as CanvasRenderingContext2D;
+
+document
+	.querySelectorAll(".tableFixHead")
+	.forEach((el) => el.addEventListener("scroll", tableFixHead));
 
 // * Public Functions
 /**
@@ -45,4 +48,13 @@ export function getCanvas(): HTMLCanvasElement {
  */
 export function getContext(): CanvasRenderingContext2D {
 	return context;
+}
+
+// Fix table head
+function tableFixHead(e: Event) {
+	const el = e.target as HTMLTableElement,
+		sT = el.scrollTop;
+	el.querySelectorAll("thead th").forEach(
+		(th: any) => (th.style.transform = `translateY(${sT}px)`)
+	);
 }
