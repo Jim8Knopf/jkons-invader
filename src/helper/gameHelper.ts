@@ -19,7 +19,7 @@ document
 /**
  * Initialize game
  */
-export function init() {
+export function init(): void {
 	setCanvasSize();
 	newPlayer("a", "d", " ");
 	loadScoreboard();
