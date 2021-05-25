@@ -1,4 +1,3 @@
-
 import { initEnemyCorp, newPlayer } from "./gameObjects";
 import { setCanvasSize } from "./gameSettings";
 import { gameState, getGameOverState, initClickListener } from "./gameStates";
@@ -16,7 +15,7 @@ const context: CanvasRenderingContext2D = getCanvas().getContext(
 /**
  * Initialize game
  */
-export function init() {
+export function init(): void {
 	setCanvasSize();
 	newPlayer("a", "d", " ");
 	loadScoreboard();
