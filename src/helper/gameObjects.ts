@@ -1,6 +1,7 @@
 import { EnemyCorp } from "../objects/enemy/enemyCorp";
 import { Player } from "../objects/player";
 import { Shot } from "../objects/shot";
+import { getEnemys, getRows } from "./gameSettings";
 
 // TODO Maybe export object functions here to the object classes
 let players: Array<Player> = new Array();
@@ -19,14 +20,14 @@ export function getShots(): Array<Shot> {
 	return shots;
 }
 
-export function addShot(shot: Shot) {
+export function addShot(shot: Shot): void {
 	shots.push(shot);
 }
 
-export function initEnemyCorp() {
-	enemyCorp = new EnemyCorp(16, 4);
+export function initEnemyCorp(): void {
+	enemyCorp = new EnemyCorp(getEnemys(), getRows());
 }
 
-export function getEnemyCorp() {
+export function getEnemyCorp(): EnemyCorp {
 	return enemyCorp;
 }
