@@ -1,0 +1,85 @@
+/* You can add global styles to this file, and also import other style files */
+// browser styles
+$height: 100%;
+$width: 100%;
+$h: #{$height}rem;
+$w: #{$width}rem;
+html,
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-image: url("assets/img/background.gif");
+  image-rendering: optimizeSpeed;
+  background-size: 2.5%;
+  color: white;
+}
+#pageLayout {
+  display: grid;
+  grid-template-areas: "guideSide main scoreSide";
+}
+
+#gameContainer {
+  display: grid;
+  grid-area: main;
+  justify-content: center;
+
+  form {
+    position: absolute;
+    grid-area: main;
+    top: 65%;
+    left: 50%;
+    width: 45%;
+    transform: translate(-50%);
+    display: none;
+    justify-content: center;
+
+    input {
+      width: 35%;
+    }
+  }
+}
+
+.tableFixHead {
+  overflow-y: auto;
+  height: 400px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+
+  th,
+  td {
+    padding: 8px 16px;
+  }
+
+  th {
+    background: grey;
+    text-align: left;
+  }
+
+  tbody {
+    tr {
+      border-bottom: 2px solid grey;
+    }
+  }
+}
+
+// canvas styles
+canvas {
+  background-color: black;
+}
+
+#scoreSide {
+  grid-area: scoreSide;
+
+  #playerValues {
+    background-color: black;
+  }
+}
+
+img {
+  image-rendering: pixelated;
+  grid-area: guideSide;
+  width: 75%;
+}
