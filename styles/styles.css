@@ -5,9 +5,7 @@ body {
   background-image: url("../assets/img/background.gif");
   background-size: 2.5%;
   -ms-interpolation-mode: nearest-neighbor;
-      image-rendering: -webkit-optimize-contrast;
       image-rendering: -moz-crisp-edges;
-      image-rendering: -o-pixelated;
       image-rendering: pixelated;
   color: white;
 }
@@ -81,6 +79,9 @@ table tbody tr {
   -ms-grid-row: 1;
   -ms-grid-column: 3;
   grid-area: scoreSide;
+}
+#scoreSide #playerValues {
+  background-color: black;
 }
 
 #scoreSide #playerValues {
