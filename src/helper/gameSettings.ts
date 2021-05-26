@@ -4,6 +4,7 @@ let zoom: number = 1;
 let size: number = 0;
 let enemyGap: number;
 let downSpeed: number;
+let _scaledTileSize: number = 0;
 const _tileSize: number = 9;
 
 // game settings
@@ -11,7 +12,7 @@ const enemys: number = 18;
 const rows: number = 4;
 const newEnemys: number = 12;
 
-export function setCanvasSize() {
+export function setCanvasSize(): void {
 	_resizeCanvas();
 
 	// Webkit/Blink will fire this on load, but Gecko doesn't.
@@ -26,23 +27,12 @@ export function getTileSize(): number {
 	return _tileSize;
 }
 
-let _scaledTileSize: number = 0;
 export function getScaledTileSize(): number {
 	return _scaledTileSize;
 }
 
-function _resizeCanvas() {
+function _resizeCanvas(): void {
 	const _canvas = getCanvas();
-	// resize canvas if the window size reached a specific size
-	if (innerHeight <= 450) {
-		zoom = 1;
-	} else if (innerHeight <= 690 || innerWidth <= 675) {
-		zoom = 2;
-	} else if (innerHeight <= 915 || innerWidth <= 900) {
-		zoom = 3;
-	} else {
-		zoom = 4;
-	}
 
 	let body: HTMLElement = document.body;
 	let html = document.documentElement;
@@ -79,18 +69,18 @@ function _resizeCanvas() {
 	getContext().imageSmoothingEnabled = false;
 }
 
-export function getEnemys() {
+export function getEnemys(): number {
 	return enemys;
 }
-export function getRows() {
+export function getRows(): number {
 	return rows;
 }
-export function getNewEnemys() {
+export function getNewEnemys(): number {
 	return newEnemys;
 }
-export function getEnemyGap() {
+export function getEnemyGap(): number {
 	return enemyGap;
 }
-export function getDownSpeed() {
+export function getDownSpeed(): number {
 	return downSpeed;
 }

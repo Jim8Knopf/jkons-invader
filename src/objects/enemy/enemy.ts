@@ -1,11 +1,7 @@
 import { EnemyColumn } from "./enemyColumn";
-import { getCanvas, getContext } from "../../helper/gameHelper";
+import { getContext } from "../../helper/gameHelper";
 import { addShot, getShots } from "../../helper/gameObjects";
-import {
-	getDownSpeed,
-	getScaledTileSize,
-	getEnemyGap,
-} from "../../helper/gameSettings";
+import { getDownSpeed, getScaledTileSize } from "../../helper/gameSettings";
 import { countScore } from "../../helper/save";
 import { Shot, who } from "../shot";
 import { playEnemyDeadSound, playHitSound } from "../../helper/soundHandler";
@@ -74,8 +70,6 @@ export abstract class Enemy {
 		if (this._live <= 0) {
 			this._enemyColumn.removeEnemy(this);
 			playEnemyDeadSound();
-			// * removed random spawn for classic mode
-			// * for the classic mode spawning look in the main
 		}
 	}
 
