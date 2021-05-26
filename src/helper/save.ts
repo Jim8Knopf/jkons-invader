@@ -8,8 +8,8 @@ let lifeElement: HTMLOutputElement = <HTMLOutputElement>(
 );
 let scoreElement = <HTMLOutputElement>document.getElementById("score");
 let scoreboardElement = <HTMLTableElement>document.getElementById("scoreboard");
-let saveUserButtonElement = <HTMLButtonElement>(
-	document.getElementById("saveUser")
+let form: HTMLFormElement = <HTMLFormElement>(
+	document.getElementById("enterUsername")
 );
 
 // Your web app's Firebase configuration
@@ -35,7 +35,8 @@ interface UserScore {
 	life: string;
 }
 
-saveUserButtonElement.addEventListener("click", () => saveUserScore());
+form.addEventListener("submit", () => saveUserScore());
+
 let score: number = 0;
 let nextLive: number = 10;
 
@@ -127,7 +128,6 @@ function _getUsername() {
 	return usernameInput.value;
 }
 
-let form = <HTMLFormElement>document.getElementById("enterUsername");
 export function displayForm() {
 	form.style.display = "flex";
 }
