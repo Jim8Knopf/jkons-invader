@@ -4,21 +4,19 @@ import { ElementRef, Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class CanvasService {
+  private _canvas!: HTMLCanvasElement;
 
-  private _canvas!: ElementRef<HTMLCanvasElement>;
   private _context: CanvasRenderingContext2D | null = null;
   constructor() {}
 
-  set setCanvas(canvas: ElementRef<HTMLCanvasElement>) {
-    if (canvas) {
+  set setCanvas(canvas: HTMLCanvasElement) {
       this._canvas = canvas;
-      this._context = this._canvas.nativeElement.getContext("2d");
-    }
+      this._context = this._canvas.getContext("2d");
   }
 
   
   get getCanvas(): HTMLCanvasElement {
-      return this._canvas.nativeElement;
+      return this._canvas;
   }
   
   get getContext(): CanvasRenderingContext2D | null {

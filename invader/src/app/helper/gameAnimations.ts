@@ -52,10 +52,6 @@ export function getAnimationState() {
  * Updates player animation.
  */
 function _updatePlayers() {
-  getPlayers().forEach((player) => {
-    player.handleInput();
-    player.handleGamepadInput();
-  });
 }
 
 /**

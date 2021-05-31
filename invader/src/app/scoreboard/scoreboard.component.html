@@ -8,13 +8,19 @@
     <table>
       <thead>
         <tr>
-          <th>Place</th>
+          <!-- <th>Place</th> -->
           <th>Username</th>
           <th>Score</th>
           <th>Life</th>
         </tr>
       </thead>
-      <tbody id="scoreboard"></tbody>
+      <tbody>
+        <tr *ngFor="let userScore of userScores">
+          <td>{{ userScore.username }}</td>
+          <td>{{ userScore.score }}</td>
+          <td>{{ userScore.life }}</td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </div>

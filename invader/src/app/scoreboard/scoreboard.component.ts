@@ -77,8 +77,8 @@ export class ScoreboardComponent implements OnInit {
       );
   }
 
+  userScores: Array<UserScore> = [];
   loadScoreboard() {
-    let userScores: Array<UserScore> = [];
 
     firebase
       .database()
@@ -87,34 +87,16 @@ export class ScoreboardComponent implements OnInit {
       .then((snapshot) => {
         let userScoreDB: { [key: string]: UserScore } = snapshot.val();
         for (const score in userScoreDB) {
-          userScores.push(userScoreDB[score]);
+          this.userScores.push(userScoreDB[score]);
         }
 
-        userScores.sort((a, b) => {
+        this.userScores.sort((a, b) => {
           return b.score - a.score;
         });
-
-        this.updateScoreboardWithData(userScores);
       });
   }
 
   updateScoreboardWithData(userScore: UserScore[]) {
-    const newTable = document.createElement('table');
-    for (let i = 0; i < userScore.length; i++) {
-      let newRow = newTable.insertRow(-1);
-
-      let placeNumberText = document.createTextNode(`${i + 1}.`);
-      let usernameText = document.createTextNode(userScore[i].username);
-      let scoreText = document.createTextNode(userScore[i].score.toString());
-      let lifeText = document.createTextNode(
-        userScore[i].life != null ? userScore[i].life?.toString() : ''
-      );
-
-      newRow.insertCell(0).appendChild(placeNumberText);
-      newRow.insertCell(1).appendChild(usernameText);
-      newRow.insertCell(2).appendChild(scoreText);
-      newRow.insertCell(3).appendChild(lifeText);
-    }
     // TODO
     // scoreboardElement.innerHTML = newTable.innerHTML;
   }
