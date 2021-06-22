@@ -1,22 +1,11 @@
 <div id="pageLayout">
   <img id="playerGuide" src="assets/img/player-guide.gif" alt="" />
-  <div id="gameContainer">
-    <canvas #jkonsInvader></canvas>
-    <form id="enterUsername">
-      <input
-        id="username"
-        minlength="4"
-        maxlength="16"
-        placeholder="Enter your Username to save your score"
-      />
-      <button id="saveUser">Save</button>
-    </form>
-  </div>
+  <!-- <div id="gameContainer"> -->
+    <jkons-game></jkons-game>
+  <!-- </div> -->
   <div id="scoreSide">
     <div class="test">
-      <button id="start">start</button>
-      <button id="stop" disabled>stop</button>
-      <button id="reset" disabled>reset</button>
+      <jkons-menu></jkons-menu>
       <app-scoreboard></app-scoreboard>
     </div>
   </div>

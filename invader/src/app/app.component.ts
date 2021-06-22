@@ -7,22 +7,10 @@ import { SettingsService } from './services/settings.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements AfterViewInit{
-  @ViewChild('jkonsInvader', {static: false})
-  _canvasElemetRef!: ElementRef;
+export class AppComponent{
+  // @ViewChild('jkonsInvader', {static: false})
   
-  constructor(private _canvasService: CanvasService, private _settingsService: SettingsService, private _playerService: PlayerService) {}
-
-  @HostListener('window:resize', ['$event'])
-  ngAfterViewInit(): void {
-    this._canvasService.setCanvas = this._canvasElemetRef.nativeElement;
-    this._settingsService.setCanvasSize();
-    this._playerService.newPlayer('a', 'd', ' ');
-    this._playerService.getPlayers.forEach((player) => {
-      this._playerService.handleInput();
-      this._playerService.handleGamepadInput();
-    });
-    }
+  // @HostListener('window:resize', ['$event'])
     
     ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
@@ -36,4 +24,23 @@ export class AppComponent implements AfterViewInit{
     // initClickListener();
     // initEnemyCorp();
   }
+  // * Private Functions
+/**
+ * Starts the game.
+ */
+// public  _start() {
+//   if (!_gameStarted) {
+//     _playerGuideGif.src = 'assets/img/player-guide.png';
+//     playTitleTheme();
+//     vanishForm();
+//     _gameStarted = true;
+//     setAnimationState(true);
+//     resetScore();
+//     update();
+//     // _startButton.innerHTML = 'start';
+//     // _startButton.disabled = true;
+//     // _stopButton.disabled = false;
+//     // _resetButton.disabled = false;
+//   }
+// }
 }
