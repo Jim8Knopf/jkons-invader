@@ -1,7 +1,14 @@
 // Firebase App (the core Firebase SDK) is always required and must be listed first
-import firebase from "firebase/app";
+import { initializeApp } from "firebase/app";
+import { onAuthStateChanged, getAuth } from "firebase/auth";
+import {
+	getDatabase,
+	ref,
+	set,
+	onValue,
+	DataSnapshot,
+} from "firebase/database";
 import { getPlayers } from "./gameObjects";
-import "firebase/database";
 
 let lifeElement: HTMLOutputElement = <HTMLOutputElement>(
 	document.getElementById("live")
@@ -27,7 +34,7 @@ const firebaseConfig = {
 		"https://jkioins-invader-default-rtdb.europe-west1.firebasedatabase.app",
 };
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
 interface UserScore {
 	username: string;
@@ -52,43 +59,33 @@ export function resetScore() {
 
 export function saveUserScore() {
 	vanishForm();
+	const db = getDatabase();
 
-	firebase
-		.database()
-		.ref("userScores")
-		.push()
-		.set({ username: _getUsername(), score, life: lifeElement.value })
-		.then(
-			function (snapshot) {
-				// success(); // some success method
-				loadScoreboard();
-			},
-			function (error) {
-				console.log("error" + error);
-				// error(); // some error method
-			}
-		);
+	set(ref(db, "userScores/" + user_uid), {
+		username: _getUsername(),
+		score,
+		life: lifeElement.value,
+	}).then(function () {
+		loadScoreboard();
+	});
 }
 
 export function loadScoreboard() {
-	let userScores: Array<UserScore> = [];
+	const userScores: Array<UserScore> = [];
+	const db = getDatabase();
+	const userScoreRef = ref(db, "userScores/");
 
-	firebase
-		.database()
-		.ref("userScores")
-		.once("value")
-		.then((snapshot) => {
-			let userScoreDB: { [key: string]: UserScore } = snapshot.val();
-			for (const score in userScoreDB) {
-				userScores.push(userScoreDB[score]);
-			}
-
-			userScores.sort((a, b) => {
-				return b.score - a.score;
-			});
-
-			updateScoreboardWithData(userScores);
+	onValue(userScoreRef, (snapshot) => {
+		snapshot.forEach((userScoreDB) => {
+			userScores.push(userScoreDB.val());
 		});
+
+		userScores.sort((a, b) => {
+			return b.score - a.score;
+		});
+
+		updateScoreboardWithData(userScores);
+	});
 }
 
 function updateScoreboardWithData(userScore: UserScore[]) {
@@ -136,6 +133,16 @@ export function vanishForm() {
 	form.style.display = "none";
 }
 
+// * get user uid
+let user_uid: string;
+const auth = getAuth();
+onAuthStateChanged(auth, (user) => {
+	if (user) {
+		// User is signed in, see docs for a list of available properties
+		// https://firebase.google.com/docs/reference/js/firebase.User
+		user_uid = user.uid;
+	}
+});
 /**
  * the getter function for the score variable
  * @returns score
